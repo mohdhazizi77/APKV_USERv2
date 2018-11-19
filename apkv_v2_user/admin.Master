@@ -1,0 +1,80 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="admin.master.vb" Inherits="apkv_v2_user.admin" %>
+<%@ Register Src="commoncontrol/user_view_master.ascx" TagName="user_view_master" TagPrefix="uc1" %>
+<%@ Register Src="commoncontrol/tbl_usergroupmenu.ascx" TagName="tbl_usergroupmenu" TagPrefix="uc2" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>APLIKASI PENGURUSAN PENTAKSIRAN KOLEJ VOKASIONAL</title>
+
+    <meta name="robots" content="noindex" />
+    <meta content="" name="Keywords" />
+    <meta content="Global" name="Distribution" />
+    <meta content="index,follow" name="Robots" />
+    <link href="~/css/portal.default.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="img/faviconkpm.png" type="image/x-icon" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body class="fbbody">
+    <form id="myform" runat="server">
+        <table style="width: 100%; border: solid 0px #000000;">
+            <tr>
+                <td colspan="3">
+                    <table class="fbheader_menu">
+                        <tr>
+                            <td style="width: 60%; text-align: left;">
+                                <a href="admin.default.aspx">APLIKASI PENGURUSAN PENTAKSIRAN KOLEJ VOKASIONAL</a>
+                            </td>
+                            <td style="width: 40%; text-align: right;">
+                                <asp:Label ID ="lblNotifikasi" runat ="server" ></asp:Label>
+                                                
+                               |<a href="Kolejdash.aspx"></a><a href="user.change.password.aspx?msg=Logout!">KataLaluan</a>|<a href="logout.aspx?msg=Logout!">Logout</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 20%; vertical-align: top;">
+                    <uc1:user_view_master ID="user_view_master1" runat="server" />
+                    &nbsp;
+                    <uc2:tbl_usergroupmenu ID ="tbl_usergroupmenu" runat="server" />
+                   
+         
+                </td>
+                <td style="width: 80%; vertical-align: top;">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: center; vertical-align: top;">
+                    <table style="width: 100%; text-align: center; vertical-align: top; border: none 0px;"
+                        border="0px">
+                        <tr>
+                            <td>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fbfooter">|&nbsp; © 2014 Lembaga Peperiksaan Kementerian Pendidikan Malaysia
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Untuk skrin 1024 X 768 dan ke atas
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <asp:Label ID="lblFooterMsg" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+
