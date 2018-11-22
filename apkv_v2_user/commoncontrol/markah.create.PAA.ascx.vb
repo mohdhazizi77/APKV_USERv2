@@ -395,9 +395,9 @@ Public Class markah_create_PAA
             '--validate NUMBER and less than 100
             '--strBahasaMelayu
 
-            'If strBahasaMelayu.Text.Length = 0 Then
-            '    Return False
-            'End If
+            If strBahasaMelayu.Text.Length = 0 Then
+                Return False
+            End If
             If Not strBahasaMelayu.Text = "" Then
                 If oCommon.IsCurrency(strBahasaMelayu.Text) = False Then
                     Return False
@@ -441,9 +441,9 @@ Public Class markah_create_PAA
                 'End If
 
                 '--strBahasaMelayu3
-                'If strBahasaMelayu3.Text.Length = 0 Then
-                '    Return False
-                'End If
+                If strBahasaMelayu3.Text.Length = 0 Then
+                    Return False
+                End If
                 If Not strBahasaMelayu3.Text = "" Then
                     If oCommon.IsCurrency(strBahasaMelayu3.Text) = False Then
                         Return False
@@ -459,9 +459,9 @@ Public Class markah_create_PAA
             End If
             '--strBahasaInggeris
 
-            'If strBahasaInggeris.Text.Length = 0 Then
-            '    Return False
-            'End If
+            If strBahasaInggeris.Text.Length = 0 Then
+                Return False
+            End If
             If Not strBahasaInggeris.Text = "" Then
                 If oCommon.IsCurrency(strBahasaInggeris.Text) = False Then
                     Return False
@@ -476,9 +476,9 @@ Public Class markah_create_PAA
             End If
             '--strScience
 
-            'If strScience1.Text.Length = 0 Then
-            '    Return False
-            'End If
+            If strScience1.Text.Length = 0 Then
+                Return False
+            End If
             If Not strScience1.Text = "" Then
                 If oCommon.IsCurrency(strScience1.Text) = False Then
                     Return False
@@ -493,9 +493,9 @@ Public Class markah_create_PAA
             End If
             If ddlSemester.SelectedValue = "1" Or ddlSemester.SelectedValue = "2" Then
 
-                'If strScience2.Text.Length = 0 Then
-                '    Return False
-                'End If
+                If strScience2.Text.Length = 0 Then
+                    Return False
+                End If
                 If Not strScience2.Text = "" Then
                     If oCommon.IsCurrency(strScience2.Text) = False Then
                         Return False
@@ -511,9 +511,9 @@ Public Class markah_create_PAA
             End If
             '--strSejarah
 
-            'If strSejarah.Text.Length = 0 Then
-            '    Return False
-            'End If
+            If strSejarah.Text.Length = 0 Then
+                Return False
+            End If
             If Not ddlSemester.SelectedValue = "4" Then
                 If Not strSejarah.Text = "" Then
                     If oCommon.IsCurrency(strSejarah.Text) = False Then
@@ -573,9 +573,9 @@ Public Class markah_create_PAA
 
 
             'strMatematik
-            'If strMatematik.Text.Length = 0 Then
-            '    Return False
-            'End If
+            If strMatematik.Text.Length = 0 Then
+                Return False
+            End If
             If Not strMatematik.Text = "" Then
                 If oCommon.IsCurrency(strMatematik.Text) = False Then
                     Return False
