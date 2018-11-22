@@ -308,7 +308,7 @@ Public Class markah_create_PAA
         lblMsgResult.Text = ""
 
         Try
-            If ValidateForm() = False Then
+            If KemaskiniForm() = False Then
                 divMsg.Attributes("class") = "error"
                 lblMsg.Text = "Sila Semak Data Markah.[Huruf],[Kosong] adalah tidak dibenarkan!  Markah mestilah diantara -1-100 sahaja"
                 divMsgResult.Attributes("class") = "error"
@@ -374,6 +374,224 @@ Public Class markah_create_PAA
         strRet = BindData(datRespondent)
 
     End Sub
+
+    Private Function KemaskiniForm() As Boolean
+        For i As Integer = 0 To datRespondent.Rows.Count - 1
+            Dim row As GridViewRow = datRespondent.Rows(i)
+            Dim strBahasaMelayu As TextBox = CType(row.FindControl("A_BahasaMelayu"), TextBox)
+            Dim strBahasaMelayu1 As TextBox = CType(row.FindControl("A_BahasaMelayu1"), TextBox)
+            Dim strBahasaMelayu2 As TextBox = CType(row.FindControl("A_BahasaMelayu2"), TextBox)
+            Dim strBahasaMelayu3 As TextBox = CType(row.FindControl("A_BahasaMelayu3"), TextBox)
+            Dim strBahasaInggeris As TextBox = CType(row.FindControl("A_BahasaInggeris"), TextBox)
+            Dim strScience1 As TextBox = CType(row.FindControl("A_Science1"), TextBox)
+            Dim strScience2 As TextBox = CType(row.FindControl("A_Science2"), TextBox)
+            Dim strSejarah As TextBox = CType(row.FindControl("A_Sejarah"), TextBox)
+            Dim strPendidikanIslam1 As TextBox = CType(row.FindControl("A_PendidikanIslam1"), TextBox)
+            Dim strPendidikanIslam2 As TextBox = CType(row.FindControl("A_PendidikanIslam2"), TextBox)
+            Dim strPendidikanMoral As TextBox = CType(row.FindControl("A_PendidikanMoral"), TextBox)
+            Dim strMatematik As TextBox = CType(row.FindControl("A_Mathematics"), TextBox)
+
+
+            '--validate NUMBER and less than 100
+            '--strBahasaMelayu
+
+            'If strBahasaMelayu.Text.Length = 0 Then
+            '    Return False
+            'End If
+            If Not strBahasaMelayu.Text = "" Then
+                If oCommon.IsCurrency(strBahasaMelayu.Text) = False Then
+                    Return False
+                End If
+
+                If CInt(strBahasaMelayu.Text) > 100 Then
+                    Return False
+                End If
+                If CInt(strBahasaMelayu.Text) < -1 Then
+                    Return False
+                End If
+            End If
+            If ddlSemester.SelectedValue = "4" Then
+
+                '--strBahasaMelayu1
+                'If strBahasaMelayu1.Text.Length = 0 Then
+                '    Return False
+                'End If
+                'If oCommon.IsCurrency(strBahasaMelayu1.Text) = False Then
+                '    Return False
+                'End If
+                'If CInt(strBahasaMelayu1.Text) > 100 Then
+                '    Return False
+                'End If
+                'If CInt(strBahasaMelayu1.Text) < -1 Then
+                '    Return False
+                'End If
+
+                ''--strBahasaMelayu2
+                'If strBahasaMelayu2.Text.Length = 0 Then
+                '    Return False
+                'End If
+                'If oCommon.IsCurrency(strBahasaMelayu2.Text) = False Then
+                '    Return False
+                'End If
+                'If CInt(strBahasaMelayu2.Text) > 100 Then
+                '    Return False
+                'End If
+                'If CInt(strBahasaMelayu2.Text) < -1 Then
+                '    Return False
+                'End If
+
+                '--strBahasaMelayu3
+                'If strBahasaMelayu3.Text.Length = 0 Then
+                '    Return False
+                'End If
+                If Not strBahasaMelayu3.Text = "" Then
+                    If oCommon.IsCurrency(strBahasaMelayu3.Text) = False Then
+                        Return False
+                    End If
+
+                    If CInt(strBahasaMelayu3.Text) > 100 Then
+                        Return False
+                    End If
+                    If CInt(strBahasaMelayu3.Text) < -1 Then
+                        Return False
+                    End If
+                End If
+            End If
+            '--strBahasaInggeris
+
+            'If strBahasaInggeris.Text.Length = 0 Then
+            '    Return False
+            'End If
+            If Not strBahasaInggeris.Text = "" Then
+                If oCommon.IsCurrency(strBahasaInggeris.Text) = False Then
+                    Return False
+                End If
+
+                If CInt(strBahasaInggeris.Text) > 100 Then
+                    Return False
+                End If
+                If CInt(strBahasaInggeris.Text) < -1 Then
+                    Return False
+                End If
+            End If
+            '--strScience
+
+            'If strScience1.Text.Length = 0 Then
+            '    Return False
+            'End If
+            If Not strScience1.Text = "" Then
+                If oCommon.IsCurrency(strScience1.Text) = False Then
+                    Return False
+                End If
+
+                If CInt(strScience1.Text) > 100 Then
+                    Return False
+                End If
+                If CInt(strScience1.Text) < -1 Then
+                    Return False
+                End If
+            End If
+            If ddlSemester.SelectedValue = "1" Or ddlSemester.SelectedValue = "2" Then
+
+                If strScience2.Text.Length = 0 Then
+                    Return False
+                End If
+                If Not strScience2.Text = "" Then
+                    If oCommon.IsCurrency(strScience2.Text) = False Then
+                        Return False
+                    End If
+
+                    If CInt(strScience2.Text) > 100 Then
+                        Return False
+                    End If
+                    If CInt(strScience2.Text) < -1 Then
+                        Return False
+                    End If
+                End If
+            End If
+            '--strSejarah
+
+            'If strSejarah.Text.Length = 0 Then
+            '    Return False
+            'End If
+            If Not ddlSemester.SelectedValue = "4" Then
+                If Not strSejarah.Text = "" Then
+                    If oCommon.IsCurrency(strSejarah.Text) = False Then
+                        Return False
+                    End If
+
+                    If CInt(strSejarah.Text) > 100 Then
+                        Return False
+                    End If
+                    If CInt(strSejarah.Text) < -1 Then
+                        Return False
+                    End If
+                End If
+            End If
+            '--strPendidikanIslam
+            If strPendidikanIslam1.Text.Length = 0 Then
+                strPendidikanIslam1.Text = 0
+            End If
+            If oCommon.IsCurrency(strPendidikanIslam1.Text) = False Then
+                Return False
+            End If
+            If CInt(strPendidikanIslam1.Text) > 100 Then
+                Return False
+            End If
+            If CInt(strPendidikanIslam1.Text) < -1 Then
+                Return False
+            End If
+
+
+
+            If strPendidikanIslam2.Text.Length = 0 Then
+                strPendidikanIslam2.Text = 0
+            End If
+            If oCommon.IsCurrency(strPendidikanIslam2.Text) = False Then
+                Return False
+            End If
+            If CInt(strPendidikanIslam2.Text) > 100 Then
+                Return False
+            End If
+            If CInt(strPendidikanIslam2.Text) < -1 Then
+                Return False
+            End If
+
+            '--strPendidikanMoral
+            If strPendidikanMoral.Text.Length = 0 Then
+                strPendidikanMoral.Text = 0
+            End If
+            If oCommon.IsCurrency(strPendidikanMoral.Text) = False Then
+                Return False
+            End If
+            If CInt(strPendidikanMoral.Text) > 100 Then
+                Return False
+            End If
+            If CInt(strPendidikanMoral.Text) < -1 Then
+                Return False
+            End If
+
+
+            'strMatematik
+            'If strMatematik.Text.Length = 0 Then
+            '    Return False
+            'End If
+            If Not strMatematik.Text = "" Then
+                If oCommon.IsCurrency(strMatematik.Text) = False Then
+                    Return False
+                End If
+
+                If CInt(strMatematik.Text) > 100 Then
+                    Return False
+                End If
+                If CInt(strMatematik.Text) < -1 Then
+                    Return False
+                End If
+            End If
+        Next
+
+        Return True
+    End Function
 
     Private Function ValidateForm() As Boolean
         For i As Integer = 0 To datRespondent.Rows.Count - 1
