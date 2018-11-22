@@ -493,9 +493,9 @@ Public Class markah_create_PAA
             End If
             If ddlSemester.SelectedValue = "1" Or ddlSemester.SelectedValue = "2" Then
 
-                If strScience2.Text.Length = 0 Then
-                    Return False
-                End If
+                'If strScience2.Text.Length = 0 Then
+                '    Return False
+                'End If
                 If Not strScience2.Text = "" Then
                     If oCommon.IsCurrency(strScience2.Text) = False Then
                         Return False
