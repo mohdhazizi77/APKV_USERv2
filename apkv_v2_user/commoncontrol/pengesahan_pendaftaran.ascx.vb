@@ -38,7 +38,7 @@ Public Class pengesahan_pendaftaran1
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
                 '------exist takwim
-                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Calon' AND Aktif='1'"
+                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Pengesahan Pendaftaran' AND Aktif='1'"
                 If oCommon.isExist(strSQL) = True Then
 
                     'count data takwim
