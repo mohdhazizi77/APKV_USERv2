@@ -246,7 +246,7 @@ Public Class import_markah_matapelajaran
             '--not deleted
             tmpSQL = "SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran,kpmkv_pelajar.MYKAD, kpmkv_kursus.KodKursus AS [KodProgram],"
             tmpSQL += " kpmkv_pelajar_markah.B_BahasaMelayu AS BahasaMelayu, kpmkv_pelajar_markah.B_BahasaInggeris AS BahasaInggeris,kpmkv_pelajar_markah.B_Mathematics AS Matematik,"
-            tmpSQL += " kpmkv_pelajar_markah.B_Science1 AS Sains, kpmkv_pelajar_markah.B_Sejarah AS Sejarah, "
+            tmpSQL += " kpmkv_pelajar_markah.B_Science1 AS Sains,"
             tmpSQL += " kpmkv_pelajar_markah.B_PendidikanIslam1 AS PendidikanIslam, kpmkv_pelajar_markah.B_PendidikanMoral AS PendidikanMoral"
             tmpSQL += " FROM kpmkv_pelajar_markah LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_pelajar_markah.PelajarID = kpmkv_pelajar.PelajarID"
             tmpSQL += " LEFT OUTER Join kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID"
@@ -254,7 +254,7 @@ Public Class import_markah_matapelajaran
             tmpSQL = "SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran,kpmkv_pelajar.MYKAD, kpmkv_kursus.KodKursus AS [KodProgram],"
             tmpSQL += " kpmkv_pelajar_markah.A_BahasaMelayu AS BahasaMelayu, kpmkv_pelajar_markah.A_BahasaMelayu3 AS BahasaMelayu3, "
             tmpSQL += " kpmkv_pelajar_markah.A_BahasaInggeris AS BahasaInggeris, kpmkv_pelajar_markah.A_Mathematics AS Matematik, kpmkv_pelajar_markah.A_Science1 AS Sains1, kpmkv_pelajar_markah.A_Science2 AS Sains2, "
-            tmpSQL += " kpmkv_pelajar_markah.A_Sejarah AS Sejarah, kpmkv_pelajar_markah.A_PendidikanIslam1 AS PendidikanIslam1,"
+            tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam1 AS PendidikanIslam1,"
             tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam2 AS PendidikanIslam2, kpmkv_pelajar_markah.A_PendidikanMoral AS PendidikanMoral"
             tmpSQL += " FROM kpmkv_pelajar_markah LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_pelajar_markah.PelajarID = kpmkv_pelajar.PelajarID"
             tmpSQL += " LEFT OUTER Join kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID"
@@ -312,17 +312,17 @@ Public Class import_markah_matapelajaran
     Private Sub btnFile_Click(sender As Object, e As EventArgs) Handles btnFile.Click
         lblMsg.Text = ""
         If chkResult.Text = "PB" Then
-            ExportToCSV(getSQL)
-            'Response.ContentType = "Application/xlsx"
-            'Response.AppendHeader("Content-Disposition", "attachment; filename=PELAJARIMPORT.xlsx")
-            'Response.TransmitFile(Server.MapPath("~/sample_data/MATAPELAJARAN-IMPORT.xlsx"))
-            'Response.End()
+            'ExportToCSV(getSQL)
+            Response.ContentType = "Application/xlsx"
+            Response.AppendHeader("Content-Disposition", "attachment; filename=MARKAH-IMPORTPB.xlsx")
+            Response.TransmitFile(Server.MapPath("~/sample_data/MARKAH-IMPORTPB.xlsx"))
+            Response.End()
         Else
-            ExportToCSV(getSQL)
-            'Response.ContentType = "Application/xlsx"
-            'Response.AppendHeader("Content-Disposition", "attachment; filename=PELAJARIMPORT.xlsx")
-            'Response.TransmitFile(Server.MapPath("~/sample_data/MATAPELAJARAN-IMPORT2.xlsx"))
-            'Response.End()
+            'ExportToCSV(getSQL)
+            Response.ContentType = "Application/xlsx"
+            Response.AppendHeader("Content-Disposition", "attachment; filename=MARKAH-IMPORTPA.xlsx")
+            Response.TransmitFile(Server.MapPath("~/sample_data/MARKAH-IMPORTPA.xlsx"))
+            Response.End()
 
         End If
 
@@ -336,7 +336,7 @@ Public Class import_markah_matapelajaran
         Response.Buffer = True
         Response.AddHeader("content-disposition", "attachment;filename=markah.csv")
         Response.Charset = ""
-        Response.ContentType = "application/text"
+        Response.ContentType = "application/xlsx"
 
 
         Dim sb As New StringBuilder()
@@ -532,11 +532,11 @@ Public Class import_markah_matapelajaran
                     strMathematics = 0
                 End If
 
-                If IsNumeric(SiteData.Tables(0).Rows(i).Item("Sejarah")) Then
-                    strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
-                Else
-                    strSejarah = 0
-                End If
+                'If IsNumeric(SiteData.Tables(0).Rows(i).Item("Sejarah")) Then
+                '    strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
+                'Else
+                '    strSejarah = 0
+                'End If
 
                 If IsNumeric(SiteData.Tables(0).Rows(i).Item("PendidikanMoral")) Then
                     strPendidikanMoral = SiteData.Tables(0).Rows(i).Item("PendidikanMoral")
@@ -666,12 +666,12 @@ Public Class import_markah_matapelajaran
                         strBI = SiteData.Tables(0).Rows(i).Item("BahasaInggeris")
                         strMathematics = SiteData.Tables(0).Rows(i).Item("Matematik")
                         strScience = SiteData.Tables(0).Rows(i).Item("Sains")
-                        strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
+                        'strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
                         strPendidikanIslam = SiteData.Tables(0).Rows(i).Item("PendidikanIslam")
                         strPendidikanMoral = SiteData.Tables(0).Rows(i).Item("PendidikanMoral")
 
                         strSQL = "UPDATE kpmkv_pelajar_markah SET B_BahasaMelayu='" & oCommon.FixSingleQuotes(strBM) & "',B_BahasaInggeris='" & oCommon.FixSingleQuotes(strBI) & "',"
-                        strSQL += " B_Mathematics='" & oCommon.FixSingleQuotes(strMathematics) & "',B_Science1='" & oCommon.FixSingleQuotes(strScience) & "', B_Sejarah='" & oCommon.FixSingleQuotes(strSejarah) & "',"
+                        strSQL += " B_Mathematics='" & oCommon.FixSingleQuotes(strMathematics) & "',B_Science1='" & oCommon.FixSingleQuotes(strScience) & "',"
                         strSQL += " B_PendidikanIslam1='" & oCommon.FixSingleQuotes(strPendidikanIslam) & "', B_PendidikanMoral='" & oCommon.FixSingleQuotes(strPendidikanMoral) & "'"
                         strSQL += " WHERE KolejRecordID='" & lblKolejID.Text & "' AND PelajarID='" & oCommon.FixSingleQuotes(strPelajarID) & "'"
                         strSQL += " AND Tahun='" & oCommon.FixSingleQuotes(ddlTahun.Text) & "' AND Semester='" & oCommon.FixSingleQuotes(ddlSemester.Text) & "'"
@@ -689,7 +689,7 @@ Public Class import_markah_matapelajaran
                         strMathematics = SiteData.Tables(0).Rows(i).Item("Matematik")
                         strScience1 = SiteData.Tables(0).Rows(i).Item("Sains1")
                         strScience2 = SiteData.Tables(0).Rows(i).Item("Sains2")
-                        strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
+                        'strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
                         strPendidikanIslam1 = SiteData.Tables(0).Rows(i).Item("PendidikanIslam1")
                         strPendidikanIslam2 = SiteData.Tables(0).Rows(i).Item("PendidikanIslam2")
                         strPendidikanMoral = SiteData.Tables(0).Rows(i).Item("PendidikanMoral")
@@ -698,7 +698,7 @@ Public Class import_markah_matapelajaran
                         strSQL = "UPDATE kpmkv_pelajar_markah SET A_BahasaMelayu='" & oCommon.FixSingleQuotes(strBM) & "', "
                         strSQL += " A_BahasaMelayu3='" & oCommon.FixSingleQuotes(strBM3) & "', A_BahasaInggeris='" & oCommon.FixSingleQuotes(strBI) & "',A_Mathematics='" & oCommon.FixSingleQuotes(strMathematics) & "',"
                         strSQL += " A_Science1='" & oCommon.FixSingleQuotes(strScience1) & "',  A_Science2='" & strScience2 & "',"
-                        strSQL += " A_Sejarah='" & oCommon.FixSingleQuotes(strSejarah) & "', A_PendidikanIslam1='" & oCommon.FixSingleQuotes(strPendidikanIslam1) & "',A_PendidikanIslam2='" & oCommon.FixSingleQuotes(strPendidikanIslam2) & "', "
+                        strSQL += " A_PendidikanIslam1='" & oCommon.FixSingleQuotes(strPendidikanIslam1) & "',A_PendidikanIslam2='" & oCommon.FixSingleQuotes(strPendidikanIslam2) & "', "
                         strSQL += " A_PendidikanMoral='" & oCommon.FixSingleQuotes(strPendidikanMoral) & "'"
                         strSQL += " WHERE KolejRecordID='" & lblKolejID.Text & "' AND PelajarID='" & oCommon.FixSingleQuotes(strPelajarID) & "'"
                         strSQL += " AND Tahun='" & oCommon.FixSingleQuotes(ddlTahun.Text) & "' AND Semester='" & oCommon.FixSingleQuotes(ddlSemester.Text) & "'"
