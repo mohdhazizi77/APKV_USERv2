@@ -729,9 +729,9 @@ Public Class markah_create_PAA
             End If
             '--strSejarah
 
-            If strSejarah.Text.Length = 0 Then
-                Return False
-            End If
+            'If strSejarah.Text.Length = 0 Then
+            '    Return False
+            'End If
             If Not ddlSemester.SelectedValue = "4" Then
                 If Not strSejarah.Text = "" Then
                     If oCommon.IsCurrency(strSejarah.Text) = False Then
