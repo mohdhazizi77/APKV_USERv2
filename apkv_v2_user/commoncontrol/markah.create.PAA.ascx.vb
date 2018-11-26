@@ -1749,11 +1749,11 @@ Public Class markah_create_PAA
                     End If
                 End If
                 Dim SEJ As String = strSejarah.Text
-                If SEJ = "" Then
-                    divMsgResult.Attributes("class") = "error"
-                    lblMsgResult.Text = "Semua markah perlu diisi dan dikemaskini sebelum pengesahan markah dilakukan"
-                    Exit Sub
-                End If
+                'If SEJ = "" Then
+                '    divMsgResult.Attributes("class") = "error"
+                '    lblMsgResult.Text = "Semua markah perlu diisi dan dikemaskini sebelum pengesahan markah dilakukan"
+                '    Exit Sub
+                'End If
                 Dim PI1 As String = strPendidikanIslam1.Text
                 If PI1 = "" Then
                     divMsgResult.Attributes("class") = "error"
