@@ -109,7 +109,7 @@ Public Class import_markah_matapelajaran
 
     End Sub
     Private Sub kpmkv_tahun_list()
-         strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
+        strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
         strRet = oCommon.getFieldValue(strSQL)
         Try
             If Not ddlTahun.Text = strRet Then
@@ -243,21 +243,38 @@ Public Class import_markah_matapelajaran
         Dim strOrder As String = " ORDER BY kpmkv_pelajar.Nama ASC"
 
         If chkResult.Text = "PB" Then
-            '--not deleted
+
             tmpSQL = "SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran,kpmkv_pelajar.MYKAD, kpmkv_kursus.KodKursus AS [KodProgram],"
             tmpSQL += " kpmkv_pelajar_markah.B_BahasaMelayu AS BahasaMelayu, kpmkv_pelajar_markah.B_BahasaInggeris AS BahasaInggeris,kpmkv_pelajar_markah.B_Mathematics AS Matematik,"
-            tmpSQL += " kpmkv_pelajar_markah.B_Science1 AS Sains,"
+            tmpSQL += " kpmkv_pelajar_markah.B_Science1 AS Sains, kpmkv_pelajar_markah.B_Sejarah AS Sejarah,"
             tmpSQL += " kpmkv_pelajar_markah.B_PendidikanIslam1 AS PendidikanIslam, kpmkv_pelajar_markah.B_PendidikanMoral AS PendidikanMoral"
             tmpSQL += " FROM kpmkv_pelajar_markah LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_pelajar_markah.PelajarID = kpmkv_pelajar.PelajarID"
             tmpSQL += " LEFT OUTER Join kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID"
+
         Else
-            tmpSQL = "SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran,kpmkv_pelajar.MYKAD, kpmkv_kursus.KodKursus AS [KodProgram],"
-            tmpSQL += " kpmkv_pelajar_markah.A_BahasaMelayu AS BahasaMelayu, kpmkv_pelajar_markah.A_BahasaMelayu3 AS BahasaMelayu3, "
-            tmpSQL += " kpmkv_pelajar_markah.A_BahasaInggeris AS BahasaInggeris, kpmkv_pelajar_markah.A_Mathematics AS Matematik, kpmkv_pelajar_markah.A_Science1 AS Sains1, kpmkv_pelajar_markah.A_Science2 AS Sains2, "
-            tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam1 AS PendidikanIslam1,"
-            tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam2 AS PendidikanIslam2, kpmkv_pelajar_markah.A_PendidikanMoral AS PendidikanMoral"
-            tmpSQL += " FROM kpmkv_pelajar_markah LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_pelajar_markah.PelajarID = kpmkv_pelajar.PelajarID"
-            tmpSQL += " LEFT OUTER Join kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID"
+
+            If ddlSemester.Text = "4" Then
+
+                tmpSQL = "SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran,kpmkv_pelajar.MYKAD, kpmkv_kursus.KodKursus AS [KodProgram],"
+                tmpSQL += " kpmkv_pelajar_markah.A_BahasaMelayu AS BahasaMelayu, kpmkv_pelajar_markah.A_BahasaMelayu3 AS BahasaMelayu3, "
+                tmpSQL += " kpmkv_pelajar_markah.A_BahasaInggeris AS BahasaInggeris, kpmkv_pelajar_markah.A_Mathematics AS Matematik, kpmkv_pelajar_markah.A_Science1 AS Sains1, kpmkv_pelajar_markah.A_Science2 AS Sains2, "
+                tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam1 AS PendidikanIslam1,"
+                tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam2 AS PendidikanIslam2, kpmkv_pelajar_markah.A_PendidikanMoral AS PendidikanMoral"
+                tmpSQL += " FROM kpmkv_pelajar_markah LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_pelajar_markah.PelajarID = kpmkv_pelajar.PelajarID"
+                tmpSQL += " LEFT OUTER Join kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID"
+
+            Else
+
+                tmpSQL = "SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran,kpmkv_pelajar.MYKAD, kpmkv_kursus.KodKursus AS [KodProgram],"
+                tmpSQL += " kpmkv_pelajar_markah.A_BahasaMelayu AS BahasaMelayu, kpmkv_pelajar_markah.A_BahasaMelayu3 AS BahasaMelayu3, "
+                tmpSQL += " kpmkv_pelajar_markah.A_BahasaInggeris AS BahasaInggeris, kpmkv_pelajar_markah.A_Mathematics AS Matematik, kpmkv_pelajar_markah.A_Science1 AS Sains1, kpmkv_pelajar_markah.A_Science2 AS Sains2, "
+                tmpSQL += " kpmkv_pelajar_markah.A_Sejarah AS Sejarah, kpmkv_pelajar_markah.A_PendidikanIslam1 AS PendidikanIslam1,"
+                tmpSQL += " kpmkv_pelajar_markah.A_PendidikanIslam2 AS PendidikanIslam2, kpmkv_pelajar_markah.A_PendidikanMoral AS PendidikanMoral"
+                tmpSQL += " FROM kpmkv_pelajar_markah LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_pelajar_markah.PelajarID = kpmkv_pelajar.PelajarID"
+                tmpSQL += " LEFT OUTER Join kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID"
+
+            End If
+
         End If
 
         strWhere = " WHERE kpmkv_pelajar.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_pelajar.IsDeleted='N' AND kpmkv_pelajar.StatusID='2' AND kpmkv_pelajar.JenisCalonID='2'"
@@ -312,17 +329,17 @@ Public Class import_markah_matapelajaran
     Private Sub btnFile_Click(sender As Object, e As EventArgs) Handles btnFile.Click
         lblMsg.Text = ""
         If chkResult.Text = "PB" Then
-            'ExportToCSV(getSQL)
-            Response.ContentType = "Application/xlsx"
-            Response.AppendHeader("Content-Disposition", "attachment; filename=MARKAH-IMPORTPB.xlsx")
-            Response.TransmitFile(Server.MapPath("~/sample_data/MARKAH-IMPORTPB.xlsx"))
-            Response.End()
+            ExportToCSV(getSQL)
+            'Response.ContentType = "Application/xlsx"
+            'Response.AppendHeader("Content-Disposition", "attachment; filename=MARKAH-IMPORTPB.xlsx")
+            'Response.TransmitFile(Server.MapPath("~/sample_data/MARKAH-IMPORTPB.xlsx"))
+            'Response.End()
         Else
-            'ExportToCSV(getSQL)
-            Response.ContentType = "Application/xlsx"
-            Response.AppendHeader("Content-Disposition", "attachment; filename=MARKAH-IMPORTPA.xlsx")
-            Response.TransmitFile(Server.MapPath("~/sample_data/MARKAH-IMPORTPA.xlsx"))
-            Response.End()
+            ExportToCSV(getSQL)
+            'Response.ContentType = "Application/xlsx"
+            'Response.AppendHeader("Content-Disposition", "attachment; filename=MARKAH-IMPORTPA.xlsx")
+            'Response.TransmitFile(Server.MapPath("~/sample_data/MARKAH-IMPORTPA.xlsx"))
+            'Response.End()
 
         End If
 
@@ -336,7 +353,7 @@ Public Class import_markah_matapelajaran
         Response.Buffer = True
         Response.AddHeader("content-disposition", "attachment;filename=markah.csv")
         Response.Charset = ""
-        Response.ContentType = "application/xlsx"
+        Response.ContentType = "application/text"
 
 
         Dim sb As New StringBuilder()
@@ -532,11 +549,11 @@ Public Class import_markah_matapelajaran
                     strMathematics = 0
                 End If
 
-                'If IsNumeric(SiteData.Tables(0).Rows(i).Item("Sejarah")) Then
-                '    strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
-                'Else
-                '    strSejarah = 0
-                'End If
+                If IsNumeric(SiteData.Tables(0).Rows(i).Item("Sejarah")) Then
+                    strSejarah = SiteData.Tables(0).Rows(i).Item("Sejarah")
+                Else
+                    strSejarah = 0
+                End If
 
                 If IsNumeric(SiteData.Tables(0).Rows(i).Item("PendidikanMoral")) Then
                     strPendidikanMoral = SiteData.Tables(0).Rows(i).Item("PendidikanMoral")
