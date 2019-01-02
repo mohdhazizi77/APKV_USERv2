@@ -671,13 +671,14 @@ Public Class pentaksiran_vokasional
                                     End If
                                 Case "4"
                                     If strJenisKursusMT = "SOCIAL" Then
-                                        namaMP_MT = "  SELECT NamaMataPelajaran FROM kpmkv_matapelajaran
+                                        strSQL = "  SELECT NamaMataPelajaran FROM kpmkv_matapelajaran
                                                     WHERE
                                                     Tahun = '" & ddlTahun.Text & "'
                                                     AND Semester = '" & ddlSemester.Text & "'
                                                     AND PelajarMarkahGred = 'GredMT'
                                                     AND (Jenis ='SOCIAL' OR Jenis IS NULL OR Jenis ='')"
-                                        strNamaMT = oCommon.getFieldValue(strSQL)
+                                        ''strNamaMT = oCommon.getFieldValue(strSQL)
+                                        namaMP_MT = oCommon.getFieldValue(strSQL)
                                     Else
                                         strSQL = "  SELECT NamaMataPelajaran FROM kpmkv_matapelajaran
                                                     WHERE

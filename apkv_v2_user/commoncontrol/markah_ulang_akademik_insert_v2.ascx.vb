@@ -661,12 +661,12 @@ Public Class markah_ulang_akademik_insert_v21
                     End If
 
                     '' if pointerbaru less than pointerlama
-                    If Pointer < strPointerGredLama Then
-                        strSQL = "UPDATE kpmkv_pelajar_markah SET Gred" & strGredNama & "='" & strGredMarkah & "'," & strpointerNama & "='" & Pointer & "' Where PelajarID='" & strPelajarID & "'"
+                    If strPointerPelajarUlangBaru >= strPointerGredLama Then
+                        strSQL = "UPDATE kpmkv_pelajar_markah SET Gred" & strGredNama & "='" & Gred & "'," & strpointerNama & "='" & Pointer & "' Where PelajarID='" & strPelajarID & "'"
                         strRet = oCommon.ExecuteSQL(strSQL)
 
-                    ElseIf Pointer = strPointerGredLama Then
-                        strSQL = "UPDATE kpmkv_pelajar_markah SET Gred" & strGredNama & "='" & Gred & "'," & strpointerNama & "='" & Pointer & "' Where PelajarID='" & strPelajarID & "'"
+                    ElseIf strPointerGredLama >= strPointerPelajarUlangBaru Then
+                        strSQL = "UPDATE kpmkv_pelajar_markah SET Gred" & strGredNama & "='" & strGredMarkah & "'," & strpointerNama & "='" & Pointer & "' Where PelajarID='" & strPelajarID & "'"
                         strRet = oCommon.ExecuteSQL(strSQL)
                     ElseIf Gred = "C" Then
                         'update bm
