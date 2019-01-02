@@ -641,7 +641,7 @@ Public Class slip_keputusan_BM1104_SJ12511
 
                     cell = New PdfPCell()
                     cetak = ""
-                    cetak += strKompetensiGredSJ
+                    cetak += strGredSJSetara
                     cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
                     cell.Border = 0
                     table.AddCell(cell)
