@@ -22,6 +22,9 @@ Public Class pengesahan_pendaftaran1
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not IsPostBack Then
+
+                kpmkv_tahun_2_list()
+                ddlTahun_Semasa.SelectedValue = Now.Year
                 lblMsg.Text = ""
                 'lblMsgResult.Text = ""
 
