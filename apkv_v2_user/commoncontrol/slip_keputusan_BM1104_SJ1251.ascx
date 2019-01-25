@@ -2,7 +2,7 @@
 
 <table class="fbform">
     <tr class="fbform_header">
-        <td colspan="2">Slip Keputusan BM 1104 dan Sejarah 1251</td>
+        <td colspan="2">Slip Keputusan BM 1104 dan Sejarah A05401</td>
     </tr>
     <tr>
         <td style="width: 20%;">Kohort:</td>
@@ -83,6 +83,13 @@
                     <asp:TemplateField HeaderText="Kohort" HeaderStyle-Width="10px">
                         <ItemTemplate>
                             <asp:Label ID="Tahun" runat="server" Width="10px" Text='<%# Bind("Tahun")%>'></asp:Label>
+                        </ItemTemplate>
+                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
+                        <ItemStyle VerticalAlign="Middle" />
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Tahun Ujian" HeaderStyle-Width="10px">
+                        <ItemTemplate>
+                            <asp:Label ID="IsBMTahun" runat="server" Width="10px" Text='<%# Bind("IsBMTahun")%>'></asp:Label>
                         </ItemTemplate>
                         <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
                         <ItemStyle VerticalAlign="Middle" />
