@@ -212,10 +212,10 @@ Public Class bmsetara_calon_ulang_daftar
             Dim lblstatusSJ As Label = datRespondent2.Rows(i).FindControl("lblStatusSJ")
 
 
-            strSQL = "SELECT isCalon FROM kpmkv_pelajar WHERE PelajarID = '" & strkey & "'"
+            strSQL = "SELECT isCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "'"
             Dim statusBM As String = oCommon.getFieldValue(strSQL)
 
-            strSQL = "SELECT IsSJCalon FROM kpmkv_pelajar WHERE PelajarID = '" & strkey & "'"
+            strSQL = "SELECT IsSJCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "'"
             Dim statusSJ As String = oCommon.getFieldValue(strSQL)
 
             If statusBM = "1" Then
