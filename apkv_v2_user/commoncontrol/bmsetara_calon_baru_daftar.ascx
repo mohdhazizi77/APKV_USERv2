@@ -39,10 +39,8 @@
     <tr>
         <td>Semester:</td>
         <td>
-            <asp:DropDownList ID="ddlsemester" runat="server" AutoPostBack="true" Width="350px">
-                <asp:ListItem Value="3">3</asp:ListItem>
-                <asp:ListItem Value="4">4</asp:ListItem>
-            </asp:DropDownList></td>
+            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
+        </td>
 
     </tr>
     <tr>
@@ -162,7 +160,8 @@
                         <ItemTemplate>
                             <asp:Label ID="lblStatusSJ" runat="server"></asp:Label>
                         </ItemTemplate>
-                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" /><ItemStyle VerticalAlign="Middle" />
+                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
+                        <ItemStyle VerticalAlign="Middle" />
                     </asp:TemplateField>
 
                     <asp:TemplateField>

@@ -409,7 +409,7 @@ Public Class cetak_pelajar_ulang1
 
         Try
             HttpContext.Current.Response.ContentType = "application/pdf"
-            HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=LabelMeja.pdf")
+            HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=slipPelajarUlang.pdf")
             HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache)
 
             PdfWriter.GetInstance(myDocument, HttpContext.Current.Response.OutputStream)
@@ -572,7 +572,7 @@ Public Class cetak_pelajar_ulang1
 
                     table = New PdfPTable(5)
                     table.WidthPercentage = 100
-                    table.SetWidths({10, 25, 1, 10, 55})
+                    table.SetWidths({10, 35, 1, 10, 45})
                     table.DefaultCell.Border = 0
 
                     cell = New PdfPCell()
@@ -581,14 +581,7 @@ Public Class cetak_pelajar_ulang1
                     Dim countsubj As Integer = 0
                     Dim strJenisKursusMT As String = ""
 
-                    strSQL = "  SELECT 
-                                kpmkv_pelajar_ulang.NamaMataPelajaran 		
-                                FROM 
-                                kpmkv_pelajar_ulang
-                                WHERE kpmkv_pelajar_ulang.PelajarID = '" & strkey & "'
-                                AND kpmkv_pelajar_ulang.Tahun = '" & ddlTahun.SelectedValue & "'
-                                AND kpmkv_pelajar_ulang.Semester = '" & ddlSemester.SelectedValue & "'"
-
+                    strSQL = "  SELECT kpmkv_pelajar_ulang.NamaMataPelajaran FROM kpmkv_pelajar_ulang WHERE kpmkv_pelajar_ulang.PelajarID = '" & strkey & "' AND kpmkv_pelajar_ulang.Tahun = '" & ddlTahun.SelectedValue & "' AND kpmkv_pelajar_ulang.Semester = '" & ddlSemester.SelectedValue & "'"
                     strRet = oCommon.ExecuteSQL(strSQL)
 
                     Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -1182,7 +1175,7 @@ Public Class cetak_pelajar_ulang1
 
                     table = New PdfPTable(5)
                     table.WidthPercentage = 100
-                    table.SetWidths({10, 25, 1, 10, 55})
+                    table.SetWidths({10, 35, 1, 10, 45})
                     table.DefaultCell.Border = 0
 
                     cell = New PdfPCell()
@@ -1662,6 +1655,8 @@ Public Class cetak_pelajar_ulang1
             HttpContext.Current.Response.End()
 
         Catch ex As Exception
+
+            lblMsg.Text = "error" & ex.Message
 
         End Try
     End Sub

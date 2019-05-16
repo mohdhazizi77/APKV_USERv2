@@ -286,7 +286,7 @@ Public Class markah_ulang_akademik_insert_v21
 
         Dim tmpSQL As String = ""
         Dim strWhere As String = ""
-        Dim strOrder As String = " ORDER BY kpmkv_pelajar.Tahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi, kpmkv_pelajar.Nama ASC"
+        Dim strOrder As String = " ORDER BY kpmkv_pelajar.Nama"
 
         tmpSQL = "SELECT kpmkv_pelajar_ulang.PelajarUlangID, kpmkv_pelajar_ulang.Tahun, kpmkv_pelajar_ulang.Semester, kpmkv_pelajar_ulang.Sesi, kpmkv_pelajar_ulang.NamaMataPelajaran, kpmkv_pelajar_ulang.MarkahPB, kpmkv_pelajar_ulang.MarkahPA, "
         tmpSQL += " kpmkv_pelajar_ulang.Gred, kpmkv_pelajar.Tahun, kpmkv_pelajar.Nama, kpmkv_pelajar.Mykad, kpmkv_pelajar.AngkaGiliran, kpmkv_kursus.KodKursus, kpmkv_kelas.NamaKelas FROM  kpmkv_pelajar_ulang LEFT OUTER JOIN"
@@ -336,30 +336,27 @@ Public Class markah_ulang_akademik_insert_v21
         lblMsgTop.Text = ""
         Dim strPelajarUID As Integer = datRespondent.DataKeys(e.RowIndex).Values("PelajarUlangID")
         Try
-            If Not strPelajarUID = Session("strPelajarUID") Then
-                strSQL = "Select Gred FROM kpmkv_pelajar_ulang WHERE PelajarUlangID='" & strPelajarUID & "'"
-                Dim strGred As String = oCommon.getFieldValue(strSQL)
+            strSQL = "Select Gred FROM kpmkv_pelajar_ulang WHERE PelajarUlangID='" & strPelajarUID & "'"
+            Dim strGred As String = oCommon.getFieldValue(strSQL)
 
-                If strGred = "NULL" Or strGred = "" Then
-                    strSQL = "DELETE FROM kpmkv_pelajar_ulang WHERE PelajarUlangID='" & strPelajarUID & "'"
-                    strRet = oCommon.ExecuteSQL(strSQL)
-                    If strRet = "0" Then
-                        divTop.Attributes("class") = "info"
-                        lblMsgTop.Text = "Calon berjaya dipadamkan"
-                        Session("strPelajarUID") = ""
-                    Else
-                        divTop.Attributes("class") = "error"
-                        lblMsgTop.Text = "Calon tidak berjaya dipadam"
-                        Session("strPelajarUID") = ""
-                    End If
+            If strGred = "NULL" Or strGred = "" Then
+                strSQL = "DELETE FROM kpmkv_pelajar_ulang WHERE PelajarUlangID='" & strPelajarUID & "'"
+                strRet = oCommon.ExecuteSQL(strSQL)
+                If strRet = "0" Then
+                    divTop.Attributes("class") = "info"
+                    lblMsgTop.Text = "Calon berjaya dipadamkan"
+                    Session("strPelajarUID") = ""
                 Else
                     divTop.Attributes("class") = "error"
-                    lblMsgTop.Text = "Calon tidak berjaya dipadam. Gred Ulang telah dijana"
+                    lblMsgTop.Text = "Calon tidak berjaya dipadam"
                     Session("strPelajarUID") = ""
                 End If
             Else
+                divTop.Attributes("class") = "error"
+                lblMsgTop.Text = "Calon tidak berjaya dipadam. Gred Ulang telah dijana"
                 Session("strPelajarUID") = ""
             End If
+
         Catch ex As Exception
             divTop.Attributes("class") = "error"
         End Try
@@ -649,7 +646,7 @@ Public Class markah_ulang_akademik_insert_v21
 
                     Else
 
-                        If strPointerPelajarUlangBaru >= strPointerPelajarUlang Then
+                        If strPointerPelajarUlangBaru > strPointerPelajarUlang Then
 
                             strSQL = "UPDATE kpmkv_pelajar_ulang SET Gred='" & Gred & "' Where PelajarUlangID='" & datRespondent.DataKeys(i).Value.ToString & "'"
                             strSQL += " AND Tahun='" & ddlTahun.Text & "' AND Semester='" & ddlSemester.Text & "'"
@@ -666,8 +663,7 @@ Public Class markah_ulang_akademik_insert_v21
                         strRet = oCommon.ExecuteSQL(strSQL)
 
                     ElseIf strPointerGredLama >= strPointerPelajarUlangBaru Then
-                        strSQL = "UPDATE kpmkv_pelajar_markah SET Gred" & strGredNama & "='" & strGredMarkah & "'," & strpointerNama & "='" & Pointer & "' Where PelajarID='" & strPelajarID & "'"
-                        strRet = oCommon.ExecuteSQL(strSQL)
+
                     ElseIf Gred = "C" Then
                         'update bm
                         strSQL = "UPDATE kpmkv_pelajar_markah SET Gred" & strGredNama & "='C'," & strpointerNama & "='" & Pointer & "' Where PelajarID='" & strPelajarID & "'"

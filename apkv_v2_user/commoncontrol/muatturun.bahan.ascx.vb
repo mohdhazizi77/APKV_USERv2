@@ -259,8 +259,8 @@ Public Class muatturun_bahan
 
 
             Response.ContentType = "Application/octet-stream"
-                Response.AppendHeader("Content-Disposition", "attachment; filename='" & fullFileName & "'")
-                Response.TransmitFile(fileSavePath)
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" & fullFileName & "")
+            Response.TransmitFile(fileSavePath)
                 Response.End()
 
 
@@ -287,7 +287,7 @@ Public Class muatturun_bahan
 
 
             Response.ContentType = "Application/octet-stream"
-            Response.AppendHeader("Content-Disposition", "attachment; filename='" & fullFileName & "'")
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" & fullFileName & "")
             Response.TransmitFile(fileSavePath)
             Response.End()
 

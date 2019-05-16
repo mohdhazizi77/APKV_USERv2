@@ -321,7 +321,7 @@ Public Class pelajar_ulang_akademik_v21
 
         Dim tmpSQL As String = ""
         Dim strWhere As String = ""
-        Dim strOrder As String = " ORDER BY kpmkv_pelajar.Tahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi ASC"
+        Dim strOrder As String = " ORDER BY kpmkv_pelajar.Nama"
 
         '--not deleted
         tmpSQL = "SELECT kpmkv_pelajar.PelajarID, kpmkv_pelajar_markah.GredBM, kpmkv_pelajar_markah.GredBI, kpmkv_pelajar_markah.GredSC, kpmkv_pelajar_markah.GredSJ, "
@@ -540,7 +540,7 @@ Public Class pelajar_ulang_akademik_v21
             strSQL += " AND kpmkv_pelajar.KelasID ='" & ddlKelas.SelectedValue & "'"
         End If
 
-        strSQL += "ORDER BY kpmkv_pelajar.Tahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi ASC"
+        strSQL += "ORDER BY kpmkv_pelajar.Nama"
 
         strRet = oCommon.ExecuteSQL(strSQL)
 

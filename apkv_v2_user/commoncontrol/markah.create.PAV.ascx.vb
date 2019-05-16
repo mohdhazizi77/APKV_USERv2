@@ -3172,7 +3172,7 @@ Public Class markah_create_PAV
 
         Try
             HttpContext.Current.Response.ContentType = "application/pdf"
-            HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=PBAkademik.pdf")
+            HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=pa amali.pdf")
             HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache)
 
             PdfWriter.GetInstance(myDocument, HttpContext.Current.Response.OutputStream)

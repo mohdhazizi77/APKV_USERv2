@@ -28,10 +28,10 @@ Partial Public Class pelajar_view
 
                 LoadPage()
 
-                strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "'"
+                strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "' AND Tahun = '" & lblTahun.Text & "' AND Sesi = '" & lblSesi.Text & "'"
                 Dim strKlusterID As String = oCommon.getFieldValue(strSQL)
 
-                strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "'"
+                strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "' AND Tahun = '" & lblTahun.Text & "'"
                 lblKluster.Text = oCommon.getFieldValue(strSQL)
 
 

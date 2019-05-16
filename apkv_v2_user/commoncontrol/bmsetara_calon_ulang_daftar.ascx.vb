@@ -212,10 +212,10 @@ Public Class bmsetara_calon_ulang_daftar
             Dim lblstatusSJ As Label = datRespondent2.Rows(i).FindControl("lblStatusSJ")
 
 
-            strSQL = "SELECT isCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "'"
+            strSQL = "SELECT isCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "' AND NamaMataPelajaran = 'BAHASA MELAYU' AND IsBMTahun = '" & ddlTahunSemasa.SelectedValue & "'"
             Dim statusBM As String = oCommon.getFieldValue(strSQL)
 
-            strSQL = "SELECT IsSJCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "'"
+            strSQL = "SELECT IsSJCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "' AND NamaMataPelajaran = 'SEJARAH' AND IsSJTahun = '" & ddlTahunSemasa.SelectedValue & "'"
             Dim statusSJ As String = oCommon.getFieldValue(strSQL)
 
             If statusBM = "1" Then
@@ -302,15 +302,17 @@ Public Class bmsetara_calon_ulang_daftar
                     End If
 
                     strSQL = "SELECT PelajarID FROM kpmkv_pelajar_ulang WHERE PelajarID='" & strkey & "'"
-                        strSQL += " AND Tahun='" & ddlTahun.SelectedValue & "' AND Semester='" & ddlsemester.SelectedValue & "' "
-                        strSQL += " AND Sesi='" & chkSesi.Text & "' AND IsBMTahun ='" & ddlTahunSemasa.SelectedValue & "'"
-                        strSQL += " AND NamaMataPelajaran='" & strMp & "'"
+                    strSQL += " AND Tahun='" & ddlTahun.SelectedValue & "' AND Semester='" & ddlsemester.SelectedValue & "' "
+                    strSQL += " AND Sesi='" & chkSesi.Text & "'"
+                    strSQL += " AND NamaMataPelajaran='" & strMp & "'"
 
                     If ddlmp.SelectedValue = "BM" Then
                         strSQL += " AND IsCalon='1'"
+                        strSQL += " AND IsBMTahun ='" & ddlTahunSemasa.SelectedValue & "'"
 
                     ElseIf ddlmp.SelectedValue = "SJ" Then
                         strSQL += " AND IsSJCalon='1'"
+                        strSQL += " AND IsSJTahun ='" & ddlTahunSemasa.SelectedValue & "'"
                     End If
 
                     strRet = oCommon.isExist(strSQL)
@@ -325,20 +327,20 @@ Public Class bmsetara_calon_ulang_daftar
 
 
                     strSQL = "SELECT Pengajian FROM kpmkv_pelajar WHERE PelajarID='" & strkey & "' "
-                        Dim strPengajian As String = oCommon.getFieldValue(strSQL)
+                    Dim strPengajian As String = oCommon.getFieldValue(strSQL)
 
 
 
 
                     strSQL = " INSERT INTO kpmkv_pelajar_ulang (PelajarID,KolejRecordID,Pengajian,Tahun,Semester,Sesi,"
-                        strSQL += " KursusID,KelasID,NamaMataPelajaran,PA,"
-                        If ddlmp.SelectedValue = "BM" Then
+                    strSQL += " KursusID,KelasID,NamaMataPelajaran,PA,"
+                    If ddlmp.SelectedValue = "BM" Then
                         strSQL += " IsCalon,IsBMTahun,IsBMDated"
                     ElseIf ddlmp.SelectedValue = "SJ" Then
-                            strSQL += " IsSJCalon,IsSJTahun,IsSJDated"
-                        End If
+                        strSQL += " IsSJCalon,IsSJTahun,IsSJDated"
+                    End If
 
-                        strSQL += " )"
+                    strSQL += " )"
 
                     strSQL += " VALUES('" & strkey & "','" & lblKolejID.Text & "','" & strPengajian & "' ,"
                     strSQL += " '" & ddlTahun.SelectedValue & "' ,'" & ddlsemester.SelectedValue & "','" & chkSesi.Text & "' ,"
@@ -349,21 +351,21 @@ Public Class bmsetara_calon_ulang_daftar
 
 
 
-                        strRet = oCommon.ExecuteSQL(strSQL)
-                        If strRet = "0" Then
-                            divMsg.Attributes("class") = "info"
-                            lblMsg.Text = "Berjaya! Daftar Calon Ulang Berjaya"
+                    strRet = oCommon.ExecuteSQL(strSQL)
+                    If strRet = "0" Then
+                        divMsg.Attributes("class") = "info"
+                        lblMsg.Text = "Berjaya! Daftar Calon Ulang Berjaya"
 
-                            divMsgResult.Attributes("class") = "info"
-                            lblMsgResult.Text = "Berjaya! Daftar Calon Ulang Berjaya"
-                        Else
-                            divMsg.Attributes("class") = "error"
-                            lblMsg.Text = "Tidak Berjaya!Daftar Calon Ulang Tidak Berjaya"
+                        divMsgResult.Attributes("class") = "info"
+                        lblMsgResult.Text = "Berjaya! Daftar Calon Ulang Berjaya"
+                    Else
+                        divMsg.Attributes("class") = "error"
+                        lblMsg.Text = "Tidak Berjaya!Daftar Calon Ulang Tidak Berjaya"
 
-                            divMsgResult.Attributes("class") = "error"
-                            lblMsgResult.Text = "Tidak Berjaya! Daftar Calon Ulang Tidak Berjaya"
-                        End If
+                        divMsgResult.Attributes("class") = "error"
+                        lblMsgResult.Text = "Tidak Berjaya! Daftar Calon Ulang Tidak Berjaya"
                     End If
+                End If
 
             Next
             divMsg.Attributes("class") = "info"

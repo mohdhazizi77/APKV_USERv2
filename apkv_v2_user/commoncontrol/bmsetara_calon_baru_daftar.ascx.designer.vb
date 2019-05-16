@@ -32,13 +32,13 @@ Partial Public Class bmsetara_calon_baru_daftar
     Protected WithEvents chkSesi As Global.System.Web.UI.WebControls.CheckBoxList
     
     '''<summary>
-    '''ddlsemester control.
+    '''ddlSemester control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlsemester As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlSemester As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''ddlKodKursus control.

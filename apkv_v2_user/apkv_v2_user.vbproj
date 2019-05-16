@@ -265,6 +265,7 @@
     <Content Include="commoncontrol\pernyataan_keputusan_BM.ascx" />
     <Content Include="commoncontrol\roasterBM1104.ascx" />
     <Content Include="commoncontrol\roasterSJ1251.ascx" />
+    <Content Include="commoncontrol\semak_daftar_sejarah1251.ascx" />
     <Content Include="commoncontrol\slip_keputusan_BM1104_SJ1251.ascx" />
     <Content Include="commoncontrol\slip_sijilvokasionalmalaysia.ascx" />
     <Content Include="commoncontrol\slip_view.ascx" />
@@ -452,6 +453,7 @@
     <Content Include="rchart\rchart_fop.jar" />
     <Content Include="rchart\rchart_jsp.jar" />
     <Content Include="Roaster_Peperiksaan.aspx" />
+    <Content Include="semak.daftar.sejarah1251.aspx" />
     <Content Include="slip.keputusan.BM1104.SJ1251.aspx" />
     <Content Include="slip.pernyataan.keputusan.aspx" />
     <Content Include="slip.sijil.vokasional.malaysia.aspx" />
@@ -1502,6 +1504,13 @@
       <DependentUpon>roasterSJ1251.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="commoncontrol\semak_daftar_sejarah1251.ascx.designer.vb">
+      <DependentUpon>semak_daftar_sejarah1251.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\semak_daftar_sejarah1251.ascx.vb">
+      <DependentUpon>semak_daftar_sejarah1251.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="commoncontrol\slip_keputusan_BM1104_SJ1251.ascx.designer.vb">
       <DependentUpon>slip_keputusan_BM1104_SJ1251.ascx</DependentUpon>
     </Compile>
@@ -2188,6 +2197,13 @@
     <Compile Include="Roaster_Peperiksaan.aspx.vb">
       <DependentUpon>Roaster_Peperiksaan.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="semak.daftar.sejarah1251.aspx.designer.vb">
+      <DependentUpon>semak.daftar.sejarah1251.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="semak.daftar.sejarah1251.aspx.vb">
+      <DependentUpon>semak.daftar.sejarah1251.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="slip.keputusan.BM1104.SJ1251.aspx.designer.vb">
       <DependentUpon>slip.keputusan.BM1104.SJ1251.aspx</DependentUpon>

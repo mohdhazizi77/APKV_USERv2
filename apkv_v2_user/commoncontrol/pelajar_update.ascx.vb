@@ -79,10 +79,10 @@ Partial Public Class pelajar_update
                         kpmkv_jeniscalon_list()
                         LoadPage()
 
-                        strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "'"
+                        strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "' AND Tahun = '" & lblTahun.Text & "' AND Sesi = '" & lblSesi.Text & "'"
                         Dim strKlusterID As String = oCommon.getFieldValue(strSQL)
 
-                        strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "'"
+                        strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "' AND Tahun = '" & lblTahun.Text & "'"
                         lblKluster.Text = oCommon.getFieldValue(strSQL)
 
                         'personal hidden
@@ -103,10 +103,10 @@ Partial Public Class pelajar_update
                     kpmkv_jeniscalon_list()
                     LoadPage()
 
-                    strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "'"
+                    strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "' AND Tahun = '" & lblTahun.Text & "' AND Sesi = '" & lblSesi.Text & "'"
                     Dim strKlusterID As String = oCommon.getFieldValue(strSQL)
 
-                    strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "'"
+                    strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "' AND Tahun = '" & lblTahun.Text & "'"
                     lblKluster.Text = oCommon.getFieldValue(strSQL)
 
                     'personal hidden
@@ -129,10 +129,10 @@ Partial Public Class pelajar_update
             kpmkv_status_list()
             kpmkv_jeniscalon_list()
 
-            strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "'"
+            strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KodKursus='" & lblKodKursus.Text & "' AND Tahun = '" & lblTahun.Text & "' AND Sesi = '" & lblSesi.Text & "'"
             Dim strKlusterID As String = oCommon.getFieldValue(strSQL)
 
-            strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "'"
+            strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID='" & strKlusterID & "' AND Tahun = '" & lblTahun.Text & "'"
             lblKluster.Text = oCommon.getFieldValue(strSQL)
 
             If lblSemester.Text = "1" Then
