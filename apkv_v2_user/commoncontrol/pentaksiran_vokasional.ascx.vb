@@ -1240,6 +1240,50 @@ Public Class pentaksiran_vokasional
 
                     Next 'modul
 
+                    '' 19062019 MATAPELAJARAN VOKASIONAL-----------------------------------------------------
+
+                    myDocument.Add(imgSpacing)
+
+                    strSQL = "  SELECT KodMPVOK, NamaMPVOK FROM kpmkv_matapelajaran_v
+                                WHERE 
+                                Tahun = '" & ddlTahun.SelectedValue & "'
+                                AND Semester = '" & ddlSemester.Text & "'
+                                AND KursusID = '" & ddlKodKursus.SelectedValue & "'"
+                    strRet = oCommon.getFieldValueEx(strSQL)
+
+                    Dim MP_VOK As Array
+                    MP_VOK = strRet.Split("|")
+                    Dim strKodMPV As String = MP_VOK(0)
+                    Dim strNamaMPV As String = MP_VOK(1)
+
+                    strSQL = " SELECT SMP_Grade FROM kpmkv_pelajar_markah WHERE PelajarID = '" & strKey & "'"
+                    Dim SMP_Grade As String = oCommon.getFieldValue(strSQL)
+
+                    strSQL = "  SELECT Status FROM kpmkv_gred_vokasional 
+                                WHERE
+                                Gred = '" & SMP_Grade & "'
+                                AND Tahun = '" & ddlTahun.SelectedValue & "'
+                                AND Semester = '" & ddlSemester.Text & "'"
+                    Dim strStatusMPV As String = oCommon.getFieldValue(strSQL)
+
+                    Dim myTableMP9 As New PdfPTable(7)
+                    myTableMP9.WidthPercentage = 100 ' Table size is set to 100% of the page
+                    myTableMP9.HorizontalAlignment = 1 '//0=Left, 1=Centre, 2=Right
+                    myTableMP9.DefaultCell.BorderWidth = Rectangle.NO_BORDER
+                    Dim intTblCell9() As Integer = {15, 50, 10, 10, 10, 10, 36}
+                    myTableMP9.SetWidths(intTblCell9)
+
+                    myTableMP9.AddCell(New Phrase(strKodMPV, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myTableMP9.AddCell(New Phrase(strNamaMPV, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myTableMP9.AddCell(New Phrase("", FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myTableMP9.AddCell(New Phrase(SMP_Grade, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myTableMP9.AddCell(New Phrase("", FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myTableMP9.AddCell(New Phrase("", FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myTableMP9.AddCell(New Phrase(strStatusMPV, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                    myDocument.Add(myTableMP9)
+
+                    '' 19062019 MATAPELAJARAN VOKASIONAL-----------------------------------------------------
+
                     Dim strJamKreditAkademik As Double
 
                     If Not strGredPI = "" Then
