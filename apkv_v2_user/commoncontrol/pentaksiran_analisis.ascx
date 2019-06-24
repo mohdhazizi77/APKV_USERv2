@@ -557,6 +557,20 @@
                         </ItemTemplate>
                          <HeaderStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="GredBMSetara">
+                        <ItemTemplate>
+                            <asp:Label ID="GredBMSetara" runat="server"  Text='<%# Bind("GredBMSetara")%>'></asp:Label>
+                        </ItemTemplate>
+                         <HeaderStyle HorizontalAlign="Left" />
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="SMP Grade">
+                        <ItemTemplate>
+                            <asp:Label ID="SMP_Grade" runat="server"  Text='<%# Bind("SMP_Grade")%>'></asp:Label>
+                        </ItemTemplate>
+                         <HeaderStyle HorizontalAlign="Left" />
+                    </asp:TemplateField>
                        <asp:TemplateField >
                      <%--    <HeaderTemplate >
                                 <asp:CheckBox ID="chkAll" runat="server" AutoPostBack="true" OnCheckedChanged="CheckUncheckAll" />
