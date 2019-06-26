@@ -334,7 +334,7 @@ Public Class pelajar_kpmkv_transfrer
             strWhere += " AND kpmkv_pelajar.Sesi ='" & chkSesi.Text & "'"
         End If
 
-        strWhere += " AND kpmkv_pelajar_markah.gredv1 IN ('A', 'A-', 'B+', 'B', 'B-','') "
+        strWhere += " AND kpmkv_pelajar_markah.gredv1 IN ('A', 'A-', 'B+', 'B', 'B-') "
         strWhere += " AND (kpmkv_pelajar_markah.gredv2 IN ('A', 'A-', 'B+', 'B', 'B-','') OR kpmkv_pelajar_markah.gredv2 IS NULL)"
         strWhere += " AND (kpmkv_pelajar_markah.gredv3 IN ('A', 'A-', 'B+', 'B', 'B-','') OR kpmkv_pelajar_markah.gredv3 IS NULL)"
         strWhere += " AND (kpmkv_pelajar_markah.gredv4 IN ('A', 'A-', 'B+', 'B', 'B-','') OR kpmkv_pelajar_markah.gredv4 IS NULL)"
