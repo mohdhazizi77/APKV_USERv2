@@ -22,7 +22,7 @@ Public Class bmsetara_calon_ulang_daftar
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
                 kpmkv_tahun_list()
-                ddlTahun.Text = Now.Year
+                ddlTahun.Text = "-Pilih-"
 
 
                 kpmkv_kelas_list()
@@ -51,6 +51,8 @@ Public Class bmsetara_calon_ulang_daftar
             ddlTahun.DataValueField = "Tahun"
             ddlTahun.DataBind()
 
+            ddlTahun.Items.Insert(0, "-Pilih-")
+
         Catch ex As Exception
 
         Finally
@@ -77,6 +79,8 @@ Public Class bmsetara_calon_ulang_daftar
             ddlKodKursus.DataTextField = "KodKursus"
             ddlKodKursus.DataValueField = "KursusID"
             ddlKodKursus.DataBind()
+
+            ddlKodKursus.Items.Insert(0, "-Pilih-")
 
 
         Catch ex As Exception
@@ -105,6 +109,8 @@ Public Class bmsetara_calon_ulang_daftar
             ddlNamaKelas.DataTextField = "NamaKelas"
             ddlNamaKelas.DataValueField = "KelasID"
             ddlNamaKelas.DataBind()
+
+            ddlNamaKelas.Items.Insert(0, "-Pilih-")
 
 
         Catch ex As Exception
@@ -212,10 +218,10 @@ Public Class bmsetara_calon_ulang_daftar
             Dim lblstatusSJ As Label = datRespondent2.Rows(i).FindControl("lblStatusSJ")
 
 
-            strSQL = "SELECT isCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "' AND NamaMataPelajaran = 'BAHASA MELAYU' AND IsBMTahun = '" & ddlTahunSemasa.SelectedValue & "'"
+            strSQL = "SELECT isCalon FROM kpmkv_markah_bmsj_setara WHERE PelajarID = '" & strkey & "' AND MataPelajaran = 'BAHASA MELAYU' AND Tahun = '" & ddlTahun.Text & "' AND KodKursus = '" & ddlKodKursus.SelectedValue & "'"
             Dim statusBM As String = oCommon.getFieldValue(strSQL)
 
-            strSQL = "SELECT IsSJCalon FROM kpmkv_pelajar_ulang WHERE PelajarID = '" & strkey & "' AND NamaMataPelajaran = 'SEJARAH' AND IsSJTahun = '" & ddlTahunSemasa.SelectedValue & "'"
+            strSQL = "SELECT isCalon FROM kpmkv_markah_bmsj_setara WHERE PelajarID = '" & strkey & "' AND MataPelajaran = 'SEJARAH' AND Tahun = '" & ddlTahun.Text & "' AND KodKursus = '" & ddlKodKursus.SelectedValue & "'"
             Dim statusSJ As String = oCommon.getFieldValue(strSQL)
 
             If statusBM = "1" Then
@@ -324,34 +330,60 @@ Public Class bmsetara_calon_ulang_daftar
                         Exit Sub
                     End If
 
-
-
                     strSQL = "SELECT Pengajian FROM kpmkv_pelajar WHERE PelajarID='" & strkey & "' "
                     Dim strPengajian As String = oCommon.getFieldValue(strSQL)
 
+                    strSQL = "  SELECT PelajarID FROM kpmkv_markah_bmsj_setara WHERE PelajarID = '" & strkey & "' AND MataPelajaran = '" & strMp & "' AND Tahun = '" & ddlTahun.SelectedValue & "' AND Sesi = '" & chkSesi.Text & "'"
+                    strRet = oCommon.isExist(strSQL)
 
+                    If strRet = True Then
 
+                        divMsg.Attributes("class") = "error"
+                        lblMsg.Text = "Data Calon Sudah wujud!"
 
-                    strSQL = " INSERT INTO kpmkv_pelajar_ulang (PelajarID,KolejRecordID,Pengajian,Tahun,Semester,Sesi,"
-                    strSQL += " KursusID,KelasID,NamaMataPelajaran,PA,"
-                    If ddlmp.SelectedValue = "BM" Then
-                        strSQL += " IsCalon,IsBMTahun,IsBMDated"
-                    ElseIf ddlmp.SelectedValue = "SJ" Then
-                        strSQL += " IsSJCalon,IsSJTahun,IsSJDated"
+                        Exit Sub
+
                     End If
 
-                    strSQL += " )"
-
-                    strSQL += " VALUES('" & strkey & "','" & lblKolejID.Text & "','" & strPengajian & "' ,"
-                    strSQL += " '" & ddlTahun.SelectedValue & "' ,'" & ddlsemester.SelectedValue & "','" & chkSesi.Text & "' ,"
-                    strSQL += " '" & ddlKodKursus.SelectedValue & "','" & ddlNamaKelas.SelectedValue & "','" & strMp & "',"
-                    strSQL += "'1','1','" & ddlTahunSemasa.SelectedValue & "','" & Date.Now.ToString("yyyy/MM/dd") & "'"
-
-                    strSQL += " )"
-
-
+                    strSQL = "  INSERT INTO kpmkv_markah_bmsj_setara 
+                               (PelajarID, KolejRecordID, Tahun, Sesi, Kodkursus, MataPelajaran, IsCalon, IsAKATahun, IsAKASesi, IsAKADated)
+                                VALUES
+                               ('" & strkey & "', '" & lblKolejID.Text & "', '" & ddlTahun.SelectedValue & "', '" & chkSesi.Text & "', '" & ddlKodKursus.SelectedValue & "', '" & strMp & "', '1', '" & ddlTahunSemasa.SelectedValue & "', '1',  GETDATE() )"
 
                     strRet = oCommon.ExecuteSQL(strSQL)
+
+                    If ddlmp.SelectedValue = "BM" Then
+
+                        strSQL = " UPDATE kpmkv_pelajar SET IsBMUlang = '1' WHERE PelajarID = '" & strkey & "'"
+
+                    ElseIf ddlmp.SelectedValue = "SJ" Then
+
+                        strSQL = " UPDATE kpmkv_pelajar SET IsSJUlang = '1' WHERE PelajarID = '" & strkey & "'"
+
+                    End If
+
+                    strRet = oCommon.ExecuteSQL(strSQL)
+
+                    'strSQL = " INSERT INTO kpmkv_pelajar_ulang (PelajarID,KolejRecordID,Pengajian,Tahun,Semester,Sesi,"
+                    'strSQL += " KursusID,KelasID,NamaMataPelajaran,PA,"
+                    'If ddlmp.SelectedValue = "BM" Then
+                    '    strSQL += " IsCalon,IsBMTahun,IsBMDated"
+                    'ElseIf ddlmp.SelectedValue = "SJ" Then
+                    '    strSQL += " IsSJCalon,IsSJTahun,IsSJDated"
+                    'End If
+
+                    'strSQL += " )"
+
+                    'strSQL += " VALUES('" & strkey & "','" & lblKolejID.Text & "','" & strPengajian & "' ,"
+                    'strSQL += " '" & ddlTahun.SelectedValue & "' ,'" & ddlsemester.SelectedValue & "','" & chkSesi.Text & "' ,"
+                    'strSQL += " '" & ddlKodKursus.SelectedValue & "','" & ddlNamaKelas.SelectedValue & "','" & strMp & "',"
+                    'strSQL += "'1','1','" & ddlTahunSemasa.SelectedValue & "','" & Date.Now.ToString("yyyy/MM/dd") & "'"
+
+                    'strSQL += " )"
+
+
+
+                    'strRet = oCommon.ExecuteSQL(strSQL)
                     If strRet = "0" Then
                         divMsg.Attributes("class") = "info"
                         lblMsg.Text = "Berjaya! Daftar Calon Ulang Berjaya"
@@ -394,5 +426,9 @@ Public Class bmsetara_calon_ulang_daftar
 
     Private Sub ddlKodKursus_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlKodKursus.SelectedIndexChanged
         kpmkv_kelas_list()
+    End Sub
+
+    Private Sub ddlTahun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTahun.SelectedIndexChanged
+        kpmkv_kodkursus_list()
     End Sub
 End Class
