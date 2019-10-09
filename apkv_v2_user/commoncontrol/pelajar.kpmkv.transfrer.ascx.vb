@@ -219,6 +219,14 @@ Public Class pelajar_kpmkv_transfrer
 
     End Sub
     Private Function kpmkv_pelajar_transfer() As Boolean
+
+        'kolejnama
+        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+        Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
+        'kolejid
+        strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
+        lblKolejID.Text = oCommon.getFieldValue(strSQL)
+
         Dim strmykad As String
         Dim cmd As New SqlCommand(getSQL)
         Dim dt As DataTable = GetData(cmd)
@@ -304,6 +312,14 @@ Public Class pelajar_kpmkv_transfrer
 
     End Function
     Private Function getSQL() As String
+
+        'kolejnama
+        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+        Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
+        'kolejid
+        strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
+        lblKolejID.Text = oCommon.getFieldValue(strSQL)
+
         Dim tmpSQL As String
         Dim strWhere As String = ""
         Dim strOrder As String = " ORDER BY kpmkv_pelajar.Tahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi ASC"
@@ -400,4 +416,5 @@ Public Class pelajar_kpmkv_transfrer
 
         Return True
     End Function
+
 End Class

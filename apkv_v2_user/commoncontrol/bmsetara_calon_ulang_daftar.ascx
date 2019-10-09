@@ -24,12 +24,12 @@
     </tr>
     <tr>
            <td style="width: 20%;">Kohort:</td>
-        <td><asp:DropDownList ID="ddlTahun" runat="server" Width="350px"></asp:DropDownList></td>
+        <td><asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList></td>
     </tr>
     <tr>
          <td style="width: 20%;">Sesi Pengambilan:</td>
                  <td><asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-             <asp:ListItem>1</asp:ListItem>
+             <asp:ListItem Selected="True">1</asp:ListItem>
              <asp:ListItem>2</asp:ListItem>
              </asp:CheckBoxList>
     </tr>

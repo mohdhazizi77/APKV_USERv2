@@ -485,7 +485,7 @@ Public Class slip_keputusan_BM1104_SJ12511
                     myDocument.Add(myPara01)
 
                     myDocument.Add(imgSpacing)
-                    Dim myPara02 As New Paragraph("SLIP KEPUTUSAN BAHASA MELAYU 1104 DAN SEJARAH A05401", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
+                    Dim myPara02 As New Paragraph("SLIP KEPUTUSAN BAHASA MELAYU 1104 DAN SEJARAH 1251", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
                     myPara02.Alignment = Element.ALIGN_CENTER
                     myDocument.Add(myPara02)
 
