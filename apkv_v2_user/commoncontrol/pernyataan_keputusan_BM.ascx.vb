@@ -20,7 +20,7 @@ Public Class pernyataan_keputusan_BM
 
             If Not IsPostBack Then
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
                 'kolejid
                 strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
@@ -320,7 +320,7 @@ Public Class pernyataan_keputusan_BM
                 strSQL += " WHERE kpmkv_kursus.NamaKursus ='" & strKodKursus & "' "
                 strKluster = oCommon.getFieldValue(strSQL)
 
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
                 'kolejnegeri

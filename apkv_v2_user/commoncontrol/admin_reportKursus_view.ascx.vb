@@ -16,17 +16,17 @@ Public Class admin_reportKursus_view
         Try
             If Not IsPostBack Then
                 'kolejnegeri
-                strSQL = "SELECT Negeri FROM kpmkv_kolej WHERE Nama= '" & Request.QueryString("Nama") & "'"
+                strSQL = "SELECT Negeri FROM kpmkv_kolej WHERE Nama= '" & oCommon.Decrypt(Request.QueryString("Nama")) & "'"
                 lblNegeri.Text = oCommon.getFieldValue(strSQL)
 
                 'kolejnama
-                lblKolej.Text = Request.QueryString("Nama")
+                lblKolej.Text = oCommon.Decrypt(Request.QueryString("Nama"))
 
                 'kohort
-                lblTahun.Text = Request.QueryString("Tahun")
+                lblTahun.Text = oCommon.Decrypt(Request.QueryString("Tahun"))
 
                 'kolejid
-                strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama= '" & Request.QueryString("Nama") & "'"
+                strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama= '" & oCommon.Decrypt(Request.QueryString("Nama")) & "'"
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
                 lblMsg.Text = ""

@@ -17,7 +17,7 @@ Public Class cetak_labelMeja
         Try
             If Not IsPostBack Then
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
                 'kolejid
@@ -358,7 +358,7 @@ Public Class cetak_labelMeja
             myDocument.Open()
 
             '1'--start here
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
             'kolejnegeri

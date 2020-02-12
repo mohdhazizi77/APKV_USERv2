@@ -20,7 +20,7 @@ Public Class roasterSJ1251
         Try
             If Not IsPostBack Then
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
                 'kolejid
@@ -35,8 +35,8 @@ Public Class roasterSJ1251
                 kpmkv_kodkursus_list()
 
 
-                kpmkv_tahun_1_list()
-                ddlTahun_1.Text = Now.Year
+                'kpmkv_tahun_1_list()
+                'ddlTahun_1.Text = Now.Year
 
                 'kpmkv_tahun_2_list()
                 'ddlTahun_Semasa.Text = Now.Year
@@ -70,28 +70,28 @@ Public Class roasterSJ1251
 
     End Sub
 
-    Private Sub kpmkv_tahun_1_list()
-        strSQL = "SELECT Tahun FROM kpmkv_tahun ORDER BY TahunID"
-        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
-        Dim objConn As SqlConnection = New SqlConnection(strConn)
-        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+    'Private Sub kpmkv_tahun_1_list()
+    '    strSQL = "SELECT Tahun FROM kpmkv_tahun ORDER BY TahunID"
+    '    Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+    '    Dim objConn As SqlConnection = New SqlConnection(strConn)
+    '    Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
 
-        Try
-            Dim ds As DataSet = New DataSet
-            sqlDA.Fill(ds, "AnyTable")
+    '    Try
+    '        Dim ds As DataSet = New DataSet
+    '        sqlDA.Fill(ds, "AnyTable")
 
-            ddlTahun_1.DataSource = ds
-            ddlTahun_1.DataTextField = "Tahun"
-            ddlTahun_1.DataValueField = "Tahun"
-            ddlTahun_1.DataBind()
+    '        ddlTahun_1.DataSource = ds
+    '        ddlTahun_1.DataTextField = "Tahun"
+    '        ddlTahun_1.DataValueField = "Tahun"
+    '        ddlTahun_1.DataBind()
 
-        Catch ex As Exception
+    '    Catch ex As Exception
 
-        Finally
-            objConn.Dispose()
-        End Try
+    '    Finally
+    '        objConn.Dispose()
+    '    End Try
 
-    End Sub
+    'End Sub
     'Private Sub kpmkv_tahun_2_list()
     '    strSQL = "SELECT Tahun FROM kpmkv_tahun ORDER BY TahunID"
     '    Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
@@ -370,7 +370,7 @@ Public Class roasterSJ1251
             Dim strKey As String
 
             '1'--start here
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
             'kolejnegeri
@@ -454,6 +454,11 @@ Public Class roasterSJ1251
                     ''--Pointer SJ 
                     strSQL = "SELECT PointerSJSetara FROM kpmkv_pelajar_markah WHERE PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
                     strPointer = oCommon.getFieldValue(strSQL)
+
+                    ''--Gred SJ 
+                    strSQL = "SELECT GredSJSetara FROM kpmkv_pelajar_markah WHERE PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
+                    Dim strGredSJSetara As String = oCommon.getFieldValue(strSQL)
+
                     ''--Gred SJ 
                     If strPointer = "-1" Then
                         strGredSJ = "T"
@@ -463,43 +468,48 @@ Public Class roasterSJ1251
                     End If
 
                     ''get kompetensi
-                    strSQL = "SELECT Kompetensi FROM kpmkv_gred_sejarah WHERE Gred = '" & strGredSJ & "' AND Tahun = '" & ddlTahun.Text & "' AND Sesi = '" & chkSesi.Text & "'"
-                    Dim strKompetensiSJ As String = oCommon.getFieldValue(strSQL)
+                    strSQL = "SELECT Status FROM kpmkv_gred_sejarah WHERE Gred = '" & strGredSJ & "' AND Tahun = '" & ddlTahun.Text & "' AND Sesi = '" & chkSesi.Text & "'"
+                    Dim strStatus As String = oCommon.getFieldValue(strSQL)
 
-                    'change on 17082016
-                    strSQL = "UPDATE kpmkv_pelajar_markah SET GredSJSetara='" & strGredSJ & "' Where PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
-                    strRet = oCommon.ExecuteSQL(strSQL)
+                    ''change on 17082016
+                    'strSQL = "UPDATE kpmkv_pelajar_markah SET GredSJSetara='" & strStatus & "' Where PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
+                    'strRet = oCommon.ExecuteSQL(strSQL)
 
                     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                    Dim myTablerow2 As New PdfPTable(5)
-                    myTablerow2.WidthPercentage = 100 ' Table size is set to 100% of the page
-                    myTablerow2.HorizontalAlignment = 1 '//0=Left, 1=Centre, 2=Right
-                    'myTable.HorizontalAlignment = Rectangle.NO_BORDER
-                    Dim intTblWidth2() As Integer = {5, 40, 9, 9, 5}
-                    myTablerow2.SetWidths(intTblWidth2)
+                    If Not strGredSJ = "T" Then
 
-                    Dim Cell1Hdr1 As New PdfPCell(New Phrase("" & i + 1, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
-                    Cell1Hdr1.Border = Rectangle.NO_BORDER
-                    myTablerow2.AddCell(Cell1Hdr1)
+                        Dim myTablerow2 As New PdfPTable(5)
+                        myTablerow2.WidthPercentage = 100 ' Table size is set to 100% of the page
+                        myTablerow2.HorizontalAlignment = 1 '//0=Left, 1=Centre, 2=Right
+                        'myTable.HorizontalAlignment = Rectangle.NO_BORDER
+                        Dim intTblWidth2() As Integer = {5, 40, 9, 9, 5}
+                        myTablerow2.SetWidths(intTblWidth2)
 
-                    Dim Cell1Hdr10 As New PdfPCell(New Phrase("" & strNama, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
-                    Cell1Hdr10.Border = Rectangle.NO_BORDER
-                    myTablerow2.AddCell(Cell1Hdr10)
+                        Dim Cell1Hdr1 As New PdfPCell(New Phrase("" & i + 1, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                        Cell1Hdr1.Border = Rectangle.NO_BORDER
+                        myTablerow2.AddCell(Cell1Hdr1)
 
-                    Dim Cell2Hdr2 As New PdfPCell(New Phrase("" & strMykad, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
-                    Cell2Hdr2.Border = Rectangle.NO_BORDER
-                    myTablerow2.AddCell(Cell2Hdr2)
+                        Dim Cell1Hdr10 As New PdfPCell(New Phrase("" & strNama, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                        Cell1Hdr10.Border = Rectangle.NO_BORDER
+                        myTablerow2.AddCell(Cell1Hdr10)
 
-                    Dim Cell2Hdr20 As New PdfPCell(New Phrase("" & strAngkaGiliran, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
-                    Cell2Hdr20.Border = Rectangle.NO_BORDER
-                    myTablerow2.AddCell(Cell2Hdr20)
+                        Dim Cell2Hdr2 As New PdfPCell(New Phrase("" & strMykad, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                        Cell2Hdr2.Border = Rectangle.NO_BORDER
+                        myTablerow2.AddCell(Cell2Hdr2)
+
+                        Dim Cell2Hdr20 As New PdfPCell(New Phrase("" & strAngkaGiliran, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                        Cell2Hdr20.Border = Rectangle.NO_BORDER
+                        myTablerow2.AddCell(Cell2Hdr20)
+
+                        Dim Cell3Hdr30 As New PdfPCell(New Phrase("" & strGredSJSetara, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
+                        Cell3Hdr30.Border = Rectangle.NO_BORDER
+                        myTablerow2.AddCell(Cell3Hdr30)
+                        myDocument.Add(myTablerow2)
+
+                    End If
 
 
-                    Dim Cell3Hdr30 As New PdfPCell(New Phrase("" & strKompetensiSJ, FontFactory.GetFont("Arial", 8, Font.NORMAL)))
-                    Cell3Hdr30.Border = Rectangle.NO_BORDER
-                    myTablerow2.AddCell(Cell3Hdr30)
-                    myDocument.Add(myTablerow2)
 
                 End If 'is check box
 
@@ -542,279 +552,279 @@ Public Class roasterSJ1251
         kpmkv_kelas_list()
     End Sub
 
-    Protected Sub btnPrintSlip_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnPrintSlip.Click
-        Dim myDocument As New Document(PageSize.A4)
+    'Protected Sub btnPrintSlip_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnPrintSlip.Click
+    '    Dim myDocument As New Document(PageSize.A4)
 
-        Try
-            HttpContext.Current.Response.ContentType = "application/pdf"
-            HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=SlipSJSetara1251.pdf")
-            HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache)
+    '    Try
+    '        HttpContext.Current.Response.ContentType = "application/pdf"
+    '        HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=SlipSJSetara1251.pdf")
+    '        HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache)
 
-            PdfWriter.GetInstance(myDocument, HttpContext.Current.Response.OutputStream)
+    '        PdfWriter.GetInstance(myDocument, HttpContext.Current.Response.OutputStream)
 
-            myDocument.Open()
+    '        myDocument.Open()
 
-            ''--draw spacing
-            Dim imgdrawSpacing As String = Server.MapPath("~/img/spacing.png")
-            Dim imgSpacing As Image = Image.GetInstance(imgdrawSpacing)
-            imgSpacing.Alignment = Image.LEFT_ALIGN  'left
-            imgSpacing.Border = 0
+    '        ''--draw spacing
+    '        Dim imgdrawSpacing As String = Server.MapPath("~/img/spacing.png")
+    '        Dim imgSpacing As Image = Image.GetInstance(imgdrawSpacing)
+    '        imgSpacing.Alignment = Image.LEFT_ALIGN  'left
+    '        imgSpacing.Border = 0
 
-            '1'--start here
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
-            Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
+    '        '1'--start here
+    '        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
+    '        Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
-            'kolejnegeri
-            strSQL = "SELECT Negeri FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
-            Dim strKolejnegeri As String = oCommon.getFieldValue(strSQL)
-
-
-            strSQL = "SELECT kpmkv_pelajar.PelajarID,kpmkv_pelajar.MYKAD,kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran, "
-            strSQL += " kpmkv_kursus.KodKursus,kpmkv_kluster.NamaKluster, kpmkv_kursus.NamaKursus,kpmkv_pelajar.isBMTahun"
-            strSQL += " FROM  kpmkv_pelajar LEFT OUTER JOIN kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID "
-            strSQL += " LEFT OUTER JOIN kpmkv_kluster ON kpmkv_kursus.KlusterID=kpmkv_kluster.KlusterID"
-            strSQL += " LEFT OUTER JOIN kpmkv_status ON kpmkv_pelajar.StatusID = kpmkv_status.StatusID"
-            strSQL += " LEFT OUTER JOIN kpmkv_kelas ON kpmkv_pelajar.KelasID = kpmkv_kelas.KelasID"
-            strSQL += " WHERE kpmkv_pelajar.IsDeleted='N' AND kpmkv_pelajar.StatusID='2' "
-            strSQL += " And kpmkv_pelajar.KolejRecordID ='" & lblKolejID.Text & "' "
-            strSQL += " AND kpmkv_pelajar.Semester ='4'"
-
-            If Not ddlTahun.Text = "" Then
-                strSQL += " AND kpmkv_pelajar.Tahun ='" & ddlTahun.Text & "'"
-            End If
-
-            If Not chkSesi.Text = "" Then
-                strSQL += " AND kpmkv_pelajar.Sesi ='" & chkSesi.Text & "'"
-            End If
-
-            If Not ddlKodKursus.Text = "" Then
-                strSQL += " AND kpmkv_pelajar.KursusID ='" & ddlKodKursus.SelectedValue & "'"
-            End If
-
-            If Not ddlNamaKelas.Text = "" Then
-                strSQL += " AND kpmkv_pelajar.KelasID ='" & ddlNamaKelas.SelectedValue & "'"
-            End If
-
-            If Not txtNama.Text.Length = 0 Then
-                strSQL += " AND kpmkv_pelajar.Nama LIKE '%" & oCommon.FixSingleQuotes(txtNama.Text) & "%'"
-            End If
-
-            If Not txtMYKAD.Text.Length = 0 Then
-                strSQL += " AND kpmkv_pelajar.MYKAD='" & oCommon.FixSingleQuotes(txtMYKAD.Text) & "'"
-            End If
-
-            If Not txtAngkaGiliran.Text.Length = 0 Then
-                strSQL += " AND kpmkv_pelajar.AngkaGiliran LIKE '%" & oCommon.FixSingleQuotes(txtAngkaGiliran.Text) & "%'"
-            End If
-
-            strRet = oCommon.ExecuteSQL(strSQL)
-
-            Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
-            Dim ds As DataSet = New DataSet
-            sqlDA.Fill(ds, "AnyTable")
-
-            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-
-                Dim strkey As String = ds.Tables(0).Rows(i).Item(0).ToString
-
-                Dim strmykad As String = ds.Tables(0).Rows(i).Item(1).ToString
-                Dim strname As String = ds.Tables(0).Rows(i).Item(2).ToString
-                Dim strag As String = ds.Tables(0).Rows(i).Item(3).ToString
-                Dim strkodKursus As String = ds.Tables(0).Rows(i).Item(4).ToString
-                Dim strbidang As String = ds.Tables(0).Rows(i).Item(5).ToString
-                Dim strprogram As String = ds.Tables(0).Rows(i).Item(6).ToString
-                Dim strTahun As String = ds.Tables(0).Rows(i).Item(7).ToString
-                ''getting data end
-
-                Dim table As New PdfPTable(3)
-                table.WidthPercentage = 100
-                table.SetWidths({42, 16, 42})
-                table.DefaultCell.Border = 0
+    '        'kolejnegeri
+    '        strSQL = "SELECT Negeri FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
+    '        Dim strKolejnegeri As String = oCommon.getFieldValue(strSQL)
 
 
-                myDocument.Add(table)
+    '        strSQL = "SELECT kpmkv_pelajar.PelajarID,kpmkv_pelajar.MYKAD,kpmkv_pelajar.Nama, kpmkv_pelajar.AngkaGiliran, "
+    '        strSQL += " kpmkv_kursus.KodKursus,kpmkv_kluster.NamaKluster, kpmkv_kursus.NamaKursus,kpmkv_pelajar.isBMTahun"
+    '        strSQL += " FROM  kpmkv_pelajar LEFT OUTER JOIN kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID "
+    '        strSQL += " LEFT OUTER JOIN kpmkv_kluster ON kpmkv_kursus.KlusterID=kpmkv_kluster.KlusterID"
+    '        strSQL += " LEFT OUTER JOIN kpmkv_status ON kpmkv_pelajar.StatusID = kpmkv_status.StatusID"
+    '        strSQL += " LEFT OUTER JOIN kpmkv_kelas ON kpmkv_pelajar.KelasID = kpmkv_kelas.KelasID"
+    '        strSQL += " WHERE kpmkv_pelajar.IsDeleted='N' AND kpmkv_pelajar.StatusID='2' "
+    '        strSQL += " And kpmkv_pelajar.KolejRecordID ='" & lblKolejID.Text & "' "
+    '        strSQL += " AND kpmkv_pelajar.Semester ='4'"
 
-                Dim myPara001 As New Paragraph("LEMBAGA PEPERIKSAAN", FontFactory.GetFont("Arial", 10, Font.BOLD))
-                myPara001.Alignment = Element.ALIGN_CENTER
-                myDocument.Add(myPara001)
+    '        If Not ddlTahun.Text = "" Then
+    '            strSQL += " AND kpmkv_pelajar.Tahun ='" & ddlTahun.Text & "'"
+    '        End If
 
-                Dim myPara01 As New Paragraph("KEMENTERIAN PENDIDIKAN MALAYSIA", FontFactory.GetFont("Arial", 10, Font.BOLD))
-                myPara01.Alignment = Element.ALIGN_CENTER
-                myDocument.Add(myPara01)
+    '        If Not chkSesi.Text = "" Then
+    '            strSQL += " AND kpmkv_pelajar.Sesi ='" & chkSesi.Text & "'"
+    '        End If
 
-                myDocument.Add(imgSpacing)
-                Dim myPara02 As New Paragraph("SLIP KEPUTUSAN SEJARAH 1251", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
-                myPara02.Alignment = Element.ALIGN_CENTER
-                myDocument.Add(myPara02)
+    '        If Not ddlKodKursus.Text = "" Then
+    '            strSQL += " AND kpmkv_pelajar.KursusID ='" & ddlKodKursus.SelectedValue & "'"
+    '        End If
 
-                Dim myPara03 As New Paragraph("TAHUN " & strTahun, FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
-                myPara03.Alignment = Element.ALIGN_CENTER
-                myDocument.Add(myPara03)
+    '        If Not ddlNamaKelas.Text = "" Then
+    '            strSQL += " AND kpmkv_pelajar.KelasID ='" & ddlNamaKelas.SelectedValue & "'"
+    '        End If
 
-                myDocument.Add(imgSpacing)
+    '        If Not txtNama.Text.Length = 0 Then
+    '            strSQL += " AND kpmkv_pelajar.Nama LIKE '%" & oCommon.FixSingleQuotes(txtNama.Text) & "%'"
+    '        End If
 
-                ''PROFILE STARTS HERE
+    '        If Not txtMYKAD.Text.Length = 0 Then
+    '            strSQL += " AND kpmkv_pelajar.MYKAD='" & oCommon.FixSingleQuotes(txtMYKAD.Text) & "'"
+    '        End If
 
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '        If Not txtAngkaGiliran.Text.Length = 0 Then
+    '            strSQL += " AND kpmkv_pelajar.AngkaGiliran LIKE '%" & oCommon.FixSingleQuotes(txtAngkaGiliran.Text) & "%'"
+    '        End If
 
-                table = New PdfPTable(2)
+    '        strRet = oCommon.ExecuteSQL(strSQL)
 
-                table.WidthPercentage = 100
-                table.SetWidths({30, 70})
+    '        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+    '        Dim ds As DataSet = New DataSet
+    '        sqlDA.Fill(ds, "AnyTable")
 
-                Dim cell = New PdfPCell()
-                Dim cetak = Environment.NewLine & "NAMA"
-                cetak += Environment.NewLine & "NO.KAD PENGENALAN"
-                cetak += Environment.NewLine & "ANGKA GILIRAN"
-                cetak += Environment.NewLine & "INSTITUSI"
-                cetak += Environment.NewLine & "NAMA BIDANG"
-                cetak += Environment.NewLine & "PROGRAM"
-                cetak += Environment.NewLine & ""
+    '        For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
 
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
+    '            Dim strkey As String = ds.Tables(0).Rows(i).Item(0).ToString
 
-                cell = New PdfPCell()
-                cetak = Environment.NewLine & ": " & strname
-                cetak += Environment.NewLine & ": " & strmykad
-                cetak += Environment.NewLine & ": " & strag
-                cetak += Environment.NewLine & ": " & strKolejnama
-                cetak += Environment.NewLine & ": " & strbidang
-                cetak += Environment.NewLine & ": " & strprogram & " (" & strkodKursus & ")"
-                cetak += Environment.NewLine & " "
+    '            Dim strmykad As String = ds.Tables(0).Rows(i).Item(1).ToString
+    '            Dim strname As String = ds.Tables(0).Rows(i).Item(2).ToString
+    '            Dim strag As String = ds.Tables(0).Rows(i).Item(3).ToString
+    '            Dim strkodKursus As String = ds.Tables(0).Rows(i).Item(4).ToString
+    '            Dim strbidang As String = ds.Tables(0).Rows(i).Item(5).ToString
+    '            Dim strprogram As String = ds.Tables(0).Rows(i).Item(6).ToString
+    '            Dim strTahun As String = ds.Tables(0).Rows(i).Item(7).ToString
+    '            ''getting data end
 
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-                Debug.WriteLine(cetak)
-
-                myDocument.Add(table)
-
-                ''profile ends here
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-                table = New PdfPTable(4)
-                table.WidthPercentage = 100
-                table.SetWidths({30, 42, 18, 10})
-
-                cell = New PdfPCell()
-                cetak = "KOD"
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                cell = New PdfPCell()
-                cetak = "MATA PELAJARAN"
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                cell = New PdfPCell()
-                cetak = "KOMPETENSI"
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                cell = New PdfPCell()
-                cetak = ""
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                myDocument.Add(table)
-
-                strSQL = "select GredSJSetara from kpmkv_pelajar_markah where PelajarID = '" & strkey & "'"
-                strSQL += " AND Tahun='" & ddlTahun.SelectedValue & "'"
-                strSQL += " AND Sesi='" & chkSesi.SelectedValue & "'"
-                Dim strgred As String = oCommon.getFieldValue(strSQL)
-
-                strSQL = " SELECT Kompetensi FROM kpmkv_gred_sejarah WHERE Gred = '" & strgred & "'"
-                strSQL += " AND Tahun='" & ddlTahun.SelectedValue & "'"
-                strSQL += " AND Sesi='" & chkSesi.SelectedValue & "'"
-                Dim strKompetensi As String = oCommon.getFieldValue(strSQL)
-
-                table = New PdfPTable(4)
-                table.WidthPercentage = 100
-                table.SetWidths({30, 42, 18, 10})
-                table.DefaultCell.Border = 0
-
-                cell = New PdfPCell()
-                cetak = ""
-                cetak += "1251"
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                cell = New PdfPCell()
-                cetak = ""
-                cetak += "SEJARAH"
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                cell = New PdfPCell()
-                cetak = ""
-                cetak += strKompetensi
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                cell = New PdfPCell()
-                cetak = ""
-                cetak += ""
-                cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
-                cell.Border = 0
-                table.AddCell(cell)
-
-                Debug.WriteLine(cetak)
-                myDocument.Add(table)
+    '            Dim table As New PdfPTable(3)
+    '            table.WidthPercentage = 100
+    '            table.SetWidths({42, 16, 42})
+    '            table.DefaultCell.Border = 0
 
 
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                myDocument.Add(New Paragraph("TARIKH: " & ddlHari.Text & "/" & ddlBulan.Text & "/" & ddlTahun_1.Text & "                                                                                                                                                      PENGARAH PEPERIKSAAN", FontFactory.GetFont("Arial", 8, Font.BOLD)))
-                'Dim myPengarah As New Paragraph("" & strKolejnama, FontFactory.GetFont("Arial", 8, Font.BOLD))
-                'myPengarah.Alignment = Element.ALIGN_RIGHT
-                'myDocument.Add(myPengarah)
+    '            myDocument.Add(table)
 
-                myDocument.Add(imgSpacing)
-                myDocument.Add(imgSpacing)
-                Dim myslip As New Paragraph("Slip ini adalah cetakan komputer, tandatangan tidak diperlukan", FontFactory.GetFont("Arial", 8, Font.ITALIC))
-                myslip.Alignment = Element.ALIGN_CENTER
-                myDocument.Add(myslip)
-                myDocument.NewPage()
-                ''--content end
+    '            Dim myPara001 As New Paragraph("LEMBAGA PEPERIKSAAN", FontFactory.GetFont("Arial", 10, Font.BOLD))
+    '            myPara001.Alignment = Element.ALIGN_CENTER
+    '            myDocument.Add(myPara001)
+
+    '            Dim myPara01 As New Paragraph("KEMENTERIAN PENDIDIKAN MALAYSIA", FontFactory.GetFont("Arial", 10, Font.BOLD))
+    '            myPara01.Alignment = Element.ALIGN_CENTER
+    '            myDocument.Add(myPara01)
+
+    '            myDocument.Add(imgSpacing)
+    '            Dim myPara02 As New Paragraph("SLIP KEPUTUSAN SEJARAH 1251", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
+    '            myPara02.Alignment = Element.ALIGN_CENTER
+    '            myDocument.Add(myPara02)
+
+    '            Dim myPara03 As New Paragraph("TAHUN " & strTahun, FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
+    '            myPara03.Alignment = Element.ALIGN_CENTER
+    '            myDocument.Add(myPara03)
+
+    '            myDocument.Add(imgSpacing)
+
+    '            ''PROFILE STARTS HERE
+
+    '            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    '            table = New PdfPTable(2)
+
+    '            table.WidthPercentage = 100
+    '            table.SetWidths({30, 70})
+
+    '            Dim cell = New PdfPCell()
+    '            Dim cetak = Environment.NewLine & "NAMA"
+    '            cetak += Environment.NewLine & "NO.KAD PENGENALAN"
+    '            cetak += Environment.NewLine & "ANGKA GILIRAN"
+    '            cetak += Environment.NewLine & "INSTITUSI"
+    '            cetak += Environment.NewLine & "NAMA BIDANG"
+    '            cetak += Environment.NewLine & "PROGRAM"
+    '            cetak += Environment.NewLine & ""
+
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = Environment.NewLine & ": " & strname
+    '            cetak += Environment.NewLine & ": " & strmykad
+    '            cetak += Environment.NewLine & ": " & strag
+    '            cetak += Environment.NewLine & ": " & strKolejnama
+    '            cetak += Environment.NewLine & ": " & strbidang
+    '            cetak += Environment.NewLine & ": " & strprogram & " (" & strkodKursus & ")"
+    '            cetak += Environment.NewLine & " "
+
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+    '            Debug.WriteLine(cetak)
+
+    '            myDocument.Add(table)
+
+    '            ''profile ends here
+    '            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    '            table = New PdfPTable(4)
+    '            table.WidthPercentage = 100
+    '            table.SetWidths({30, 42, 18, 10})
+
+    '            cell = New PdfPCell()
+    '            cetak = "KOD"
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = "MATA PELAJARAN"
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = "KOMPETENSI"
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = ""
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            myDocument.Add(table)
+
+    '            strSQL = "select GredSJSetara from kpmkv_pelajar_markah where PelajarID = '" & strkey & "'"
+    '            strSQL += " AND Tahun='" & ddlTahun.SelectedValue & "'"
+    '            strSQL += " AND Sesi='" & chkSesi.SelectedValue & "'"
+    '            Dim strgred As String = oCommon.getFieldValue(strSQL)
+
+    '            strSQL = " SELECT Kompetensi FROM kpmkv_gred_sejarah WHERE Gred = '" & strgred & "'"
+    '            strSQL += " AND Tahun='" & ddlTahun.SelectedValue & "'"
+    '            strSQL += " AND Sesi='" & chkSesi.SelectedValue & "'"
+    '            Dim strKompetensi As String = oCommon.getFieldValue(strSQL)
+
+    '            table = New PdfPTable(4)
+    '            table.WidthPercentage = 100
+    '            table.SetWidths({30, 42, 18, 10})
+    '            table.DefaultCell.Border = 0
+
+    '            cell = New PdfPCell()
+    '            cetak = ""
+    '            cetak += "1251"
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = ""
+    '            cetak += "SEJARAH"
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = ""
+    '            cetak += strKompetensi
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            cell = New PdfPCell()
+    '            cetak = ""
+    '            cetak += ""
+    '            cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
+    '            cell.Border = 0
+    '            table.AddCell(cell)
+
+    '            Debug.WriteLine(cetak)
+    '            myDocument.Add(table)
 
 
-                myDocument.NewPage()
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(New Paragraph("TARIKH: " & ddlHari.Text & "/" & ddlBulan.Text & "/" & ddlTahun_1.Text & "                                                                                                                                                      PENGARAH PEPERIKSAAN", FontFactory.GetFont("Arial", 8, Font.BOLD)))
+    '            'Dim myPengarah As New Paragraph("" & strKolejnama, FontFactory.GetFont("Arial", 8, Font.BOLD))
+    '            'myPengarah.Alignment = Element.ALIGN_RIGHT
+    '            'myDocument.Add(myPengarah)
+
+    '            myDocument.Add(imgSpacing)
+    '            myDocument.Add(imgSpacing)
+    '            Dim myslip As New Paragraph("Slip ini adalah cetakan komputer, tandatangan tidak diperlukan", FontFactory.GetFont("Arial", 8, Font.ITALIC))
+    '            myslip.Alignment = Element.ALIGN_CENTER
+    '            myDocument.Add(myslip)
+    '            myDocument.NewPage()
+    '            ''--content end
 
 
-            Next
+    '            myDocument.NewPage()
 
-            myDocument.Close()
 
-            HttpContext.Current.Response.Write(myDocument)
-            HttpContext.Current.Response.End()
+    '        Next
 
-        Catch ex As Exception
+    '        myDocument.Close()
 
-        End Try
-    End Sub
+    '        HttpContext.Current.Response.Write(myDocument)
+    '        HttpContext.Current.Response.End()
+
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
 End Class

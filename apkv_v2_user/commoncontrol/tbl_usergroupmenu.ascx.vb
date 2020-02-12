@@ -25,7 +25,7 @@ Partial Public Class tbl_usergroupmenu
             strSQL = "select tbl_menuheader_kolej.Idx, tbl_menu_kolej .HeaderCode,LOWER(tbl_menuheader_kolej.HeaderText) AS HeaderText  from tbl_usergroupmenu_kolej "
             strSQL += " inner join tbl_menu_kolej on tbl_usergroupmenu_kolej.MenuCode = tbl_menu_kolej.MenuCode"
             strSQL += " inner join tbl_menuheader_kolej on tbl_menuheader_kolej .HeaderCode =tbl_menu_kolej.HeaderCode "
-            strSQL += " WHERE tbl_usergroupmenu_kolej.UserGroupCode='" & Session("UserGroupCode") & "'"
+            strSQL += " WHERE tbl_usergroupmenu_kolej.UserGroupCode='" & Session("UserGroupCodeUSERv2") & "'"
 
             strSQL += " group by tbl_menu_kolej .HeaderCode ,tbl_menuheader_kolej .HeaderCode ,tbl_menuheader_kolej.HeaderText,tbl_menuheader_kolej.Idx "
             strSQL += " order by tbl_menuheader_kolej.Idx ASC"
@@ -61,7 +61,7 @@ Partial Public Class tbl_usergroupmenu
 
                     strSQL = "SELECT tbl_submenu_kolej.Idx,tbl_submenu_kolej.SubMenuImg ,tbl_submenu_kolej.SubMenuLink, tbl_submenu_kolej.SubMenuText"
                     strSQL += " FROM tbl_submenu_kolej INNER JOIN tbl_usergroupmenu_kolej on tbl_usergroupmenu_kolej.MenuCode=tbl_submenu_kolej .ParentMenuCode"
-                    strSQL += " WHERE tbl_usergroupmenu_kolej.UserGroupCode='" & Session("UserGroupCode") & "' "
+                    strSQL += " WHERE tbl_usergroupmenu_kolej.UserGroupCode='" & Session("UserGroupCodeUSERv2") & "' "
                     strSQL += " AND tbl_submenu_kolej.HeaderCode ='" & strHeaderCode & "' ORDER BY tbl_submenu_kolej.Idx ASC"
                     strRet = oCommon.getFieldValue(strSQL)
                     'Response.Write(strSQL)

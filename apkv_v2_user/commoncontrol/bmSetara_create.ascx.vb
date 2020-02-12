@@ -21,7 +21,7 @@ Public Class bmSetara_create
 
             If Not IsPostBack Then
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 strKolejnama = oCommon.getFieldValue(strSQL)
                 'kolejid
                 strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"

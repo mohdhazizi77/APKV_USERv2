@@ -155,7 +155,7 @@
     </tr>
     </table>
 <br />
-<table class="fbform">
+<%--<table class="fbform">
     <tr class="fbform_header">
         <td colspan="3">Tetapan Tarikh</td>
     </tr>
@@ -220,7 +220,7 @@
          <td style="text-align: center;" colspan="3"><asp:Button ID="btnPrintSlip" runat="server" Text="Cetak Slip Keputusan" CssClass="fbbutton"/>&nbsp;<asp:HyperLink ID="HyPDF2" runat="server" Target="_blank"
                     Visible="false">Klik disini untuk muat turun.</asp:HyperLink> </td>
     </tr>
-</table>
+</table>--%>
 <br />
 <div class="info" id="divMsg" runat="server">
 <asp:Label ID="lblKolejID" runat="server" Text="" Visible="false"></asp:Label>

@@ -173,6 +173,7 @@
     <Content Include="commoncontrol\cetak_labelMeja.ascx" />
     <Content Include="commoncontrol\cetak_pelajar_ulang.ascx" />
     <Content Include="commoncontrol\contact_us.ascx" />
+    <Content Include="commoncontrol\error_page.ascx" />
     <Content Include="commoncontrol\gred_list.ascx" />
     <Content Include="commoncontrol\import_markah_matapelajaran.ascx" />
     <Content Include="commoncontrol\import_markah_modul.ascx" />
@@ -267,6 +268,7 @@
     <Content Include="commoncontrol\roasterSJ1251.ascx" />
     <Content Include="commoncontrol\semak_daftar_sejarah1251.ascx" />
     <Content Include="commoncontrol\slip_keputusan_BM1104_SJ1251.ascx" />
+    <Content Include="commoncontrol\slip_keputusan_ulangan.ascx" />
     <Content Include="commoncontrol\slip_sijilvokasionalmalaysia.ascx" />
     <Content Include="commoncontrol\slip_view.ascx" />
     <Content Include="commoncontrol\takwim_create.ascx" />
@@ -304,12 +306,14 @@
     <Content Include="DashKursus_view.aspx" />
     <Content Include="default.aspx" />
     <Content Include="default.contactus.aspx" />
+    <Content Include="error.page.aspx" />
     <Content Include="icons\back.png" />
     <Content Include="icons\band-aid.png" />
     <Content Include="icons\button_post.png" />
     <Content Include="icons\calendar.gif" />
     <Content Include="icons\chat.png" />
     <Content Include="icons\clock.png" />
+    <Content Include="icons\delete.png" />
     <Content Include="icons\delicious.gif" />
     <Content Include="icons\digg.gif" />
     <Content Include="icons\download.gif" />
@@ -455,6 +459,7 @@
     <Content Include="Roaster_Peperiksaan.aspx" />
     <Content Include="semak.daftar.sejarah1251.aspx" />
     <Content Include="slip.keputusan.BM1104.SJ1251.aspx" />
+    <Content Include="slip.keputusan.ulangan.aspx" />
     <Content Include="slip.pernyataan.keputusan.aspx" />
     <Content Include="slip.sijil.vokasional.malaysia.aspx" />
     <Content Include="slip.view.aspx" />
@@ -858,6 +863,13 @@
     </Compile>
     <Compile Include="commoncontrol\contact_us.ascx.vb">
       <DependentUpon>contact_us.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\error_page.ascx.designer.vb">
+      <DependentUpon>error_page.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\error_page.ascx.vb">
+      <DependentUpon>error_page.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="commoncontrol\gred_list.ascx.designer.vb">
@@ -1518,6 +1530,13 @@
       <DependentUpon>slip_keputusan_BM1104_SJ1251.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="commoncontrol\slip_keputusan_ulangan.ascx.designer.vb">
+      <DependentUpon>slip_keputusan_ulangan.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\slip_keputusan_ulangan.ascx.vb">
+      <DependentUpon>slip_keputusan_ulangan.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="commoncontrol\slip_sijilvokasionalmalaysia.ascx.designer.vb">
       <DependentUpon>slip_sijilvokasionalmalaysia.ascx</DependentUpon>
     </Compile>
@@ -1639,6 +1658,13 @@
     <Compile Include="default.Master.vb">
       <DependentUpon>default.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="error.page.aspx.designer.vb">
+      <DependentUpon>error.page.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="error.page.aspx.vb">
+      <DependentUpon>error.page.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="import.markah.matapelajaran.aspx.designer.vb">
       <DependentUpon>import.markah.matapelajaran.aspx</DependentUpon>
@@ -2210,6 +2236,13 @@
     </Compile>
     <Compile Include="slip.keputusan.BM1104.SJ1251.aspx.vb">
       <DependentUpon>slip.keputusan.BM1104.SJ1251.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="slip.keputusan.ulangan.aspx.designer.vb">
+      <DependentUpon>slip.keputusan.ulangan.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="slip.keputusan.ulangan.aspx.vb">
+      <DependentUpon>slip.keputusan.ulangan.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="slip.pernyataan.keputusan.aspx.designer.vb">

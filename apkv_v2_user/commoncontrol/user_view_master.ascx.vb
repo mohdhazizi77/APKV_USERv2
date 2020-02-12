@@ -26,9 +26,9 @@ Partial Public Class user_view_master
 
     Private Sub kpmkv_users_view()
         Try
-            lblLoginID.Text = Request.Cookies("kpmkv_loginid").Value
+            lblLoginID.Text = Session("LoginID")
 
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             lblNama.Text = oCommon.getFieldValue(strSQL)
         Catch ex As Exception
             Response.Redirect("logout.aspx?msg=You have logout from other browser or window. Please login again.")

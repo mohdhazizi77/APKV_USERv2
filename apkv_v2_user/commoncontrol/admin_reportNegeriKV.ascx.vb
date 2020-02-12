@@ -15,7 +15,7 @@ Public Class admin_reportNegeriKV
             If Not IsPostBack Then
                 lblMsg.Text = ""
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
                 'kolejid
@@ -315,7 +315,7 @@ Public Class admin_reportNegeriKV
         strSQL = "SELECT Nama FROM kpmkv_kolej WHERE RecordID='" & lblKolejID.Text & "'"
         Dim strKeyID As String = oCommon.getFieldValue(strSQL)
 
-        Response.Redirect("DashKursus_view.aspx?Nama=" & strKeyID & "&Tahun=" & ddlTahun.Text)
+        Response.Redirect("DashKursus_view.aspx?Nama=" & oCommon.Encrypt(strKeyID.Trim()) & "&Tahun=" & oCommon.Encrypt((ddlTahun.Text).Trim()))
 
     End Sub
 

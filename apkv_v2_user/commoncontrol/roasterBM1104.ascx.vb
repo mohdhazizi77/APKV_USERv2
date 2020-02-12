@@ -14,7 +14,7 @@ Public Class roasterBM1104
         Try
             If Not IsPostBack Then
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
                 'kolejid
@@ -311,7 +311,7 @@ Public Class roasterBM1104
             Dim strKey As String
 
             '1'--start here
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
             'kolejnegeri
@@ -399,13 +399,13 @@ Public Class roasterBM1104
                     If strPointer = "-1" Then
                         strGredBM = "T"
                     Else
-                        strSQL = "SELECT TOP ( 1 ) Gred FROM  kpmkv_gred_bmsetara WHERE '" & Integer.Parse(strPointer) & "' BETWEEN MarkahFrom AND MarkahTo AND Tahun='" & ddlTahun.Text & "' AND Sesi='" & chkSesi.Text & "' "
+                        strSQL = "SELECT GredBMSetara FROM kpmkv_pelajar_markah WHERE PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
                         strGredBM = oCommon.getFieldValue(strSQL)
                     End If
 
                     'change on 17082016
-                    strSQL = "UPDATE kpmkv_pelajar_markah SET GredBMSetara='" & strGredBM & "' Where PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
-                    strRet = oCommon.ExecuteSQL(strSQL)
+                    'strSQL = "UPDATE kpmkv_pelajar_markah SET GredBMSetara='" & strGredBM & "' Where PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
+                    'strRet = oCommon.ExecuteSQL(strSQL)
 
                     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
