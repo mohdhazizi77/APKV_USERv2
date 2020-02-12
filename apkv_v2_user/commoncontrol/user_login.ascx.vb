@@ -17,7 +17,7 @@ Partial Public Class user_login
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             Session("LoginID") = ""
-            Session("UserGroupCode") = ""
+            Session("UserGroupCodeUSERv2") = ""
 
         Catch ex As Exception
 
@@ -39,7 +39,8 @@ Partial Public Class user_login
                 Dim ar_user_login As Array
                 ar_user_login = strRet.Split("|")
 
-                Session("UserGroupCode") = ar_user_login(0)
+                Session("UserGroupCodeUSERv2") = ar_user_login(0)
+                Session("LoginID") = txtLoginID.Text
                 Response.Cookies("kpmkv_loginid").Value = txtLoginID.Text
                 If txtPwd.Text = "KV@1234lp" Then
                     Response.Redirect("user.change.password.aspx")

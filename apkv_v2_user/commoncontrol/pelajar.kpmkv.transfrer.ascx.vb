@@ -19,7 +19,7 @@ Public Class pelajar_kpmkv_transfrer
             If Not IsPostBack Then
 
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
                 'kolejid
                 strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
@@ -221,7 +221,7 @@ Public Class pelajar_kpmkv_transfrer
     Private Function kpmkv_pelajar_transfer() As Boolean
 
         'kolejnama
-        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
         Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
         'kolejid
         strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
@@ -314,7 +314,7 @@ Public Class pelajar_kpmkv_transfrer
     Private Function getSQL() As String
 
         'kolejnama
-        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+        strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
         Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
         'kolejid
         strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"

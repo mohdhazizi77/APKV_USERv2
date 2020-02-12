@@ -23,7 +23,7 @@ Public Class markah_ulang_akademik_insert_v21
                 lblMsg.Text = ""
 
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
                 'kolejid
                 strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
@@ -857,7 +857,7 @@ Public Class markah_ulang_akademik_insert_v21
             imgSpacing.Alignment = iTextSharp.text.Image.LEFT_ALIGN  'left
             imgSpacing.Border = 0
 
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             Dim strNamaKolej As String = oCommon.getFieldValue(strSQL)
 
             strSQL = "SELECT Negeri FROM kpmkv_kolej WHERE Nama='" & strNamaKolej & "'"

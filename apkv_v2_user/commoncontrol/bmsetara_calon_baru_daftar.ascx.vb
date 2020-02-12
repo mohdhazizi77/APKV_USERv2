@@ -17,9 +17,17 @@ Public Class bmsetara_calon_baru_daftar
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not Page.IsPostBack Then
-               
+
+                kpmkv_tahun_list()
+                ddlTahun.Enabled = False
+
+                kpmkv_semester_list()
+                ddlSemester.Enabled = False
+
+                chkSesi.Enabled = False
+
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
                 'kolejid
@@ -57,10 +65,14 @@ Public Class bmsetara_calon_baru_daftar
                         If strMula IsNot Nothing Then
                             If strAkhir IsNot Nothing And dayDiff >= 0 Then
 
-                                kpmkv_tahun_list()
+                                ddlTahun.Enabled = True
                                 ddlTahun.Text = Now.Year
 
-                                kpmkv_semester_list()
+                                ddlSemester.Enabled = True
+                                ddlSemester.Text = ""
+
+                                chkSesi.Enabled = True
+
 
                                 kpmkv_kelas_list()
 
@@ -101,13 +113,26 @@ Public Class bmsetara_calon_baru_daftar
         End Try
     End Sub
     Private Sub kpmkv_tahun_list()
-        strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-        strRet = oCommon.getFieldValue(strSQL)
-        Try
+        strSQL = "  SELECT DISTINCT Kohort FROM kpmkv_takwim
+                    WHERE '" & Format(CDate(Date.Now), "dd-MM-yyyy") & "' BETWEEN TarikhMula AND TarikhAkhir"
 
-            ddlTahun.Items.Add(strRet)
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
+        Try
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlTahun.DataSource = ds
+            ddlTahun.DataTextField = "Kohort"
+            ddlTahun.DataValueField = "Kohort"
+            ddlTahun.DataBind()
+
+            ddlTahun.Items.Add(New ListItem("-Pilih-", ""))
 
         Catch ex As Exception
+
             lblMsg.Text = "System Error:" & ex.Message
 
         Finally
@@ -116,10 +141,22 @@ Public Class bmsetara_calon_baru_daftar
     End Sub
 
     Private Sub kpmkv_semester_list()
-        strSQL = "SELECT Semester FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Semester ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+        strSQL = "  SELECT DISTINCT Semester FROM kpmkv_takwim
+                    WHERE '" & Format(CDate(Date.Now), "dd-MM-yyyy") & "' BETWEEN TarikhMula AND TarikhAkhir"
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            ddlSemester.Items.Add(strRet)
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlSemester.DataSource = ds
+            ddlSemester.DataTextField = "Semester"
+            ddlSemester.DataValueField = "Semester"
+            ddlSemester.DataBind()
+
+            ddlSemester.Items.Add(New ListItem("-Pilih-", ""))
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message

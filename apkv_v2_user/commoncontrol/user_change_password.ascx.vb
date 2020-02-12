@@ -33,7 +33,7 @@ Public Class user_change_password
 
         Try
             ''--update new password
-            strSQL = "UPDATE kpmkv_users SET Pwd='" & oCommon.FixSingleQuotes(txtNewPwd.Text) & "' WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "UPDATE kpmkv_users SET Pwd='" & oCommon.FixSingleQuotes(txtNewPwd.Text) & "' WHERE LoginID='" & Session("LoginID") & "'"
             strRet = oCommon.ExecuteSQL(strSQL)
             If Not strRet = "0" Then
                 lblMsg.Text = strRet
@@ -49,7 +49,7 @@ Public Class user_change_password
             'End If
 
             ''--update user currently login
-            'strSQL = "UPDATE user_login SET IsLogin='N',LoginDate='N',SessionID='N' WHERE LoginIDNo='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            'strSQL = "UPDATE user_login SET IsLogin='N',LoginDate='N',SessionID='N' WHERE LoginIDNo='" & Session("LoginID") & "'"
             'strRet = oCommon.ExecuteSQL(strSQL)
             'If Not strRet = "0" Then
             '    lblMsg.Text = "Logout Pengguna tidak berjaya " & strRet
@@ -69,7 +69,7 @@ Public Class user_change_password
         Dim strLoginPwd As String = oCommon.FixSingleQuotes(txtOldPwd.Text)
 
         ''--single login only. have to logout
-        strSQL = "SELECT LoginID,Pwd FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "' AND Pwd='" & strLoginPwd & "'"
+        strSQL = "SELECT LoginID,Pwd FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "' AND Pwd='" & strLoginPwd & "'"
 
         If oCommon.isExist(strSQL) = True Then
             Return True

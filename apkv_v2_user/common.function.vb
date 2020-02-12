@@ -8,6 +8,8 @@ Imports System.Net.Mail
 Imports System.Net
 Imports System.Text.RegularExpressions
 Imports System.Web
+Imports System.Security.Cryptography
+
 
 Public Class Commonfunction
     Function DateFormat(ByVal strDate As String, ByVal strFormat As String) As String
@@ -20,7 +22,17 @@ Public Class Commonfunction
         Return dtSelected.ToString("dddd dd-MM-yyyy")
 
     End Function
+    Function isMyKad2(ByVal inputMyKad As String) As Boolean
 
+        Dim pattern As String = "^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])[0-9]{2}[0-9]{4}$"
+        Dim MyKadNumberMatch As Match = Regex.Match(inputMyKad, pattern)
+        If MyKadNumberMatch.Success Then
+            isMyKad2 = True
+        Else
+            isMyKad2 = False
+        End If
+
+    End Function
     Function ExecuteSqlTransaction() As String
         Dim strRet As String = "0"
         Dim strconn As String = ConfigurationManager.AppSettings("ConnectionString")
@@ -179,10 +191,10 @@ Public Class Commonfunction
     ''sqlinjection
     Function CheckSqlInjection(ByVal userValue As String) As Boolean
         ' Throw an exception if a blacklisted word is detected.
-        Dim blackList As [String]() = {"alter", "begin", "cast", "create", "cursor", "declare", _
-         "delete", "drop", "exec", "execute", "fetch", "insert", _
-         "kill", "open", "select", "sys", "sysobjects", "syscolumns", _
-         "table", "update", "<script", "</script", "--", "/*", _
+        Dim blackList As [String]() = {"alter", "begin", "cast", "create", "cursor", "declare",
+         "delete", "drop", "exec", "execute", "fetch", "insert",
+         "kill", "open", "select", "sys", "sysobjects", "syscolumns",
+         "table", "update", "<script", "</script", "--", "/*",
          "*/", "@@", "@"}
         For i As Integer = 0 To blackList.Length - 1
             If userValue.ToLower().IndexOf(blackList(i)) <> -1 Then
@@ -300,20 +312,6 @@ Public Class Commonfunction
 
     End Function
 
-    Function ValidatePhone(ByVal num As String) As Boolean
-        'create our regular exp<b></b>ression pattern
-        Dim pattern As String = "^[0][18]\d{1}[\-][1-9]\d{2}\d{4}$"
-        'create our regular exp<b></b>ression object
-        Dim check As New Regex(pattern)
-        Dim valid As Boolean = False
-        'Make sure a phone number was provided
-        If Not String.IsNullOrEmpty(num) Then
-            valid = check.IsMatch(num)
-        Else
-            valid = False
-        End If
-        Return valid
-    End Function
     Function isEmail(ByVal inputEmail As String) As Boolean
 
         Dim pattern As String = "^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"
@@ -326,29 +324,6 @@ Public Class Commonfunction
 
     End Function
 
-    Function isMyKad(ByVal inputMyKad As String) As Boolean
-
-        Dim pattern As String = "^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])-[0-9]{2}-[0-9]{4}$"
-        Dim MyKadNumberMatch As Match = Regex.Match(inputMyKad, pattern)
-        If MyKadNumberMatch.Success Then
-            isMyKad = True
-        Else
-            isMyKad = False
-        End If
-
-    End Function
-
-    Function isMyKad2(ByVal inputMyKad As String) As Boolean
-
-        Dim pattern As String = "^\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])[0-9]{2}[0-9]{4}$"
-        Dim MyKadNumberMatch As Match = Regex.Match(inputMyKad, pattern)
-        If MyKadNumberMatch.Success Then
-            isMyKad2 = True
-        Else
-            isMyKad2 = False
-        End If
-
-    End Function
     Function FormatDateDMY(ByVal strDate As Date) As String
         Dim ddate As Date
         ddate = strDate
@@ -532,8 +507,8 @@ Public Class Commonfunction
         Return True
     End Function
 
-    Function LogEventDB(ByVal myEvent As String, ByVal FileID As String, _
-    ByVal FileName As String, ByVal FolderName As String, ByVal FolDir As String, ByVal History As String, _
+    Function LogEventDB(ByVal myEvent As String, ByVal FileID As String,
+    ByVal FileName As String, ByVal FolderName As String, ByVal FolDir As String, ByVal History As String,
     ByVal UserID As String, ByVal LoginID As String) As String
 
         Dim strSQL As String
@@ -1170,8 +1145,8 @@ Public Class Commonfunction
 
     Private Sub drRetrieveMultipleResults(ByVal connection As SqlConnection)
         Using connection
-            Dim command As SqlCommand = New SqlCommand( _
-                      "SELECT CategoryID, CategoryName FROM Categories;" & _
+            Dim command As SqlCommand = New SqlCommand(
+                      "SELECT CategoryID, CategoryName FROM Categories;" &
                       "SELECT EmployeeID, LastName FROM Employees", connection)
 
             connection.Open()
@@ -1194,8 +1169,8 @@ Public Class Commonfunction
 
     Private Sub drGetSchemaInfo(ByVal connection As SqlConnection)
         Using connection
-            Dim command As SqlCommand = New SqlCommand( _
-              "SELECT CategoryID, CategoryName FROM Categories;", _
+            Dim command As SqlCommand = New SqlCommand(
+              "SELECT CategoryID, CategoryName FROM Categories;",
               connection)
             connection.Open()
 
@@ -1207,7 +1182,7 @@ Public Class Commonfunction
 
             For Each row In schemaTable.Rows
                 For Each column In schemaTable.Columns
-                    Console.WriteLine(String.Format("{0} = {1}", _
+                    Console.WriteLine(String.Format("{0} = {1}",
                       column.ColumnName, row(column)))
                 Next
                 Console.WriteLine()
@@ -1234,6 +1209,77 @@ Public Class Commonfunction
             Con.Close()
         End Using
     End Sub
+
+    Function ValidatePhone(ByVal num As String) As Boolean
+        'create our regular exp<b></b>ression pattern
+        Dim pattern As String = "^[0][18]\d{1}[\-][1-9]\d{2}\d{4}$"
+        'create our regular exp<b></b>ression object
+        Dim check As New Regex(pattern)
+        Dim valid As Boolean = False
+        'Make sure a phone number was provided
+        If Not String.IsNullOrEmpty(num) Then
+            valid = check.IsMatch(num)
+        Else
+            valid = False
+        End If
+        Return valid
+    End Function
+
+    Public Function Encrypt(ByVal qrString As String) As String
+
+        Dim encryptionKey As String = "MAKV2SPBNI99212"
+        Dim clearBytes As Byte() = Encoding.Unicode.GetBytes(qrString)
+
+        Using encryptor As Aes = Aes.Create()
+
+            Dim rfc As New Rfc2898DeriveBytes(encryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D, &H65, &H64, &H76, &H65, &H64, &H65, &H76})
+            encryptor.Key = rfc.GetBytes(32)
+            encryptor.IV = rfc.GetBytes(16)
+
+            Using ms As New MemoryStream()
+
+                Using cs As New CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write)
+
+                    cs.Write(clearBytes, 0, clearBytes.Length)
+                    cs.Close()
+
+                End Using
+
+                qrString = Convert.ToBase64String(ms.ToArray())
+
+            End Using
+
+        End Using
+
+        Return qrString
+
+    End Function
+
+    Public Function Decrypt(qrCipher As String) As String
+
+        Dim encryptionKey As String = "MAKV2SPBNI99212"
+
+        Dim qrCipherBytes As Byte() = Convert.FromBase64String(qrCipher)
+        Using encryptor As Aes = Aes.Create()
+            Dim pdb As New Rfc2898DeriveBytes(encryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D,
+         &H65, &H64, &H76, &H65, &H64, &H65,
+         &H76})
+            encryptor.Key = pdb.GetBytes(32)
+            encryptor.IV = pdb.GetBytes(16)
+            Using ms As New MemoryStream()
+                Using cs As New CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write)
+                    cs.Write(qrCipherBytes, 0, qrCipherBytes.Length)
+                    cs.Close()
+                End Using
+                qrCipher = Encoding.Unicode.GetString(ms.ToArray())
+            End Using
+        End Using
+
+        Return qrCipher
+
+    End Function
+
+
 
 End Class
 

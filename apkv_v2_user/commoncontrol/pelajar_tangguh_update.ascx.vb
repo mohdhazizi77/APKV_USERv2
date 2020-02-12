@@ -16,13 +16,16 @@ Public Class pelajar_tangguh_update
     Dim objConn As SqlConnection = New SqlConnection(strConn)
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        Dim decryptedID As String = oCommon.Decrypt(Request.QueryString("PelajarID").Trim())
+
         lblMsg.Text = ""
         Try
             If Not IsPostBack Then
 
-                strSQL = "SELECT kpmkv_kolej.Nama,kpmkv_kolej.RecordID FROM kpmkv_kolej LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_kolej.RecordID=kpmkv_pelajar.KolejRecordID  WHERE kpmkv_pelajar.PelajarID='" & Request.QueryString("PelajarID") & "'"
+                strSQL = "SELECT kpmkv_kolej.Nama,kpmkv_kolej.RecordID FROM kpmkv_kolej LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_kolej.RecordID=kpmkv_pelajar.KolejRecordID  WHERE kpmkv_pelajar.PelajarID='" & decryptedID & "'"
                 lblKolej.Text = oCommon.getFieldValue(strSQL)
-                strSQL = "SELECT kpmkv_kolej.RecordID FROM kpmkv_kolej LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_kolej.RecordID=kpmkv_pelajar.KolejRecordID  WHERE kpmkv_pelajar.PelajarID='" & Request.QueryString("PelajarID") & "'"
+                strSQL = "SELECT kpmkv_kolej.RecordID FROM kpmkv_kolej LEFT OUTER JOIN kpmkv_pelajar ON kpmkv_kolej.RecordID=kpmkv_pelajar.KolejRecordID  WHERE kpmkv_pelajar.PelajarID='" & decryptedID & "'"
                 lblRecordID.Text = oCommon.getFieldValue(strSQL)
                 lblKolejID.Text = lblRecordID.Text
 
@@ -37,7 +40,7 @@ Public Class pelajar_tangguh_update
 
                 'kpmkv_kelas_list()
 
-               
+
             End If
 
         Catch ex As Exception
@@ -158,7 +161,9 @@ Public Class pelajar_tangguh_update
 
     End Sub
     Private Sub LoadPage()
-        
+
+        Dim decryptedID As String = oCommon.Decrypt(Request.QueryString("PelajarID").Trim())
+
         strSQL = "SELECT kpmkv_pelajar.Pengajian,kpmkv_pelajar.AngkaGiliran, kpmkv_pelajar.Tahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi, kpmkv_pelajar.Nama, kpmkv_pelajar.MYKAD, kpmkv_pelajar.Tel, "
         strSQL += " kpmkv_pelajar.KursusID,kpmkv_kluster.NamaKluster, kpmkv_kursus.KodKursus, kpmkv_kursus.NamaKursus, kpmkv_pelajar.Kaum, kpmkv_pelajar.Jantina, "
         strSQL += " kpmkv_pelajar.Agama, kpmkv_status.StatusID, kpmkv_pelajar.Email, kpmkv_pelajar.Catatan, kpmkv_kelas.NamaKelas"
@@ -166,7 +171,7 @@ Public Class pelajar_tangguh_update
         strSQL += " kpmkv_status ON kpmkv_pelajar.StatusID = kpmkv_status.StatusID LEFT OUTER JOIN kpmkv_kelas ON kpmkv_pelajar.KelasID = kpmkv_kelas.KelasID"
         strSQL += " LEFT OUTER JOIN kpmkv_jeniscalon ON kpmkv_pelajar.JenisCalonID = kpmkv_jeniscalon.JenisCalonID "
         strSQL += "LEFT OUTER JOIN kpmkv_kluster ON kpmkv_pelajar.KursusID=kpmkv_kluster.KlusterID"
-        strSQL += " WHERE kpmkv_pelajar.PelajarID='" & Request.QueryString("PelajarID") & "'"
+        strSQL += " WHERE kpmkv_pelajar.PelajarID='" & decryptedID & "'"
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
         Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -347,7 +352,9 @@ Public Class pelajar_tangguh_update
         Return True
     End Function
     Private Function kpmkv_pelajar_create() As Boolean
-       
+
+        Dim decryptedID As String = oCommon.Decrypt(Request.QueryString("PelajarID").Trim())
+
         'insert table pelajar
         strSQL = "INSERT INTO kpmkv_pelajar (KolejRecordID,Pengajian,KursusID,KelasID,Tahun,Semester,Sesi,Nama,MYKAD,Jantina,Kaum,Agama,Email,Catatan,StatusID,JenisCalonID,AngkaGiliran,Tel,IsDeleted)"
         strSQL += "VALUES ('" & lblRecordID.Text & "','" & lblPengajian.Text & "','" & ddlKodKursus.SelectedValue & "','" & ddlKelas.SelectedValue & "','" & ddlTahun.SelectedValue & "','" & ddlSemester.SelectedValue & "',"
@@ -368,7 +375,7 @@ Public Class pelajar_tangguh_update
             strSQL += "'" & ddlTahun.SelectedValue & "','" & ddlSemester.SelectedValue & "','" & chkSesi.Text & "')"
             strRet = oCommon.ExecuteSQL(strSQL)
 
-            strSQL = "UPDATE kpmkv_pelajar SET StatusID='1',JenisCalonID='1' WHERE PelajarID='" & Request.QueryString("PelajarID") & "'"
+            strSQL = "UPDATE kpmkv_pelajar SET StatusID='1',JenisCalonID='1' WHERE PelajarID='" & decryptedID & "'"
             strRet = oCommon.ExecuteSQL(strSQL)
 
             Return True

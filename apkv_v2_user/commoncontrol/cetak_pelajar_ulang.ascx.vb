@@ -20,7 +20,7 @@ Public Class cetak_pelajar_ulang1
                 lblMsg.Text = ""
 
                 'kolejnama
-                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+                strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
                 'kolejid
                 strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
@@ -417,7 +417,7 @@ Public Class cetak_pelajar_ulang1
             myDocument.Open()
 
             '1'--start here
-            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
             'kolejnegeri

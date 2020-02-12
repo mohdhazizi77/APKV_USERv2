@@ -113,51 +113,6 @@ Partial Public Class roasterSJ1251
     Protected WithEvents hyPDF As Global.System.Web.UI.WebControls.HyperLink
     
     '''<summary>
-    '''ddlHari control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlHari As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''ddlBulan control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlBulan As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''ddlTahun_1 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlTahun_1 As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''btnPrintSlip control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnPrintSlip As Global.System.Web.UI.WebControls.Button
-    
-    '''<summary>
-    '''HyPDF2 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents HyPDF2 As Global.System.Web.UI.WebControls.HyperLink
-    
-    '''<summary>
     '''divMsg control.
     '''</summary>
     '''<remarks>

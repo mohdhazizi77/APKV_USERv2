@@ -16,7 +16,7 @@ Public Class pemeriksa_list
 
             If Not IsPostBack Then
 
-                'strSQL = "SELECT UserID from kpmkv_users where LoginID='" & Response.Cookies("kpmkv_loginid").Value & "'"
+                'strSQL = "SELECT UserID from kpmkv_users where LoginID='" & Session("LoginID") & "'"
                 'lblUserID.Text = oCommon.getFieldValue(strSQL)
                 strRet = BindData(datRespondent)
             End If

@@ -24,10 +24,10 @@ Public Class kolej_view_master
         Try
             'lblLoginID.Text = Request.Cookies("kpmkv_loginid").Value
 
-            'strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            'strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             'lblNama.Text = oCommon.getFieldValue(strSQL)
 
-            'strSQL = "SELECT Negeri FROM kpmkv_users WHERE LoginID='" & Server.HtmlEncode(Request.Cookies("kpmkv_loginid").Value) & "'"
+            'strSQL = "SELECT Negeri FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             'lblNegeri.Text = oCommon.getFieldValue(strSQL)
 
         Catch ex As Exception
