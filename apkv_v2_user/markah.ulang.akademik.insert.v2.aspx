@@ -2,8 +2,9 @@
 
 <%@ Register Src="~/commoncontrol/markah_ulang_akademik_insert_v2.ascx" TagPrefix="uc1" TagName="markah_ulang_akademik_insert_v2" %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <uc1:markah_ulang_akademik_insert_v2 runat="server" id="markah_ulang_akademik_insert_v2" />
+    <uc1:markah_ulang_akademik_insert_v2 runat="server" ID="markah_ulang_akademik_insert_v2" />
 </asp:Content>

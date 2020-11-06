@@ -45,17 +45,18 @@ Public Class markah_create_PAV
                         Dim strMula As String = ar_user_login(0)
                         Dim strAkhir As String = ar_user_login(1)
 
-                        Dim strdateNow As Date = Date.Now
+                        Dim strdateNow As Date = Date.Now.Date
                         Dim startDate = DateTime.ParseExact(strMula, "dd-MM-yyyy", CultureInfo.InvariantCulture)
                         Dim endDate = DateTime.ParseExact(strAkhir, "dd-MM-yyyy", CultureInfo.InvariantCulture)
 
                         Dim ts As New TimeSpan
+                        ts = startDate.Subtract(strdateNow)
+                        Dim dayDiffMula = ts.Days
                         ts = endDate.Subtract(strdateNow)
-                        Dim dayDiff = ts.Days
+                        Dim dayDiffAkhir = ts.Days
 
-
-                        If strMula IsNot Nothing Then
-                            If strAkhir IsNot Nothing And dayDiff >= 0 Then
+                        If strMula IsNot Nothing And dayDiffMula <= 0 Then
+                            If strAkhir IsNot Nothing And dayDiffAkhir >= 0 Then
                                 kpmkv_tahun_list()
                                 kpmkv_semester_list()
 
@@ -367,7 +368,7 @@ Public Class markah_create_PAV
 
 
             If nCount = 2 Then
-                strSQL = "UPDATE kpmkv_pelajar_markah SET  A_Amali1='" & Amali1 & "', A_Amali2='" & Amali1 & "',"
+                strSQL = "UPDATE kpmkv_pelajar_markah SET  A_Amali1='" & Amali1 & "', A_Amali2='" & Amali1 & "'"
                 strSQL += " WHERE KolejRecordID='" & lblKolejID.Text & "' AND PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
             ElseIf nCount = 3 Then
                 strSQL = "UPDATE kpmkv_pelajar_markah SET  A_Amali1='" & Amali1 & "', A_Amali2='" & Amali1 & "',"

@@ -205,7 +205,7 @@
     <Content Include="commoncontrol\markah.vokasional.list.ascx" />
     <Content Include="commoncontrol\markah_import.ascx" />
     <Content Include="commoncontrol\markah_list.ascx" />
-    <Content Include="commoncontrol\markah_ulang_akademik_insert_v2.ascx" />
+    <Content Include="commoncontrol\markah_ulang_bm.ascx" />
     <Content Include="commoncontrol\markah_update.ascx" />
     <Content Include="commoncontrol\matapelajaran.pensyarah.create.ascx" />
     <Content Include="commoncontrol\matapelajaran_create.ascx" />
@@ -407,7 +407,9 @@
     <Content Include="Markah.list.Vokasional.aspx" />
     <Content Include="markah.ulang.akademik.insert.aspx" />
     <Content Include="markah.ulang.akademik.insert.v2.aspx" />
+    <Content Include="markah.ulang.bm.aspx" />
     <Content Include="markah.ulang.vokasional.insert.aspx" />
+    <Content Include="commoncontrol\markah_ulang_akademik_insert_v2.ascx" />
     <Content Include="matapelajaran.create.aspx" />
     <Content Include="matapelajaran.list.aspx" />
     <Content Include="matapelajaran.pensyarah.aspx" />
@@ -1089,11 +1091,11 @@
       <DependentUpon>markah_list.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="commoncontrol\markah_ulang_akademik_insert_v2.ascx.designer.vb">
-      <DependentUpon>markah_ulang_akademik_insert_v2.ascx</DependentUpon>
+    <Compile Include="commoncontrol\markah_ulang_bm.ascx.designer.vb">
+      <DependentUpon>markah_ulang_bm.ascx</DependentUpon>
     </Compile>
-    <Compile Include="commoncontrol\markah_ulang_akademik_insert_v2.ascx.vb">
-      <DependentUpon>markah_ulang_akademik_insert_v2.ascx</DependentUpon>
+    <Compile Include="commoncontrol\markah_ulang_bm.ascx.vb">
+      <DependentUpon>markah_ulang_bm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="commoncontrol\markah_update.ascx.designer.vb">
@@ -1890,11 +1892,25 @@
       <DependentUpon>markah.ulang.akademik.insert.v2.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="markah.ulang.bm.aspx.designer.vb">
+      <DependentUpon>markah.ulang.bm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="markah.ulang.bm.aspx.vb">
+      <DependentUpon>markah.ulang.bm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="markah.ulang.vokasional.insert.aspx.designer.vb">
       <DependentUpon>markah.ulang.vokasional.insert.aspx</DependentUpon>
     </Compile>
     <Compile Include="markah.ulang.vokasional.insert.aspx.vb">
       <DependentUpon>markah.ulang.vokasional.insert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\markah_ulang_akademik_insert_v2.ascx.designer.vb">
+      <DependentUpon>markah_ulang_akademik_insert_v2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\markah_ulang_akademik_insert_v2.ascx.vb">
+      <DependentUpon>markah_ulang_akademik_insert_v2.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="matapelajaran.create.aspx.designer.vb">
