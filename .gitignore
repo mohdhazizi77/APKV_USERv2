@@ -244,3 +244,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 apkv_v2_user/inbox/
+
+apkv_v2_user/Web.config

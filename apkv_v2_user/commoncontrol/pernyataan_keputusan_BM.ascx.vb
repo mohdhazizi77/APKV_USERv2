@@ -390,7 +390,7 @@ Public Class pernyataan_keputusan_BM
                 Dim myTable1 As New PdfPTable(3)
                 myTable1.WidthPercentage = 100 ' Table size is set to 100% of the page
                 myTable1.HorizontalAlignment = 1 '//0=Left, 1=Centre, 2=Right
-                myTable.HorizontalAlignment = Rectangle.MULTI_COLUMN_TEXT
+                ' myTable.HorizontalAlignment = Rectangle.MULTI_COLUMN_TEXT
                 Dim intTblWidth1() As Integer = {36, 36, 36}
                 myTable1.SetWidths(intTblWidth1)
 

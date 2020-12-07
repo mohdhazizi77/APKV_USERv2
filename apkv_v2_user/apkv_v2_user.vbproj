@@ -42,8 +42,11 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="itextsharp">
-      <HintPath>..\..\nurul\kolej_kpmkv_OGOS\kolej_kpmkv\bin\itextsharp.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -137,6 +140,7 @@
     <Content Include="bin\apkv_v2_user.dll" />
     <Content Include="bin\apkv_v2_user.pdb" />
     <Content Include="bin\apkv_v2_user.xml" />
+    <Content Include="bin\BouncyCastle.Crypto.dll" />
     <Content Include="bin\itextsharp.dll" />
     <Content Include="bin\RKLib.ExportData.dll" />
     <Content Include="bin\WebChart.dll" />
@@ -392,7 +396,6 @@
     <Content Include="kolej.view.aspx" />
     <Content Include="KolejDash.aspx" />
     <Content Include="kolej_kpmkv.vbproj" />
-    <Content Include="kolej_kpmkv.vbproj.user" />
     <Content Include="kursus.list.aspx" />
     <Content Include="kursus.popup.aspx" />
     <Content Include="kursus.view.aspx" />
@@ -2341,6 +2344,7 @@
     <Content Include="sample_data\PELAJARIMPORT3.xlsx" />
     <Content Include="sample_data\PENSYARAHIMPORT.xlsx" />
     <Content Include="popup.Master" />
+    <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

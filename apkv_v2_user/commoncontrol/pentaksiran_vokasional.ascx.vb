@@ -454,9 +454,10 @@ Public Class pentaksiran_vokasional
                     strSQL = "SELECT NamaKursus FROM kpmkv_kursus WHERE KursusID='" & ddlKodKursus.SelectedValue & "'"
                     strKodKursus = oCommon.getFieldValue(strSQL)
 
-                    strSQL = "SELECT Top 1 kpmkv_kluster.NamaKluster FROM  kpmkv_kluster LEFT OUTER JOIN kpmkv_kursus "
-                    strSQL += " ON kpmkv_kluster.KlusterID = kpmkv_kursus.KlusterID "
-                    strSQL += " WHERE kpmkv_kursus.NamaKursus ='" & strKodKursus & "' "
+                    strSQL = "SELECT KlusterID FROM kpmkv_kursus WHERE KursusID = '" & ddlKodKursus.SelectedValue & "'"
+                    Dim strKlusterID As String = oCommon.getFieldValue(strSQL)
+
+                    strSQL = "SELECT NamaKluster FROM kpmkv_kluster WHERE KlusterID ='" & strKlusterID & "'"
                     strKluster = oCommon.getFieldValue(strSQL)
 
                     strSQL = "SELECT Tahun FROM kpmkv_pelajar WHERE PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
