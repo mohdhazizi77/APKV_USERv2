@@ -372,6 +372,8 @@ Public Class cetak_labelMeja
 
                 If cb.Checked = True Then
 
+                    myDocument.NewPage()
+
                     Dim strkey As String = datRespondent.DataKeys(i).Value.ToString
 
                     strSQL = " SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.MYKAD, kpmkv_pelajar.AngkaGiliran,"

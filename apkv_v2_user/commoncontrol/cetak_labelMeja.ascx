@@ -66,7 +66,7 @@
         <td>
             <asp:GridView ID="datRespondent" runat="server" AutoGenerateColumns="False" AllowPaging="True"
                 CellPadding="4" ForeColor="#333333" GridLines="None" DataKeyNames="PelajarID"
-                Width="100%" PageSize="25" CssClass="gridview_footer" EnableModelValidation="True">
+                Width="100%" PageSize="100" CssClass="gridview_footer" EnableModelValidation="True">
                 <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                 <Columns>
                     <asp:TemplateField HeaderText="#">

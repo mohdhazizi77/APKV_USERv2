@@ -32,6 +32,8 @@ Public Class import_markah_matapelajaran
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
     Dim objConn As SqlConnection = New SqlConnection(strConn)
 
+    Dim SubMenuText As String = "Import Markah Akademik"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         lblMsg.Text = ""
 
@@ -65,18 +67,23 @@ Public Class import_markah_matapelajaran
                     Dim strMula As String = ar_user_login(0)
                     Dim strAkhir As String = ar_user_login(1)
 
-                    Dim strdateNow As Date = Date.Now
+                    Dim strdateNow As Date = Date.Now.Date
                     Dim startDate = DateTime.ParseExact(strMula, "dd-MM-yyyy", CultureInfo.InvariantCulture)
                     Dim endDate = DateTime.ParseExact(strAkhir, "dd-MM-yyyy", CultureInfo.InvariantCulture)
 
                     Dim ts As New TimeSpan
+                    ts = startDate.Subtract(strdateNow)
+                    Dim dayDiffMula = ts.Days
                     ts = endDate.Subtract(strdateNow)
-                    Dim dayDiff = ts.Days
+                    Dim dayDiffAkhir = ts.Days
 
-                    If strMula IsNot Nothing Then
-                        If strAkhir IsNot Nothing And dayDiff >= 0 Then
+                    If strMula IsNot Nothing And dayDiffMula <= 0 Then
+                        If strAkhir IsNot Nothing And dayDiffAkhir >= 0 Then
+
                             kpmkv_tahun_list()
-                            kpmkv_semester_list()
+                            ' DDL_RemoveDuplicateItems(ddlTahun)
+
+                            'DDL_RemoveDuplicateItems(ddlSemester)
 
                             'checkinbox
                             strSQL = "SELECT Sesi FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
@@ -84,20 +91,19 @@ Public Class import_markah_matapelajaran
 
                             If strRet = 1 Then
                                 chkSesi.Items(0).Enabled = True
-                                'chkSesi.Items(1).Enabled = False
+                                ' chkSesi.Items(1).Enabled = False
                             Else
-                                'chkSesi.Items(0).Enabled = False
+                                ' chkSesi.Items(0).Enabled = False
                                 chkSesi.Items(1).Enabled = True
                             End If
                             btnFile.Enabled = True
                             btnUpload.Enabled = True
                         End If
-                    Else
-                        btnFile.Enabled = False
-                        btnUpload.Enabled = False
-                        lblMsg.Text = "Import Markah Akademik telah ditutup!"
                     End If
                 Next
+                kpmkv_semester_list()
+                kpmkv_kodkursus_list()
+                kpmkv_kelas_list()
             Else
                 btnFile.Enabled = False
                 btnUpload.Enabled = False
@@ -109,12 +115,27 @@ Public Class import_markah_matapelajaran
 
     End Sub
     Private Sub kpmkv_tahun_list()
-        strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT Kohort FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND CONVERT(VARCHAR(10),GETDATE() ,105)  BETWEEN TarikhMula AND TarikhAkhir"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            If Not ddlTahun.Text = strRet Then
-                ddlTahun.Items.Add(strRet)
-            End If
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlTahun.DataSource = ds
+            ddlTahun.DataTextField = "Kohort"
+            ddlTahun.DataValueField = "Kohort"
+            ddlTahun.DataBind()
+
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
 
@@ -124,12 +145,27 @@ Public Class import_markah_matapelajaran
 
     End Sub
     Private Sub kpmkv_semester_list()
-        strSQL = "SELECT Semester FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Semester ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT Semester FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND Kohort = '" & ddlTahun.Text & "'
+                    AND CONVERT(VARCHAR(10),GETDATE() ,105)  BETWEEN TarikhMula AND TarikhAkhir"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            If Not ddlSemester.Text = strRet Then
-                ddlSemester.Items.Add(strRet)
-            End If
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlSemester.DataSource = ds
+            ddlSemester.DataTextField = "Semester"
+            ddlSemester.DataValueField = "Semester"
+            ddlSemester.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -802,5 +838,16 @@ Public Class import_markah_matapelajaran
             divImport.Visible = False
 
         End If
+    End Sub
+
+    Private Sub ddlTahun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTahun.SelectedIndexChanged
+        kpmkv_semester_list()
+        kpmkv_kodkursus_list()
+        kpmkv_kelas_list()
+    End Sub
+
+    Private Sub ddlSemester_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSemester.SelectedIndexChanged
+        kpmkv_kodkursus_list()
+        kpmkv_kelas_list()
     End Sub
 End Class
