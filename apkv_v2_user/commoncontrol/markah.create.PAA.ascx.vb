@@ -17,6 +17,8 @@ Public Class markah_create_PAA
 
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
     Dim objConn As SqlConnection = New SqlConnection(strConn)
+
+    Dim SubMenuText As String = "Penilaian Akhir Akademik"
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not IsPostBack Then
@@ -66,7 +68,6 @@ Public Class markah_create_PAA
                                 kpmkv_tahun_list()
                                 ' DDL_RemoveDuplicateItems(ddlTahun)
 
-                                kpmkv_semester_list()
                                 'DDL_RemoveDuplicateItems(ddlSemester)
 
                                 'checkinbox
@@ -83,12 +84,11 @@ Public Class markah_create_PAA
                                 btnGred.Enabled = True
                                 btnUpdate.Enabled = True
                             End If
-                        Else
-                            btnGred.Enabled = False
-                            btnUpdate.Enabled = False
-                            lblMsg.Text = "Penilaian Akhir Akademik telah ditutup!"
                         End If
                     Next
+                    kpmkv_semester_list()
+                    kpmkv_kodkursus_list()
+                    kpmkv_kelas_list()
                 Else
                     btnGred.Enabled = False
                     btnUpdate.Enabled = False
@@ -97,18 +97,33 @@ Public Class markah_create_PAA
                 RepoveDuplicate(ddlTahun)
                 RepoveDuplicate(ddlSemester)
             End If
-           
+
 
         Catch ex As Exception
             lblMsg.Text = ex.Message
         End Try
     End Sub
     Private Sub kpmkv_tahun_list()
-         strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-        strRet = oCommon.getFieldValue(strSQL)
-        Try
 
-            ddlTahun.Items.Add(strRet)
+        strSQL = "  SELECT Kohort FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND CONVERT(VARCHAR(10),GETDATE() ,105)  BETWEEN TarikhMula AND TarikhAkhir"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
+        Try
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlTahun.DataSource = ds
+            ddlTahun.DataTextField = "Kohort"
+            ddlTahun.DataValueField = "Kohort"
+            ddlTahun.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -116,12 +131,30 @@ Public Class markah_create_PAA
         Finally
             objConn.Dispose()
         End Try
+
     End Sub
     Private Sub kpmkv_semester_list()
-        strSQL = "SELECT Semester FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Semester ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT Semester FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND Kohort = '" & ddlTahun.Text & "'
+                    AND CONVERT(VARCHAR(10),GETDATE() ,105)  BETWEEN TarikhMula AND TarikhAkhir"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            ddlSemester.Items.Add(strRet)
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlSemester.DataSource = ds
+            ddlSemester.DataTextField = "Semester"
+            ddlSemester.DataValueField = "Semester"
+            ddlSemester.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -1670,15 +1703,6 @@ Public Class markah_create_PAA
 
     End Sub
 
-    Private Sub ddlSemester_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSemester.SelectedIndexChanged
-        If ddlSemester.SelectedValue = "4" Then
-            btnGred.Visible = False
-
-        Else
-            btnGred.Visible = True
-        End If
-    End Sub
-
     ''pengesahan markah
     Protected Sub btnSah_Click(sender As Object, e As EventArgs) Handles btnSah.Click
         lblMsg.Text = ""
@@ -2769,6 +2793,23 @@ Public Class markah_create_PAA
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub ddlTahun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTahun.SelectedIndexChanged
+        kpmkv_semester_list()
+        kpmkv_kodkursus_list()
+        kpmkv_kelas_list()
+    End Sub
+
+    Private Sub ddlSemester_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSemester.SelectedIndexChanged
+        If ddlSemester.SelectedValue = "4" Then
+            btnGred.Visible = False
+
+        Else
+            btnGred.Visible = True
+        End If
+        kpmkv_kodkursus_list()
+        kpmkv_kelas_list()
     End Sub
 
 End Class

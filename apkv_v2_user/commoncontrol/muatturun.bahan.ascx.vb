@@ -42,29 +42,49 @@ Public Class muatturun_bahan
     End Sub
 
     Private Sub kpmkv_kategori_list()
-        strSQL = "SELECT ID,Parameter FROM tbl_Settings WHERE type='KATEGORIMUATNAIKBAHAN'  ORDER BY idx ASC"
-        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
-        Dim objConn As SqlConnection = New SqlConnection(strConn)
-        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
 
-        Try
-            Dim ds As DataSet = New DataSet
-            sqlDA.Fill(ds, "AnyTable")
+        strSQL = "SELECT UserID FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "' AND Pwd = '" & Session("Password") & "'"
+        Dim strUserID As String = oCommon.getFieldValue(strSQL)
 
-            ddlKategory.DataSource = ds
-            ddlKategory.DataTextField = "Parameter"
-            ddlKategory.DataValueField = "ID"
-            ddlKategory.DataBind()
+        strSQL = "SELECT UserType FROM kpmkv_users WHERE UserID = '" & strUserID & "'"
+        Dim strUserType As String = oCommon.getFieldValue(strSQL)
 
+        If strUserType = "JPN" Then
 
+            ddlKategory.Items.Add(New ListItem("JPN", 8))
             ddlKategory.Items.Add(New ListItem("-Pilih-", ""))
 
-        Catch ex As Exception
-            lblMsg.Text = "System Error:" & ex.Message
+        Else
 
-        Finally
-            objConn.Dispose()
-        End Try
+            strSQL = "SELECT ID,Parameter FROM tbl_Settings WHERE type='KATEGORIMUATNAIKBAHAN' ORDER BY idx ASC"
+            Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+            Dim objConn As SqlConnection = New SqlConnection(strConn)
+            Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
+            Try
+                Dim ds As DataSet = New DataSet
+                sqlDA.Fill(ds, "AnyTable")
+
+                ddlKategory.DataSource = ds
+                ddlKategory.DataTextField = "Parameter"
+                ddlKategory.DataValueField = "ID"
+                ddlKategory.DataBind()
+
+
+                ddlKategory.Items.Add(New ListItem("-Pilih-", ""))
+
+            Catch ex As Exception
+                lblMsg.Text = "System Error:" & ex.Message
+
+            Finally
+                objConn.Dispose()
+            End Try
+
+        End If
+
+
+
+
     End Sub
 
     Private Sub kpmkv_kohort_list()
@@ -127,7 +147,7 @@ Public Class muatturun_bahan
 
             If myDataSet.Tables(0).Rows.Count = 0 Then
                 divMsg.Attributes("class") = "error"
-                lblMsg.Text = "Rekod tidak dijumpai2!"
+                lblMsg.Text = "Rekod tidak dijumpai!"
             Else
                 divMsg.Attributes("class") = "info"
                 lblMsg.Text = "Jumlah Rekod#:" & myDataSet.Tables(0).Rows.Count
@@ -168,29 +188,57 @@ Public Class muatturun_bahan
 
     Private Function getSQL() As String
 
-        strSQL = " SELECT bahan.ID,bahan.Kohort ,bahan.Semester ,bahan.Sesi ,bahan.Komponen ,"
-        strSQL += " kursus.KodKursus ,bahan.Tajuk ,bahan.Catatan ,bahan.FilePath ,"
-        strSQL += " bahan.STarikh ,bahan.ETarikh "
+        strSQL = "SELECT UserID FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "' AND Pwd = '" & Session("Password") & "'"
+        Dim strUserID As String = oCommon.getFieldValue(strSQL)
 
-        strSQL += " FROM kpmkv_bahan AS bahan"
-        strSQL += " LEFT JOIN tbl_Settings AS setting ON bahan.kategori=setting.ID"
-        strSQL += " LEFT JOIN kpmkv_kursus AS kursus ON bahan.KursusID=kursus.KursusID"
-        strSQL += " WHERE (Convert(DateTime,STarikh ,103) <= '" & strdate & "') AND ( Convert(DateTime,ETarikh ,103) >= '" & strdate & "')"
-        strSQL += " AND isVerified='Y'"
-        strSQL += " AND bahan.Kohort='" & ddlKohort.SelectedValue & "'"
-        strSQL += " AND bahan.Semester = '" & ddlSemester.SelectedValue & "'"
+        strSQL = "SELECT UserType FROM kpmkv_users WHERE UserID = '" & strUserID & "'"
+        Dim strUserType As String = oCommon.getFieldValue(strSQL)
 
-        If Not ddlKategory.SelectedValue = "" Then
-            strSQL += " AND bahan.kategori='" & ddlKategory.SelectedValue & "'"
+        If strUserType = "JPN" Then
+
+            strSQL = " SELECT bahan.ID,bahan.Kohort ,bahan.Semester ,bahan.Sesi ,bahan.Komponen ,"
+            strSQL += " kursus.KodKursus ,bahan.Tajuk ,bahan.Catatan ,bahan.FilePath ,"
+            strSQL += " bahan.STarikh ,bahan.ETarikh "
+
+            strSQL += " FROM kpmkv_bahan AS bahan"
+            strSQL += " LEFT JOIN tbl_Settings AS setting ON bahan.kategori=setting.ID"
+            strSQL += " LEFT JOIN kpmkv_kursus AS kursus ON bahan.KursusID=kursus.KursusID"
+            strSQL += " WHERE (Convert(DateTime,STarikh ,103) <= '" & strdate & "') AND ( Convert(DateTime,ETarikh ,103) >= '" & strdate & "')"
+            strSQL += " AND isVerified='Y'"
+            strSQL += " AND bahan.Kohort='" & ddlKohort.SelectedValue & "'"
+            strSQL += " AND bahan.Semester = '" & ddlSemester.SelectedValue & "'"
+
+            If Not ddlKategory.SelectedValue = "" Then
+                strSQL += " AND bahan.kategori='" & ddlKategory.SelectedValue & "'"
+            End If
+
+        Else
+
+            strSQL = " SELECT bahan.ID,bahan.Kohort ,bahan.Semester ,bahan.Sesi ,bahan.Komponen ,"
+            strSQL += " kursus.KodKursus ,bahan.Tajuk ,bahan.Catatan ,bahan.FilePath ,"
+            strSQL += " bahan.STarikh ,bahan.ETarikh "
+
+            strSQL += " FROM kpmkv_bahan AS bahan"
+            strSQL += " LEFT JOIN tbl_Settings AS setting ON bahan.kategori=setting.ID"
+            strSQL += " LEFT JOIN kpmkv_kursus AS kursus ON bahan.KursusID=kursus.KursusID"
+            strSQL += " WHERE (Convert(DateTime,STarikh ,103) <= '" & strdate & "') AND ( Convert(DateTime,ETarikh ,103) >= '" & strdate & "')"
+            strSQL += " AND isVerified='Y'"
+            strSQL += " AND bahan.Kohort='" & ddlKohort.SelectedValue & "'"
+            strSQL += " AND bahan.Semester = '" & ddlSemester.SelectedValue & "'"
+
+            If Not ddlKategory.SelectedValue = "" Then
+                strSQL += " AND bahan.kategori='" & ddlKategory.SelectedValue & "'"
+            End If
+
+            strSQL += " AND bahan.KursusID  IN (SELECT kpmkv_kursus.KursusID "
+            strSQL += " FROM kpmkv_kursus_kolej "
+            strSQL += " LEFT OUTER Join kpmkv_kursus On kpmkv_kursus_kolej.KursusID = kpmkv_kursus.KursusID "
+            strSQL += " WHERE kpmkv_kursus_kolej.KolejRecordID ='" & lblKolejID.Text & "'  "
+            strSQL += " AND kpmkv_kursus.Tahun ='" & ddlKohort.SelectedValue & "' )"
+
+            strSQL += " ORDER BY STarikh ASC"
+
         End If
-
-        strSQL += " AND bahan.KursusID  IN (SELECT kpmkv_kursus.KursusID "
-        strSQL += " FROM kpmkv_kursus_kolej "
-        strSQL += " LEFT OUTER Join kpmkv_kursus On kpmkv_kursus_kolej.KursusID = kpmkv_kursus.KursusID "
-        strSQL += " WHERE kpmkv_kursus_kolej.KolejRecordID ='" & lblKolejID.Text & "'  "
-        strSQL += " AND kpmkv_kursus.Tahun ='" & ddlKohort.SelectedValue & "' )"
-
-        strSQL += " ORDER BY STarikh ASC"
 
         getSQL = strSQL
 

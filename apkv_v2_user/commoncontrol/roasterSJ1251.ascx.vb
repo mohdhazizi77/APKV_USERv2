@@ -438,7 +438,7 @@ Public Class roasterSJ1251
                     Dim strNama As String = ""
                     Dim strMykad As String = ""
                     Dim strAngkaGiliran As String = ""
-                    Dim strPointer As String = ""
+                    Dim strPointer As Integer
                     Dim strStudentID As String = ""
                     Dim strGredSJ As String = ""
                     ''--Tokenid,ClassCode,Q001Remarks

@@ -6,19 +6,19 @@
      <tr>
           <td style="width: 20%;">Kohort:</td>
         <td>
-            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="True" Width="350px"></asp:DropDownList>
         </td>
     </tr>
      <tr>
           <td style="width: 20%;">Semester:</td>
         <td>
-            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="True" Width="350px"></asp:DropDownList>
         </td>
     </tr>
      <tr>
           <td style="width: 20%;">Sesi Pengambilan:</td>
         <td><asp:CheckBoxList ID="chkSesi" runat="server"  AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-             <asp:ListItem>1</asp:ListItem>
+             <asp:ListItem Selected="True">1</asp:ListItem>
              <asp:ListItem>2</asp:ListItem>
              </asp:CheckBoxList></td>
     </tr>

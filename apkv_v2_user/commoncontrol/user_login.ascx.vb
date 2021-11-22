@@ -41,6 +41,7 @@ Partial Public Class user_login
 
                 Session("UserGroupCodeUSERv2") = ar_user_login(0)
                 Session("LoginID") = txtLoginID.Text
+                Session("Password") = txtPwd.Text
                 Response.Cookies("kpmkv_loginid").Value = txtLoginID.Text
                 If txtPwd.Text = "KV@1234lp" Then
                     Response.Redirect("user.change.password.aspx")

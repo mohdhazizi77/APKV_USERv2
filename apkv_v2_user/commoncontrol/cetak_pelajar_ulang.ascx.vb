@@ -431,6 +431,8 @@ Public Class cetak_pelajar_ulang1
 
                 If cb.Checked = True Then
 
+                    myDocument.NewPage()
+
                     Dim strkey As String = datRespondent.DataKeys(i).Value.ToString
 
                     strSQL = " SELECT kpmkv_pelajar.Nama, kpmkv_pelajar.MYKAD, kpmkv_pelajar.AngkaGiliran,"
