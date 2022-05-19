@@ -12,35 +12,36 @@
     <tr>
         <td style="width: 20%;">Kohort:</td>
         <td>
-            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
         </td>
     </tr>
     <tr>
         <td style="width: 20%;">Semester:</td>
         <td>
-            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
         </td>
     </tr>
     <tr>
         <td style="width: 20%;">Sesi Pengambilan:</td>
         <td>
-            <asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-                <asp:ListItem Enabled="False" Selected="True">1</asp:ListItem>
-                <asp:ListItem Enabled="False">2</asp:ListItem>
+            <asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="250px" RepeatDirection="Horizontal">
+                <asp:ListItem Selected="True">1</asp:ListItem>
+                <asp:ListItem>2</asp:ListItem>
             </asp:CheckBoxList></td>
     </tr>
     <tr>
         <td style="width: 20%;">Kod Program:</td>
         <td>
-            <asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
         </td>
     </tr>
     <tr>
         <td style="width: 20%;">Kelas:</td>
         <td>
-            <asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList></td>
+            <asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="250px"></asp:DropDownList></td>
     </tr>
     <tr>
+        <td></td>
         <td colspan="2">
             <asp:Button ID="btnCari" runat="server" Text="Cari" CssClass="fbbutton" />&nbsp;</td>
     </tr>
@@ -140,7 +141,7 @@
                         <HeaderStyle HorizontalAlign="Left" />
                         <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Science2">
+                    <asp:TemplateField HeaderText="Science2" Visible="false">
                         <ItemTemplate>
                             <asp:TextBox ID="A_Science2" runat="server" Width="30px" MaxLength="4" Text='<%# Bind("A_Science2")%>'></asp:TextBox>
                         </ItemTemplate>

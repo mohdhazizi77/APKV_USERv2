@@ -9,39 +9,43 @@
     <tr class="fbform_header">
         <td colspan="2">Paparan Keputusan Akademik</td>
     </tr>
-     <tr>
-          <td style="width: 20%;">Kohort:</td>
+    <tr>
+        <td style="width: 20%;">Kohort:</td>
         <td>
-            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="True" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="True" Width="250px"></asp:DropDownList>
         </td>
-    </tr>
-     <tr>
-          <td style="width: 20%;">Semester:</td>
-        <td>
-            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="True" Width="350px"></asp:DropDownList>
-        </td>
-    </tr>
-     <tr>
-          <td style="width: 20%;">Sesi Pengambilan:</td>
-        <td><asp:CheckBoxList ID="chkSesi" runat="server"  AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-             <asp:ListItem Selected="True">1</asp:ListItem>
-             <asp:ListItem>2</asp:ListItem>
-             </asp:CheckBoxList></td>
-    </tr>
-   <tr>
-          <td style="width: 20%;">Kod Program:</td>
-        <td>
-            <asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
-        </td>
-    </tr>
-     <tr>        
-        <td style="width: 20%;">Kelas:</td>
-          <td><asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList></td>
     </tr>
     <tr>
-        <td colspan="2"><asp:Button ID="btnCari" runat="server" Text="Cari" CssClass="fbbutton" />&nbsp;</td>
-           </tr>
-   </table>
+        <td style="width: 20%;">Semester:</td>
+        <td>
+            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="True" Width="250px"></asp:DropDownList>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Sesi Pengambilan:</td>
+        <td>
+            <asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
+                <asp:ListItem Selected="True">1</asp:ListItem>
+                <asp:ListItem>2</asp:ListItem>
+            </asp:CheckBoxList></td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Kod Program:</td>
+        <td>
+            <asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Kelas:</td>
+        <td>
+            <asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="250px"></asp:DropDownList></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="2">
+            <asp:Button ID="btnCari" runat="server" Text="Cari" CssClass="fbbutton" />&nbsp;</td>
+    </tr>
+</table>
 <br />
 <table class="fbform">
     <tr class="fbform_header">
@@ -88,52 +92,52 @@
                         <ItemTemplate>
                             <asp:Label ID="GredBM" runat="server" Width="30px" Text='<%# Bind("GredBM")%>'></asp:Label>
                         </ItemTemplate>
-                          <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Gred BI">
                         <ItemTemplate>
-                            <asp:Label ID="GredBI" runat="server" Width="30px"  Text='<%# Bind("GredBI")%>'></asp:Label>
+                            <asp:Label ID="GredBI" runat="server" Width="30px" Text='<%# Bind("GredBI")%>'></asp:Label>
                         </ItemTemplate>
-                          <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Gred Math">
+                    <asp:TemplateField HeaderText="Gred Math">
                         <ItemTemplate>
-                            <asp:Label ID="GredMT" runat="server"  Width="30px" Text='<%# Bind("GredMT")%>'></asp:Label>
+                            <asp:Label ID="GredMT" runat="server" Width="30px" Text='<%# Bind("GredMT")%>'></asp:Label>
                         </ItemTemplate>
-                           <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Gred Science">
+                    <asp:TemplateField HeaderText="Gred Science">
                         <ItemTemplate>
                             <asp:Label ID="GredSC" runat="server" Width="30px" Text='<%# Bind("GredSC")%>'></asp:Label>
                         </ItemTemplate>
-                           <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Gred Sejarah">
                         <ItemTemplate>
                             <asp:Label ID="GredSJ" runat="server" Width="30px" Text='<%# Bind("GredSJ")%>'></asp:Label>
                         </ItemTemplate>
-                          <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Gred P.Islam">
                         <ItemTemplate>
                             <asp:Label ID="GredPI" runat="server" Width="30px" Text='<%# Bind("GredPI")%>'></asp:Label>
                         </ItemTemplate>
-                          <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Gred P.Moral">
+                    <asp:TemplateField HeaderText="Gred P.Moral">
                         <ItemTemplate>
-                            <asp:Label ID="GredPM" runat="server"  Width="30px" Text='<%# Bind("GredPM")%>'></asp:Label>
+                            <asp:Label ID="GredPM" runat="server" Width="30px" Text='<%# Bind("GredPM")%>'></asp:Label>
                         </ItemTemplate>
-                           <HeaderStyle HorizontalAlign="Left"/>
-                          <ItemStyle  HorizontalAlign="Left" />
+                        <HeaderStyle HorizontalAlign="Left" />
+                        <ItemStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                    
+
 
                 </Columns>
                 <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" Font-Underline="true" />
@@ -146,14 +150,13 @@
             </asp:GridView>
         </td>
     </tr>
-     <tr>
-        <td>
-            &nbsp;</td>
+    <tr>
+        <td>&nbsp;</td>
     </tr>
 </table>
 <br />
 <div class="info" id="divMsg" runat="server">
-  <asp:Label ID="lblKolejID" runat="server" Text="" Visible="false"></asp:Label>
-  <asp:Label ID="lblMsg" runat="server" Text="System message..."></asp:Label>
+    <asp:Label ID="lblKolejID" runat="server" Text="" Visible="false"></asp:Label>
+    <asp:Label ID="lblMsg" runat="server" Text="System message..."></asp:Label>
 </div>
 

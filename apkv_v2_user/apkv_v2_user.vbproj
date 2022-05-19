@@ -63,6 +63,8 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\nurul\kolej_kpmkv_OGOS\kolej_kpmkv\bin\office.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RKLib.ExportData">
       <HintPath>..\..\nurul\kolej_kpmkv_OGOS\kolej_kpmkv\bin\RKLib.ExportData.dll</HintPath>
     </Reference>
@@ -85,6 +87,7 @@
     <Reference Include="WebChart">
       <HintPath>..\..\nurul\kolej_kpmkv_OGOS\kolej_kpmkv\bin\WebChart.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="borang\" />
@@ -263,6 +266,15 @@
     <Content Include="commoncontrol\pentaksiran_roster.ascx" />
     <Content Include="commoncontrol\pentaksiran_sijil_vokasional.ascx" />
     <Content Include="commoncontrol\pentaksiran_vokasional.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_bmi.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_daftar.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_default.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_main.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_bm3.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_bm4.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_list.ascx" />
+    <Content Include="commoncontrol\pentaksir_bmsetara_reset.ascx" />
     <Content Include="commoncontrol\permohonan.berpindah.pensyarah.create.ascx" />
     <Content Include="commoncontrol\permohonan.berpindah.pensyarah.update.ascx" />
     <Content Include="commoncontrol\permohonan.pindah.create.ascx" />
@@ -450,6 +462,15 @@
     <Content Include="pensyarah.search.aspx" />
     <Content Include="pensyarah.update.aspx" />
     <Content Include="pensyarah.view.aspx" />
+    <Content Include="pentaksir_bmsetara_bmi.aspx" />
+    <Content Include="pentaksir_bmsetara_daftar.aspx" />
+    <Content Include="pentaksir_bmsetara_default.aspx" />
+    <Content Include="pentaksir_bmsetara_main.aspx" />
+    <Content Include="pentaksir_bmsetara_penyerahan_markah.aspx" />
+    <Content Include="pentaksir_bmsetara_penyerahan_markah_bm3.aspx" />
+    <Content Include="pentaksir_bmsetara_penyerahan_markah_bm4.aspx" />
+    <Content Include="pentaksir_bmsetara_penyerahan_markah_list.aspx" />
+    <Content Include="pentaksir_bmsetara_reset.aspx" />
     <Content Include="permohonan.berpindah.pensyarah.aspx" />
     <Content Include="permohonan.berpindah.pensyarah.update.aspx" />
     <Content Include="permohonan.pindah.create.aspx" />
@@ -870,6 +891,7 @@
       <DependentUpon>contact_us.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="commoncontrol\DialogResult.vb" />
     <Compile Include="commoncontrol\error_page.ascx.designer.vb">
       <DependentUpon>error_page.ascx</DependentUpon>
     </Compile>
@@ -1470,6 +1492,69 @@
     </Compile>
     <Compile Include="commoncontrol\pentaksiran_vokasional.ascx.vb">
       <DependentUpon>pentaksiran_vokasional.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_bmi.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_bmi.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_bmi.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_bmi.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_daftar.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_daftar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_daftar.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_daftar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_default.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_default.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_default.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_default.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_main.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_main.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_main.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_main.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_bm3.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm3.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_bm3.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm3.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_bm4.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm4.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_bm4.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm4.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_list.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_list.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_penyerahan_markah_list.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_reset.ascx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_reset.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pentaksir_bmsetara_reset.ascx.vb">
+      <DependentUpon>pentaksir_bmsetara_reset.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="commoncontrol\permohonan.berpindah.pensyarah.create.ascx.designer.vb">
@@ -2194,6 +2279,76 @@
       <DependentUpon>pensyarah.view.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="pentaksir.Master.designer.vb">
+      <DependentUpon>pentaksir.Master</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir.Master.vb">
+      <DependentUpon>pentaksir.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_bmi.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_bmi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_bmi.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_bmi.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_daftar.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_daftar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_daftar.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_daftar.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_default.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_default.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_default.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_main.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_main.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_main.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_main.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah_bm3.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah_bm3.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah_bm4.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah_bm4.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_bm4.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah_list.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_penyerahan_markah_list.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_penyerahan_markah_list.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_reset.aspx.designer.vb">
+      <DependentUpon>pentaksir_bmsetara_reset.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pentaksir_bmsetara_reset.aspx.vb">
+      <DependentUpon>pentaksir_bmsetara_reset.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="permohonan.berpindah.pensyarah.aspx.designer.vb">
       <DependentUpon>permohonan.berpindah.pensyarah.aspx</DependentUpon>
     </Compile>
@@ -2345,6 +2500,7 @@
     <Content Include="sample_data\PENSYARAHIMPORT.xlsx" />
     <Content Include="popup.Master" />
     <None Include="packages.config" />
+    <Content Include="pentaksir.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -13,7 +13,7 @@
     <tr>
         <td style="width: 20%;">Kohort:</td>
         <td>
-            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
         </td>
     </tr>
     <tr>
@@ -22,12 +22,12 @@
             <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
         </td>
     </tr>
-    <tr>
+   <tr>
         <td style="width: 20%;">Sesi Pengambilan:</td>
         <td>
-            <asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-                <asp:ListItem Enabled="False">1</asp:ListItem>
-                <asp:ListItem Enabled="False">2</asp:ListItem>
+            <asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="250px" RepeatDirection="Horizontal">
+                <asp:ListItem Selected="True">1</asp:ListItem>
+                <asp:ListItem>2</asp:ListItem>
             </asp:CheckBoxList></td>
     </tr>
     <tr>
@@ -39,7 +39,7 @@
     <tr>
         <td style="width: 20%;">Kelas:</td>
         <td>
-            <asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList></td>
+            <asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList></td>
     </tr>
     <tr>
         <td style="width: 20%;">Matapelajaran:</td>
@@ -47,6 +47,7 @@
             <asp:DropDownList ID="ddlMatapelajaran" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList></td>
     </tr>
     <tr>
+        <td></td>
         <td colspan="2">
             <asp:Button ID="btnCari" runat="server" Text="Cari" CssClass="fbbutton" />&nbsp;</td>
     </tr>
@@ -122,6 +123,13 @@
                             <asp:TextBox ID="MarkahPA" runat="server" Width="30px" MaxLength="3" Text='<%# Bind("MarkahPA")%>'></asp:TextBox>
                         </ItemTemplate>
                     </asp:TemplateField>
+
+                     <asp:TemplateField HeaderText="PA2">
+                        <ItemTemplate>
+                            <asp:TextBox ID="MarkahPA2" runat="server" Width="30px" MaxLength="3" Text='<%# Bind("MarkahPA2")%>'></asp:TextBox>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
                     <asp:TemplateField HeaderText="Gred Ulang">
                         <ItemTemplate>
                             <asp:Label ID="Gred" runat="server" Width="30px" MaxLength="3" Text='<%# Bind("Gred")%>'></asp:Label>

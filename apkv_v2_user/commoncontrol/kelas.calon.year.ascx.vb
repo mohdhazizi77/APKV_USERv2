@@ -12,6 +12,9 @@ Public Class kelas_calon_year
 
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
     Dim objConn As SqlConnection = New SqlConnection(strConn)
+
+    Dim SubMenuText As String = "Penetapan Kelas Calon"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not IsPostBack Then
@@ -24,64 +27,26 @@ Public Class kelas_calon_year
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
                 '------exist takwim
-                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Penetapan Kelas Calon' AND Aktif='1'"
+                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText = '" & SubMenuText & "' AND Aktif='1' AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
                 If oCommon.isExist(strSQL) = True Then
 
-                    'count data takwim
-                    'Get the data from database into datatable
-                    Dim cmd As New SqlCommand("SELECT TakwimID FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Penetapan Kelas Calon' AND Aktif='1'")
-                    Dim dt As DataTable = GetData(cmd)
+                    chkSesi.Enabled = True
 
-                    For i As Integer = 0 To dt.Rows.Count - 1
-                        IntTakwim = dt.Rows(i)("TakwimID")
+                    kpmkv_tahun_list()
+                    kpmkv_semester_list()
+                    kpmkv_kodkursus_list()
+                    kpmkv_kelas_list()
 
-                        strSQL = "SELECT TarikhMula,TarikhAkhir FROM kpmkv_takwim WHERE TakwimID='" & IntTakwim & "'"
-                        strRet = oCommon.getFieldValueEx(strSQL)
+                    btnCreate.Enabled = True
 
-                        Dim ar_user_login As Array
-                        ar_user_login = strRet.Split("|")
-                        Dim strMula As String = ar_user_login(0)
-                        Dim strAkhir As String = ar_user_login(1)
-
-                        Dim strdateNow As Date = Date.Now
-                        Dim startDate = DateTime.ParseExact(strMula, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-                        Dim endDate = DateTime.ParseExact(strAkhir, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-
-                        Dim ts As New TimeSpan
-                        ts = endDate.Subtract(strdateNow)
-                        Dim dayDiff = ts.Days
-
-                        If strMula IsNot Nothing Then
-                            If strAkhir IsNot Nothing And dayDiff >= 0 Then
-
-                                kpmkv_tahun_list()
-                                kpmkv_semester_list()
-
-                                'checkinbox
-                                strSQL = "SELECT Sesi FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-                                strRet = oCommon.getFieldValue(strSQL)
-
-                                If strRet = 1 Then
-                                    chkSesi.Items(0).Enabled = True
-                                    ' chkSesi.Items(1).Enabled = False
-                                Else
-                                    'chkSesi.Items(0).Enabled = False
-                                    chkSesi.Items(1).Enabled = True
-                                End If
-
-                                btnCreate.Enabled = True
-                            End If
-                        Else
-                            btnCreate.Enabled = False
-                            lblMsg.Text = "Penetapan Kelas Calon telah ditutup!"
-                        End If
-                    Next
                 Else
+
                     btnCreate.Enabled = False
                     lblMsg.Text = "Penetapan Kelas Calon telah ditutup!"
+
                 End If
-                RepoveDuplicate(ddlTahun)
-                RepoveDuplicate(ddlSemester)
+
             End If
 
         Catch ex As Exception
@@ -106,12 +71,40 @@ Public Class kelas_calon_year
 
     End Sub
     Private Sub kpmkv_tahun_list()
-        strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NULL
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))
+
+                    UNION
+
+                    SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NOT NULL
+                    AND kpmkv_takwim_kv.KolejRecordID = '" & lblKolejID.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            If Not ddlTahun.Text = strRet Then
-                ddlTahun.Items.Add(strRet)
-            End If
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlTahun.DataSource = ds
+            ddlTahun.DataTextField = "Kohort"
+            ddlTahun.DataValueField = "Kohort"
+            ddlTahun.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -122,12 +115,27 @@ Public Class kelas_calon_year
 
     End Sub
     Private Sub kpmkv_semester_list()
-        strSQL = "SELECT Semester FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Semester ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT DISTINCT Semester FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND Kohort = '" & ddlTahun.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            If Not ddlSemester.Text = strRet Then
-                ddlSemester.Items.Add(strRet)
-            End If
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlSemester.DataSource = ds
+            ddlSemester.DataTextField = "Semester"
+            ddlSemester.DataValueField = "Semester"
+            ddlSemester.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -135,8 +143,9 @@ Public Class kelas_calon_year
         Finally
             objConn.Dispose()
         End Try
+
     End Sub
-     Private Shared Function RepoveDuplicate(ByVal ddl As DropDownList) As DropDownList
+    Private Shared Function RepoveDuplicate(ByVal ddl As DropDownList) As DropDownList
         For Row As Int16 = 0 To ddl.Items.Count - 2
             For RowAgain As Int16 = ddl.Items.Count - 1 To Row + 1 Step -1
                 If ddl.Items(Row).ToString = ddl.Items(RowAgain).ToString Then
@@ -149,9 +158,10 @@ Public Class kelas_calon_year
     Private Sub kpmkv_kodkursus_list()
 
         strSQL = "SELECT kpmkv_kursus.KodKursus, kpmkv_kursus.KursusID"
-        strSQL += " FROM kpmkv_kelas_kursus LEFT OUTER JOIN kpmkv_kursus ON kpmkv_kelas_kursus.KursusID = kpmkv_kursus.KursusID LEFT OUTER JOIN"
+        strSQL += " FROM kpmkv_kelas_kursus INNER JOIN kpmkv_kursus ON kpmkv_kelas_kursus.KursusID = kpmkv_kursus.KursusID INNER JOIN"
         strSQL += " kpmkv_kelas ON kpmkv_kelas_kursus.KelasID = kpmkv_kelas.KelasID"
-        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kursus.Tahun='" & ddlTahun.Text & "' AND kpmkv_kursus.Sesi='" & chkSesi.SelectedValue & "' GROUP BY kpmkv_kursus.KodKursus, kpmkv_kursus.KursusID"
+        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kursus.Tahun='" & ddlTahun.Text & "'"
+        strSQL += " AND kpmkv_kursus.Sesi='" & chkSesi.SelectedValue & "' GROUP BY kpmkv_kursus.KodKursus,kpmkv_kursus.KursusID"
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
         Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -166,7 +176,7 @@ Public Class kelas_calon_year
             ddlKodKursus.DataBind()
 
             '--ALL
-            ddlKodKursus.Items.Add(New ListItem("-Pilih-", "0"))
+            'ddlKodKursus.Items.Add(New ListItem("-Pilih-", "0"))
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -178,10 +188,10 @@ Public Class kelas_calon_year
     End Sub
 
     Private Sub kpmkv_kelas_list()
-        strSQL = " SELECT kpmkv_kelas.NamaKelas, kpmkv_kelas.KelasID FROM kpmkv_kelas"
-        strSQL += " INNER JOIN kpmkv_kelas_kursus ON kpmkv_kelas.KelasID=kpmkv_kelas_kursus.KelasID"
-        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "'  AND kpmkv_kelas.Tahun= '" & ddlTahun.SelectedValue & "' AND kpmkv_kelas.IsDeleted='N' AND kpmkv_kelas_kursus.KursusID='" & ddlKodKursus.SelectedValue & "'"
-        'Response.Write(strSQL)
+        strSQL = " SELECT kpmkv_kelas.NamaKelas, kpmkv_kelas.KelasID"
+        strSQL += " FROM  kpmkv_kelas_kursus LEFT OUTER JOIN kpmkv_kelas ON kpmkv_kelas_kursus.KelasID = kpmkv_kelas.KelasID LEFT OUTER JOIN"
+        strSQL += " kpmkv_kursus ON kpmkv_kelas_kursus.KursusID = kpmkv_kursus.KursusID"
+        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kelas_kursus.KursusID= '" & ddlKodKursus.SelectedValue & "' ORDER BY KelasID"
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
         Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -196,7 +206,7 @@ Public Class kelas_calon_year
             ddlKelas.DataBind()
 
             '--ALL
-            ddlKelas.Items.Add(New ListItem("-Pilih-", "0"))
+            'ddlKelas.Items.Add(New ListItem("-Pilih-", "0"))
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -204,6 +214,7 @@ Public Class kelas_calon_year
         Finally
             objConn.Dispose()
         End Try
+
     End Sub
     Protected Sub btnCreate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCreate.Click
         lblMsgTop.Text = ""
@@ -343,12 +354,11 @@ Public Class kelas_calon_year
     End Sub
     Protected Sub chkSesi_SelectedIndexChanged(sender As Object, e As EventArgs) Handles chkSesi.SelectedIndexChanged
         kpmkv_kodkursus_list()
-        ddlKodKursus.Text = "0"
+        kpmkv_kelas_list()
     End Sub
 
     Private Sub ddlKodKursus_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlKodKursus.SelectedIndexChanged
         kpmkv_kelas_list()
-        ddlKelas.Text = "0"
     End Sub
 
     Protected Sub CheckUncheckAll(sender As Object, e As System.EventArgs)
@@ -399,5 +409,16 @@ Public Class kelas_calon_year
         End Try
         strRet = BindData(datRespondent)
         tbl_menu_check()
+    End Sub
+
+    Private Sub ddlTahun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTahun.SelectedIndexChanged
+        kpmkv_semester_list()
+        kpmkv_kodkursus_list()
+        kpmkv_kelas_list()
+    End Sub
+
+    Private Sub ddlSemester_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSemester.SelectedIndexChanged
+        kpmkv_kodkursus_list()
+        kpmkv_kelas_list()
     End Sub
 End Class

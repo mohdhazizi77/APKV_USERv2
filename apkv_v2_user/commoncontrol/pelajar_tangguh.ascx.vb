@@ -12,6 +12,9 @@ Public Class pelajar_tangguh1
 
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
     Dim objConn As SqlConnection = New SqlConnection(strConn)
+
+    Dim SubMenuText As String = "Penilaian Akhir Akademik"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not IsPostBack Then
@@ -24,7 +27,31 @@ Public Class pelajar_tangguh1
 
                 lblMsg.Text = ""
 
+                ''------exist takwim
+                'strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText = '" & SubMenuText & "' AND Aktif='1' AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
+                'If oCommon.isExist(strSQL) = True Then
+
+                '    chkSesi.Enabled = True
+
+                '    kpmkv_tahun_list()
+                '    kpmkv_semester_list()
+                '    kpmkv_kodkursus_list()
+                '    kpmkv_kelas_list()
+
+                'Else
+
+                '    chkSesi.Enabled = False
+
+                '    btnGred.Enabled = False
+                '    btnUpdate.Enabled = False
+                '    lblMsg.Text = "Penilaian Akhir Akademik telah ditutup!"
+
+                'End If
+
             End If
+
+
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message

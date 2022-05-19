@@ -8,7 +8,7 @@
 
             Response.Redirect("default.aspx")
         Catch ex As Exception
-            lblMsg.Text = "Sessi tamat. Sila login semula."
+            lblMsg.Text = "Sesi tamat. Sila login semula."
         End Try
 
     End Sub

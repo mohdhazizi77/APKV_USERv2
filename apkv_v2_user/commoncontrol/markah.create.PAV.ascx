@@ -9,41 +9,45 @@
     <tr class="fbform_header">
         <td colspan="2">Pentaksiran Akhir Vokasional</td>
     </tr>
-     <tr>
-          <td style="width: 20%;">Kohort:</td>
+    <tr>
+        <td style="width: 20%;">Kohort:</td>
         <td>
-            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList>
+            <asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
         </td>
-    </tr>
-     <tr>
-          <td style="width: 20%;">Semester:</td>
-        <td>
-            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList>
-        </td>
-    </tr>
-     <tr>
-          <td style="width: 20%;">Sesi Pengambilan:</td>
-        <td><asp:CheckBoxList ID="chkSesi" runat="server"  AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-             <asp:ListItem Enabled="False">1</asp:ListItem>
-             <asp:ListItem Enabled="False">2</asp:ListItem>
-             </asp:CheckBoxList></td>
-    </tr>
-   <tr>
-          <td style="width: 20%;">Kod Program:</td>
-        <td>
-            <asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList>
-        </td>
-    </tr>
-     <tr>        
-        <td style="width: 20%;">Kelas:</td>
-          <td><asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList></td>
     </tr>
     <tr>
-        <td colspan="2"><asp:Button ID="btnCari" runat="server" Text="Cari" CssClass="fbbutton" />&nbsp;</td>
-           </tr>
-   </table> 
+        <td style="width: 20%;">Semester:</td>
+        <td>
+            <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Sesi Pengambilan:</td>
+        <td>
+            <asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="250px" RepeatDirection="Horizontal">
+                <asp:ListItem Selected="True">1</asp:ListItem>
+                <asp:ListItem>2</asp:ListItem>
+            </asp:CheckBoxList></td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Kod Program:</td>
+        <td>
+            <asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="250px"></asp:DropDownList>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Kelas:</td>
+        <td>
+            <asp:DropDownList ID="ddlKelas" runat="server" AutoPostBack="false" Width="250px"></asp:DropDownList></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="2">
+            <asp:Button ID="btnCari" runat="server" Text="Cari" CssClass="fbbutton" />&nbsp;</td>
+    </tr>
+</table>
 <div class="info" id="divMsgResult" runat="server">
-  <asp:Label ID="lblMsgResult" runat="server" Text="Mesej..."></asp:Label>
+    <asp:Label ID="lblMsgResult" runat="server" Text="Mesej..."></asp:Label>
 </div>
 <table class="fbform">
     <tr class="fbform_header">
@@ -95,10 +99,10 @@
                         </ItemTemplate>
                         <HeaderStyle HorizontalAlign="Left" />
                     </asp:TemplateField>
-                 
-                    
+
+
                 </Columns>
-                 <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" Font-Underline="true" />
+                <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" Font-Underline="true" />
                 <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" CssClass="cssPager" />
                 <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
                 <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" VerticalAlign="Middle"
@@ -108,29 +112,31 @@
             </asp:GridView>
         </td>
     </tr>
-     <tr>
+    <tr>
         <td>
             <asp:Button ID="btnUpdate" runat="server" Text="Kemaskini" CssClass="fbbutton" Visible="true" />&nbsp;
             <asp:Button ID="btnGred" runat="server" Text="Gred" CssClass="fbbutton" />
-        &nbsp;<asp:Button ID="btnExport" runat="server" Text="Eksport" CssClass="fbbutton" Visible="true" />
+            &nbsp;<asp:Button ID="btnExport" runat="server" Text="Eksport" CssClass="fbbutton" Visible="true" />
         </td>
     </tr>
 </table>
 <br />
 <table class="fbform">
     <tr class="fbform_header">
-        <td colspan="2">Pengesahan Kemasukan Markah (<span style ="color :red">Sila tekan Sahkan hanya selepas semua markah telah dikemaskini</span>)</td>
+        <td colspan="2">Pengesahan Kemasukan Markah (<span style="color: red">Sila tekan Sahkan hanya selepas semua markah telah dikemaskini</span>)</td>
     </tr>
-  <tr>
-        <td style ="width :30%">Pengesahan markah telah dikemaskini pada :</td>
-        <td><asp:Label ID ="lblTarikhKemaskini" runat ="server" ></asp:Label></td>
+    <tr>
+        <td style="width: 30%">Pengesahan markah telah dikemaskini pada :</td>
+        <td>
+            <asp:Label ID="lblTarikhKemaskini" runat="server"></asp:Label></td>
     </tr>
-  <tr>
-        <td colspan ="2"><asp:Button ID ="btnSah" runat ="server" Text="Sahkan" CssClass="fbbutton" /></td>
+    <tr>
+        <td colspan="2">
+            <asp:Button ID="btnSah" runat="server" Text="Sahkan" CssClass="fbbutton" /></td>
     </tr>
 </table>
 <br />
 <div class="info" id="divMsg" runat="server">
-<asp:Label ID="lblKolejID" runat="server" Text="" Visible="false"></asp:Label>
-<asp:Label ID="lblMsg" runat="server" Text="System message..."></asp:Label>
+    <asp:Label ID="lblKolejID" runat="server" Text="" Visible="false"></asp:Label>
+    <asp:Label ID="lblMsg" runat="server" Text="System message..."></asp:Label>
 </div>
