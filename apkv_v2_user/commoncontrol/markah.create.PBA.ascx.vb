@@ -34,68 +34,30 @@ Public Class markah_create_PBA
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
                 '------exist takwim
-                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Pentaksiran Berterusan Akademik' AND Aktif='1'"
+                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Pentaksiran Berterusan Akademik' AND Aktif='1' AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
                 If oCommon.isExist(strSQL) = True Then
 
-                    'count data takwim
-                    'Get the data from database into datatable
-                    Dim cmd As New SqlCommand("SELECT TakwimID FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Pentaksiran Berterusan Akademik' AND Aktif='1'")
-                    Dim dt As DataTable = GetData(cmd)
+                    chkSesi.Enabled = True
 
-                    For i As Integer = 0 To dt.Rows.Count - 1
-                        IntTakwim = dt.Rows(i)("TakwimID")
-
-                        strSQL = "SELECT TarikhMula,TarikhAkhir FROM kpmkv_takwim WHERE TakwimID='" & IntTakwim & "'"
-                        strRet = oCommon.getFieldValueEx(strSQL)
-
-                        Dim ar_user_login As Array
-                        ar_user_login = strRet.Split("|")
-                        Dim strMula As String = ar_user_login(0)
-                        Dim strAkhir As String = ar_user_login(1)
-
-                        Dim strdateNow As Date = Date.Now.Date
-                        Dim startDate = DateTime.ParseExact(strMula, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-                        Dim endDate = DateTime.ParseExact(strAkhir, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-
-                        Dim ts As New TimeSpan
-                        ts = startDate.Subtract(strdateNow)
-                        Dim dayDiffMula = ts.Days
-                        ts = endDate.Subtract(strdateNow)
-                        Dim dayDiffAkhir = ts.Days
-
-                        If strMula IsNot Nothing And dayDiffMula <= 0 Then
-                            If strAkhir IsNot Nothing And dayDiffAkhir >= 0 Then
-
-                                kpmkv_tahun_list()
-                                ' DDL_RemoveDuplicateItems(ddlTahun)
-                                'DDL_RemoveDuplicateItems(ddlSemester)
-
-                                'checkinbox
-                                strSQL = "SELECT Sesi FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-                                strRet = oCommon.getFieldValue(strSQL)
-
-                                If strRet = 1 Then
-                                    chkSesi.Items(0).Enabled = True
-                                    ' chkSesi.Items(1).Enabled = False
-                                Else
-                                    ' chkSesi.Items(0).Enabled = False
-                                    chkSesi.Items(1).Enabled = True
-                                End If
-                                btnExport.Enabled = True
-                                btnUpdate.Enabled = True
-                            End If
-                        End If
-                    Next
+                    kpmkv_tahun_list()
                     kpmkv_semester_list()
                     kpmkv_kodkursus_list()
                     kpmkv_kelas_list()
+
                 Else
+
+                    chkSesi.Enabled = False
+
                     btnExport.Enabled = False
                     btnUpdate.Enabled = False
                     lblMsg.Text = "Pentaksiran Berterusan Akademik telah ditutup!"
+
                 End If
+
                 RepoveDuplicate(ddlTahun)
                 RepoveDuplicate(ddlSemester)
+
             End If
 
         Catch ex As Exception
@@ -159,12 +121,26 @@ Public Class markah_create_PBA
 
     Private Sub kpmkv_tahun_list()
 
-        strSQL = "  SELECT Kohort FROM kpmkv_takwim 
-                    WHERE 
-                    SubMenuText = '" & SubMenuText & "' 
-                    AND Aktif = '1'
-                    AND Tahun = '" & Now.Year & "'
-                    AND CONVERT(VARCHAR(10),GETDATE() ,105)  BETWEEN TarikhMula AND TarikhAkhir"
+        strSQL = "  SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NULL
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))
+
+                    UNION
+
+                    SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NOT NULL
+                    AND kpmkv_takwim_kv.KolejRecordID = '" & lblKolejID.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
 
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
@@ -189,13 +165,13 @@ Public Class markah_create_PBA
     End Sub
     Private Sub kpmkv_semester_list()
 
-        strSQL = "  SELECT Semester FROM kpmkv_takwim 
+        strSQL = "  SELECT DISTINCT  Semester FROM kpmkv_takwim 
                     WHERE 
                     SubMenuText = '" & SubMenuText & "' 
                     AND Aktif = '1'
                     AND Tahun = '" & Now.Year & "'
                     AND Kohort = '" & ddlTahun.Text & "'
-                    AND CONVERT(VARCHAR(10),GETDATE() ,105)  BETWEEN TarikhMula AND TarikhAkhir"
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
 
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)

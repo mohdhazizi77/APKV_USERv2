@@ -965,7 +965,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'SOCIAL'"
+                                                AND (Jenis ='SOCIAL' OR Jenis IS NULL OR Jenis ='')"
                                     strNamaSC = oCommon.getFieldValue(strSQL)
 
                                     strSQL = "  SELECT KodMataPelajaran FROM kpmkv_matapelajaran
@@ -973,7 +973,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'SOCIAL'"
+                                                AND (Jenis ='SOCIAL' OR Jenis IS NULL OR Jenis ='')"
                                     strKodSC = oCommon.getFieldValue(strSQL)
 
                                 Else
@@ -982,7 +982,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'TEKNOLOGI'"
+                                                AND (Jenis = 'TEKNOLOGI' OR Jenis IS NULL OR Jenis ='')"
                                     strNamaSC = oCommon.getFieldValue(strSQL)
 
                                     strSQL = "  SELECT KodMataPelajaran FROM kpmkv_matapelajaran
@@ -990,7 +990,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'TEKNOLOGI'"
+                                                AND (Jenis = 'TEKNOLOGI' OR Jenis IS NULL OR Jenis ='')"
                                     strKodSC = oCommon.getFieldValue(strSQL)
                                 End If
                             Case "4"
@@ -1000,7 +1000,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'SOCIAL'"
+                                                AND (Jenis ='SOCIAL' OR Jenis IS NULL OR Jenis ='')"
                                     strNamaSC = oCommon.getFieldValue(strSQL)
 
                                     strSQL = "  SELECT KodMataPelajaran FROM kpmkv_matapelajaran
@@ -1008,7 +1008,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'SOCIAL'"
+                                                AND (Jenis ='SOCIAL' OR Jenis IS NULL OR Jenis ='')"
                                     strKodSC = oCommon.getFieldValue(strSQL)
 
                                 Else
@@ -1017,7 +1017,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'TEKNOLOGI'"
+                                                AND (Jenis = 'TEKNOLOGI' OR Jenis IS NULL OR Jenis ='')"
                                     strNamaSC = oCommon.getFieldValue(strSQL)
 
                                     strSQL = "  SELECT KodMataPelajaran FROM kpmkv_matapelajaran
@@ -1025,7 +1025,7 @@ Public Class pentaksiran_vokasional
                                                 Tahun = '" & ddlTahun.Text & "'
                                                 AND Semester = '" & ddlSemester.Text & "'
                                                 AND PelajarMarkahGred = 'GredSC'
-                                                AND Jenis = 'TEKNOLOGI'"
+                                                AND (Jenis = 'TEKNOLOGI' OR Jenis IS NULL OR Jenis ='')"
                                     strKodSC = oCommon.getFieldValue(strSQL)
                                 End If
                         End Select
