@@ -115,7 +115,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="BM3">
                         <ItemTemplate>
-                            <asp:TextBox ID="A_BahasaMelayu3" runat="server" Width="30px" MaxLength="4" Text='<%# Bind("A_BahasaMelayu3")%>'></asp:TextBox>
+                            <asp:TextBox ID="A_BahasaMelayu3" runat="server" Width="30px" MaxLength="4" Text='<%# Bind("A_BahasaMelayu3")%>' Visible='<%# If(Eval("Semester").ToString() = "4", "False", "True") %>'></asp:TextBox>
                         </ItemTemplate>
                         <HeaderStyle HorizontalAlign="Left" />
                         <ItemStyle HorizontalAlign="Left" />

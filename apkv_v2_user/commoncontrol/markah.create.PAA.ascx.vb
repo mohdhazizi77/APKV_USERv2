@@ -355,9 +355,10 @@ Public Class markah_create_PAA
                 Dim Matematik As String = strMatematik.Text
 
                 strSQL = "UPDATE kpmkv_pelajar_markah SET A_BahasaMelayu='" & BM & "', "
-                strSQL += " A_BahasaMelayu3='" & BM3 & "', A_BahasaInggeris='" & BI & "', A_Science1='" & SC1 & "',"
+                strSQL += " A_BahasaInggeris='" & BI & "', A_Science1='" & SC1 & "',"
                 If Not ddlSemester.SelectedValue = "4" Then
-                    strSQL += " A_Sejarah='" & SEJ & "',"
+                    strSQL += " A_BahasaMelayu3='" & BM3 & "',
+                                A_Sejarah='" & SEJ & "',"
                 End If
                 strSQL += " A_PendidikanIslam1='" & PI1 & "', A_PendidikanMoral='" & PM & "', A_Science2='" & SC2 & "',"
                 strSQL += " A_PendidikanIslam2='" & PI2 & "', A_Mathematics='" & Matematik & "'"
@@ -417,53 +418,54 @@ Public Class markah_create_PAA
                     Return False
                 End If
             End If
-            If ddlSemester.SelectedValue = "4" Then
+            'If ddlSemester.SelectedValue = "4" Then
 
-                '--strBahasaMelayu1
-                'If strBahasaMelayu1.Text.Length = 0 Then
-                '    Return False
-                'End If
-                'If oCommon.IsCurrency(strBahasaMelayu1.Text) = False Then
-                '    Return False
-                'End If
-                'If CInt(strBahasaMelayu1.Text) > 100 Then
-                '    Return False
-                'End If
-                'If CInt(strBahasaMelayu1.Text) < -1 Then
-                '    Return False
-                'End If
+            '    '--strBahasaMelayu1
+            '    'If strBahasaMelayu1.Text.Length = 0 Then
+            '    '    Return False
+            '    'End If
+            '    'If oCommon.IsCurrency(strBahasaMelayu1.Text) = False Thens
+            '    '    Return False
+            '    'End If
+            '    'If CInt(strBahasaMelayu1.Text) > 100 Then
+            '    '    Return False
+            '    'End If
+            '    'If CInt(strBahasaMelayu1.Text) < -1 Then
+            '    '    Return False
+            '    'End If
 
-                ''--strBahasaMelayu2
-                'If strBahasaMelayu2.Text.Length = 0 Then
-                '    Return False
-                'End If
-                'If oCommon.IsCurrency(strBahasaMelayu2.Text) = False Then
-                '    Return False
-                'End If
-                'If CInt(strBahasaMelayu2.Text) > 100 Then
-                '    Return False
-                'End If
-                'If CInt(strBahasaMelayu2.Text) < -1 Then
-                '    Return False
-                'End If
+            '    ''--strBahasaMelayu2
+            '    'If strBahasaMelayu2.Text.Length = 0 Then
+            '    '    Return False
+            '    'End If
+            '    'If oCommon.IsCurrency(strBahasaMelayu2.Text) = False Then
+            '    '    Return False
+            '    'End If
+            '    'If CInt(strBahasaMelayu2.Text) > 100 Then
+            '    '    Return False
+            '    'End If
+            '    'If CInt(strBahasaMelayu2.Text) < -1 Then
+            '    '    Return False
+            '    'End If
 
-                '--strBahasaMelayu3
-                'If strBahasaMelayu3.Text.Length = 0 Then
-                '    Return False
-                'End If
-                If Not strBahasaMelayu3.Text = "" Then
-                    If oCommon.IsCurrency(strBahasaMelayu3.Text) = False Then
-                        Return False
-                    End If
+            '    '--strBahasaMelayu3
+            '    'If strBahasaMelayu3.Text.Length = 0 Then
+            '    '    Return False
+            '    'End If
 
-                    If CInt(strBahasaMelayu3.Text) > 100 Then
-                        Return False
-                    End If
-                    If CInt(strBahasaMelayu3.Text) < -1 Then
-                        Return False
-                    End If
-                End If
-            End If
+            '    If Not strBahasaMelayu3.Text = "" Then
+            '        If oCommon.IsCurrency(strBahasaMelayu3.Text) = False Then
+            '            Return False
+            '        End If
+
+            '        If CInt(strBahasaMelayu3.Text) > 100 Then
+            '            Return False
+            '        End If
+            '        If CInt(strBahasaMelayu3.Text) < -1 Then
+            '            Return False
+            '        End If
+            '    End If
+            'End If
             '--strBahasaInggeris
 
             'If strBahasaInggeris.Text.Length = 0 Then
@@ -668,9 +670,9 @@ Public Class markah_create_PAA
                 'End If
 
                 '--strBahasaMelayu3
-                If strBahasaMelayu3.Text.Length = 0 Then
-                    Return False
-                End If
+                'If strBahasaMelayu3.Text.Length = 0 Then
+                '    Return False
+                'End If
                 If Not strBahasaMelayu3.Text = "" Then
                     If oCommon.IsCurrency(strBahasaMelayu3.Text) = False Then
                         Return False
@@ -1748,14 +1750,15 @@ Public Class markah_create_PAA
                 End If
 
                 Dim BM3 As String = strBahasaMelayu3.Text
-                If ddlSemester.SelectedValue = "4" Then
-                    If BM3 = "" Then
-                        divMsgResult.Attributes("class") = "error"
-                        lblMsgResult.Text = "Semua markah perlu diisi dan dikemaskini sebelum pengesahan markah dilakukan"
-                        Exit Sub
-                    End If
+                'If ddlSemester.SelectedValue = "4" Then
+                '    If BM3 = "" Then
 
-                End If
+                '        divMsgResult.Attributes("class") = "error"
+                '        lblMsgResult.Text = "Semua markah perlu diisi dan dikemaskini sebelum pengesahan markah dilakukan"
+                '        Exit Sub
+                '    End If
+
+                'End If
 
                 Dim BI As String = strBahasaInggeris.Text
                 If BI = "" Then
