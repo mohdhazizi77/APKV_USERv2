@@ -319,7 +319,9 @@ Public Class pelajar_list2
 
     Private Sub datRespondent_SelectedIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSelectEventArgs) Handles datRespondent.SelectedIndexChanging
         Dim strKeyID As String = datRespondent.DataKeys(e.NewSelectedIndex).Value.ToString
-        ' Response.Redirect("pelajar.view.aspx?PelajarID=" & strKeyID)
+
+        Response.Redirect("pelajar_list_kemaskini.aspx?id=" & strKeyID)
+
 
     End Sub
 

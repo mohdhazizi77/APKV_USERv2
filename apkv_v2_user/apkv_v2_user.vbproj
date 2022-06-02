@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>apkv_v2_user</RootNamespace>
     <AssemblyName>apkv_v2_user</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -145,8 +145,6 @@
     <Content Include="bin\apkv_v2_user.xml" />
     <Content Include="bin\BouncyCastle.Crypto.dll" />
     <Content Include="bin\itextsharp.dll" />
-    <Content Include="bin\RKLib.ExportData.dll" />
-    <Content Include="bin\WebChart.dll" />
     <Content Include="BMSETARADash.aspx" />
     <Content Include="bmsetara_baru.aspx" />
     <Content Include="bmsetara_markah_baru.aspx" />
@@ -234,6 +232,7 @@
     <Content Include="commoncontrol\pelajar_import.ascx" />
     <Content Include="commoncontrol\pelajar_kolej_history.ascx" />
     <Content Include="commoncontrol\pelajar_list.ascx" />
+    <Content Include="commoncontrol\pelajar_list_kemaskini.ascx" />
     <Content Include="commoncontrol\pelajar_markah_list.ascx" />
     <Content Include="commoncontrol\pelajar_search.ascx" />
     <Content Include="commoncontrol\pelajar_tangguh.ascx" />
@@ -454,6 +453,7 @@
     <Content Include="pelajar.update.aspx" />
     <Content Include="pelajar.view.aspx" />
     <Content Include="pelajar_list.aspx" />
+    <Content Include="pelajar_list_kemaskini.aspx" />
     <Content Include="pengesahan.pendaftaran.aspx" />
     <Content Include="pensyarah.create.aspx" />
     <Content Include="pensyarah.import.aspx" />
@@ -1268,6 +1268,13 @@
     </Compile>
     <Compile Include="commoncontrol\pelajar_list.ascx.vb">
       <DependentUpon>pelajar_list.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="commoncontrol\pelajar_list_kemaskini.ascx.designer.vb">
+      <DependentUpon>pelajar_list_kemaskini.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="commoncontrol\pelajar_list_kemaskini.ascx.vb">
+      <DependentUpon>pelajar_list_kemaskini.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="commoncontrol\pelajar_markah_list.ascx.designer.vb">
@@ -2222,6 +2229,13 @@
     <Compile Include="pelajar_list.aspx.vb">
       <DependentUpon>pelajar_list.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pelajar_list_kemaskini.aspx.designer.vb">
+      <DependentUpon>pelajar_list_kemaskini.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pelajar_list_kemaskini.aspx.vb">
+      <DependentUpon>pelajar_list_kemaskini.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="pengesahan.pendaftaran.aspx.designer.vb">
       <DependentUpon>pengesahan.pendaftaran.aspx</DependentUpon>

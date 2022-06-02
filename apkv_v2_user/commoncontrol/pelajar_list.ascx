@@ -1,56 +1,65 @@
-﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="pelajar_list.ascx.vb" Inherits="apkv_v2_user.pelajar_list2" %>
+﻿<%@ control language="vb" autoeventwireup="false" codebehind="pelajar_list.ascx.vb" inherits="apkv_v2_user.pelajar_list2" %>
 <table class="fbform">
     <tr class="fbform_header">
         <td colspan="2">Carian </td>
     </tr>
     <tr>
-           <td style="width: 20%;">Kohort:</td>
-             <td><asp:DropDownList ID="ddlTahun" runat="server" AutoPostBack="true" Width="200px">
-            </asp:DropDownList>
+        <td style="width: 20%;">Kohort:</td>
+        <td>
+            <asp:dropdownlist id="ddlTahun" runat="server" autopostback="true" width="200px">
+            </asp:dropdownlist>
         </td>
     </tr>
-   
+
     <tr>
-           <td style="width: 20%;">Semester:</td>
-             <td> <asp:DropDownList ID="ddlSemester" runat="server" AutoPostBack="false" Width="200px">
-            </asp:DropDownList>
+        <td style="width: 20%;">Semester:</td>
+        <td>
+            <asp:dropdownlist id="ddlSemester" runat="server" autopostback="false" width="200px">
+            </asp:dropdownlist>
         </td>
     </tr>
     <tr>
-         <td style="width: 20%;">Sesi Pengambilan:</td>
-                 <td><asp:CheckBoxList ID="chkSesi" runat="server" AutoPostBack="true" Width="349px" RepeatDirection="Horizontal">
-             <asp:ListItem Enabled="False">1</asp:ListItem>
-             <asp:ListItem Enabled="False">2</asp:ListItem>
-             </asp:CheckBoxList></td>
-    </tr>
-     <tr>
-         <td style="width: 20%;">Kod Program:</td>
-        <td><asp:DropDownList ID="ddlKodKursus" runat="server" AutoPostBack="true" Width="350px"></asp:DropDownList></td> 
-    </tr>
-     <tr>
-         <td style="width: 20%;">Nama Kelas:</td>
-        <td><asp:DropDownList ID="ddlNamaKelas" runat="server" AutoPostBack="false" Width="350px"></asp:DropDownList></td> 
-    </tr>
-     <tr>
-           <td style="width: 20%;">Nama Calon:</td>
-         <td>
-            <asp:TextBox ID="txtNama" runat="server" Width="350px" MaxLength="200"></asp:TextBox>
+        <td style="width: 20%;">Sesi Pengambilan:</td>
+        <td>
+            <asp:checkboxlist id="chkSesi" runat="server" autopostback="true" width="349px" repeatdirection="Horizontal">
+                <asp:listitem enabled="False">1</asp:listitem>
+                <asp:listitem enabled="False">2</asp:listitem>
+            </asp:checkboxlist>
         </td>
     </tr>
-     <tr>
-           <td style="width: 20%;">Mykad:</td>
-         <td>
-            <asp:TextBox ID="txtMYKAD" runat="server" Width="350px" MaxLength="200"></asp:TextBox>
-        </td>
-    </tr>
-    
     <tr>
-         <td colspan="2">
-            <asp:Button ID="btnSearch" runat="server" Text="Cari " CssClass="fbbutton" /></td>
+        <td style="width: 20%;">Kod Program:</td>
+        <td>
+            <asp:dropdownlist id="ddlKodKursus" runat="server" autopostback="true" width="350px"></asp:dropdownlist>
+        </td>
     </tr>
- </table> 
+    <tr>
+        <td style="width: 20%;">Nama Kelas:</td>
+        <td>
+            <asp:dropdownlist id="ddlNamaKelas" runat="server" autopostback="false" width="350px"></asp:dropdownlist>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Nama Calon:</td>
+        <td>
+            <asp:textbox id="txtNama" runat="server" width="350px" maxlength="200"></asp:textbox>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%;">Mykad:</td>
+        <td>
+            <asp:textbox id="txtMYKAD" runat="server" width="350px" maxlength="200"></asp:textbox>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <asp:button id="btnSearch" runat="server" text="Cari " cssclass="fbbutton" />
+        </td>
+    </tr>
+</table>
 <div class="info" id="divMsgTop" runat="server">
-<asp:Label ID="lblMsgTop" runat="server" Text=""></asp:Label>
+    <asp:label id="lblMsgTop" runat="server" text=""></asp:label>
 </div>
 <table class="fbform">
     <tr class="fbform_header">
@@ -59,97 +68,103 @@
     </tr>
     <tr>
         <td>
-            <asp:GridView ID="datRespondent" runat="server" AutoGenerateColumns="False" AllowPaging="True"
-                CellPadding="4" ForeColor="#333333" GridLines="None" DataKeyNames="PelajarID"
-                Width="100%" PageSize="25" CssClass="gridview_footer" EnableModelValidation="True">
-                <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
-                <Columns>
-                    <asp:TemplateField HeaderText="#">
-                        <ItemTemplate>
+            <asp:gridview id="datRespondent" runat="server" autogeneratecolumns="False" allowpaging="True"
+                cellpadding="4" forecolor="#333333" gridlines="None" datakeynames="PelajarID"
+                width="100%" pagesize="25" cssclass="gridview_footer" enablemodelvalidation="True">
+                <rowstyle backcolor="#F7F6F3" forecolor="#333333" />
+                <columns>
+                    <asp:templatefield headertext="#">
+                        <itemtemplate>
                             <%# Container.DataItemIndex + 1 %>
-                        </ItemTemplate>
-                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
-                        <ItemStyle VerticalAlign="Middle" />
-                    </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Kohort">
-                        <ItemTemplate>
-                            <asp:Label ID="Tahun" runat="server" Text='<%# Bind("Tahun")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Semester">
-                        <ItemTemplate>
-                            <asp:Label ID="Semester" runat="server" Text='<%# Bind("Semester")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Sesi">
-                        <ItemTemplate>
-                            <asp:Label ID="Sesi" runat="server" Text='<%# Bind("Sesi") %>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Nama">
-                        <ItemTemplate>
-                            <asp:Label ID="Nama" runat="server" Text='<%# Bind("Nama") %>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Mykad">
-                        <ItemTemplate>
-                            <asp:Label ID="Mykad" runat="server" Text='<%# Bind("Mykad")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Angka Giliran">
-                        <ItemTemplate>
-                            <asp:Label ID="AngkaGiliran" runat="server" Text='<%# Bind("AngkaGiliran")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Kod Program">
-                        <ItemTemplate>
-                            <asp:Label ID="KodKursus" runat="server" Text='<%# Bind("KodKursus")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Nama Kelas">
-                        <ItemTemplate>
-                            <asp:Label ID="NamaKelas" runat="server" Text='<%# Bind("NamaKelas")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Jantina">
-                        <ItemTemplate>
-                            <asp:Label ID="Jantina" runat="server" Text='<%# Bind("Jantina")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Kaum">
-                        <ItemTemplate>
-                            <asp:Label ID="Kaum" runat="server" Text='<%# Bind("Kaum")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Agama">
-                        <ItemTemplate>
-                            <asp:Label ID="Agama" runat="server" Text='<%# Bind("Agama")%>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Padam">
-                        <ItemTemplate>
-                            <asp:ImageButton Width ="12" Height ="12" ID="btnDelete" CommandName="Delete" OnClientClick="javascript:return confirm('Anda pasti untuk padam rekod ini? Pemadaman yang dilakukan tidak boleh diubah')" runat="server" ImageUrl="~/icons/download.jpg" ToolTip="Padam Rekod"/>
-                        </ItemTemplate>
-                    </asp:TemplateField>                </Columns>
-                <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" Font-Underline="true" />
-                <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" CssClass="cssPager" />
-                <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" VerticalAlign="Middle"
-                    HorizontalAlign="Left" />
-                <EditRowStyle BackColor="#999999" />
-                <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-            </asp:GridView>
+                        </itemtemplate>
+                        <headerstyle horizontalalign="Left" verticalalign="Top" />
+                        <itemstyle verticalalign="Middle" />
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Kohort">
+                        <itemtemplate>
+                            <asp:label id="Tahun" runat="server" text='<%# Bind("Tahun")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Semester">
+                        <itemtemplate>
+                            <asp:label id="Semester" runat="server" text='<%# Bind("Semester")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Sesi">
+                        <itemtemplate>
+                            <asp:label id="Sesi" runat="server" text='<%# Bind("Sesi") %>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Nama">
+                        <itemtemplate>
+                            <asp:label id="Nama" runat="server" text='<%# Bind("Nama") %>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Mykad">
+                        <itemtemplate>
+                            <asp:label id="Mykad" runat="server" text='<%# Bind("Mykad")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Angka Giliran">
+                        <itemtemplate>
+                            <asp:label id="AngkaGiliran" runat="server" text='<%# Bind("AngkaGiliran")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Kod Program">
+                        <itemtemplate>
+                            <asp:label id="KodKursus" runat="server" text='<%# Bind("KodKursus")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Nama Kelas">
+                        <itemtemplate>
+                            <asp:label id="NamaKelas" runat="server" text='<%# Bind("NamaKelas")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Jantina">
+                        <itemtemplate>
+                            <asp:label id="Jantina" runat="server" text='<%# Bind("Jantina")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Kaum">
+                        <itemtemplate>
+                            <asp:label id="Kaum" runat="server" text='<%# Bind("Kaum")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+                    <asp:templatefield headertext="Agama">
+                        <itemtemplate>
+                            <asp:label id="Agama" runat="server" text='<%# Bind("Agama")%>'></asp:label>
+                        </itemtemplate>
+                    </asp:templatefield>
+
+                    <asp:commandfield selecttext="[KEMASKINI]" showselectbutton="True" headertext="KEMASKINI" />
+
+                    <asp:templatefield headertext="Padam">
+                        <itemtemplate>
+                            <asp:imagebutton width="12" height="12" id="btnDelete" commandname="Delete" onclientclick="javascript:return confirm('Anda pasti untuk padam rekod ini? Pemadaman yang dilakukan tidak boleh diubah')" runat="server" imageurl="~/icons/download.jpg" tooltip="Padam Rekod" />
+                        </itemtemplate>
+                    </asp:templatefield>
+                </columns>
+                <footerstyle backcolor="#5D7B9D" font-bold="True" forecolor="White" font-underline="true" />
+                <pagerstyle backcolor="#284775" forecolor="White" horizontalalign="Center" cssclass="cssPager" />
+                <selectedrowstyle backcolor="#E2DED6" font-bold="True" forecolor="#333333" />
+                <headerstyle backcolor="#5D7B9D" font-bold="True" forecolor="White" verticalalign="Middle"
+                    horizontalalign="Left" />
+                <editrowstyle backcolor="#999999" />
+                <alternatingrowstyle backcolor="White" forecolor="#284775" />
+            </asp:gridview>
         </td>
     </tr>
     <tr>
         <td></td>
     </tr>
     <tr>
-        <td><asp:Button ID="btnFile" runat="server" Text="Export" CssClass="fbbutton" /></td>
+        <td>
+            <asp:button id="btnFile" runat="server" text="Export" cssclass="fbbutton" />
+        </td>
     </tr>
-    </table>
+</table>
 <br />
 <div class="info" id="divMsg" runat="server">
-<asp:Label ID="lblKolejID" runat="server" Text="" Visible="false"></asp:Label>
-<asp:Label ID="lblMsg" runat="server" Text=""></asp:Label>
+    <asp:label id="lblKolejID" runat="server" text="" visible="false"></asp:label>
+    <asp:label id="lblMsg" runat="server" text=""></asp:label>
 </div>
