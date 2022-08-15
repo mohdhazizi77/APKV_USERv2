@@ -94,27 +94,7 @@
                         <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
                         <ItemStyle VerticalAlign="Middle" />
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Nama Bidang">
-                        <ItemTemplate>
-                            <asp:Label ID="NamaKluster" runat="server" Text='<%# Bind("NamaKluster")%>'></asp:Label>
-                        </ItemTemplate>
-                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
-                        <ItemStyle VerticalAlign="Middle" />
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Nama Program">
-                        <ItemTemplate>
-                            <asp:Label ID="NamaKursus" runat="server" Text='<%# Bind("NamaKursus")%>'></asp:Label>
-                        </ItemTemplate>
-                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
-                        <ItemStyle VerticalAlign="Middle" />
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Nama Kelas">
-                        <ItemTemplate>
-                            <asp:Label ID="NamaKelas" runat="server" Text='<%# Bind("NamaKelas")%>'></asp:Label>
-                        </ItemTemplate>
-                        <HeaderStyle HorizontalAlign="Left" VerticalAlign="Top" />
-                        <ItemStyle VerticalAlign="Middle" />
-                    </asp:TemplateField>
+                    
                     <asp:TemplateField>
                         <HeaderTemplate>
                             <asp:CheckBox ID="chkAll" runat="server" AutoPostBack="true" OnCheckedChanged="CheckUncheckAll" />

@@ -715,9 +715,9 @@ Public Class pengesahan_pendaftaran1
                     End If
                     If Not strJenisKursusMT = "" Then
                         If strJenisKursusMT = "TECHNOLOGY" Then
-                            strSQL += " AND (Jenis = 'TEKNOLOGI' OR Jenis IS NULL)"
+                            strSQL += " AND (Jenis = 'TEKNOLOGI' OR Jenis IS NULL OR Jenis = '')"
                         ElseIf strJenisKursusMT = "SOCIAL" Then
-                            strSQL += " AND (Jenis ='SOCIAL' OR Jenis IS NULL)"
+                            strSQL += " AND (Jenis ='SOCIAL' OR Jenis IS NULL OR Jenis = '')"
                         End If
                     End If
                     strSQL += " ORDER BY KodMataPelajaran"
