@@ -14,10 +14,14 @@ Public Class cetak_pelajar_ulang1
 
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
     Dim objConn As SqlConnection = New SqlConnection(strConn)
+
+    Dim SubMenuText As String = "Jana Penyata Pendaftaran Ulang"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not IsPostBack Then
                 lblMsg.Text = ""
+
 
                 'kolejnama
                 strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
@@ -27,68 +31,22 @@ Public Class cetak_pelajar_ulang1
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
                 '------exist takwim
-                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Jana Penyata Pendaftaran Ulang' AND Aktif='1'"
+                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText = '" & SubMenuText & "' AND Aktif='1' AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
                 If oCommon.isExist(strSQL) = True Then
 
-                    'count data takwim
-                    'Get the data from database into datatable
-                    Dim cmd As New SqlCommand("SELECT TakwimID FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText='Jana Penyata Pendaftaran Ulang' AND Aktif='1'")
-                    Dim dt As DataTable = GetData(cmd)
+                    kpmkv_tahun_list()
+                    kpmkv_semester_list()
+                    kpmkv_tahun_2_list()
+                    kpmkv_kodkursus_list()
+                    kpmkv_kelas_list()
 
-                    For i As Integer = 0 To dt.Rows.Count - 1
-                        IntTakwim = dt.Rows(i)("TakwimID")
-
-                        strSQL = "SELECT TarikhMula,TarikhAkhir FROM kpmkv_takwim WHERE TakwimID='" & IntTakwim & "'"
-                        strRet = oCommon.getFieldValueEx(strSQL)
-
-                        Dim ar_user_login As Array
-                        ar_user_login = strRet.Split("|")
-                        Dim strMula As String = ar_user_login(0)
-                        Dim strAkhir As String = ar_user_login(1)
-
-                        Dim strdateNow As Date = Date.Now
-                        Dim startDate = DateTime.ParseExact(strMula, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-                        Dim endDate = DateTime.ParseExact(strAkhir, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-
-                        Dim ts As New TimeSpan
-                        ts = endDate.Subtract(strdateNow)
-                        Dim dayDiff = ts.Days
-
-                        If strMula IsNot Nothing Then
-                            If strAkhir IsNot Nothing And dayDiff >= 0 Then
-                                kpmkv_tahun_list()
-                                kpmkv_semester_list()
-                                kpmkv_tahun_2_list()
-                                kpmkv_kodkursus_list()
-                                kpmkv_kelas_list()
-
-                                'checkinbox
-                                strSQL = "SELECT Sesi FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-                                strRet = oCommon.getFieldValue(strSQL)
-
-                                If strRet = 1 Then
-                                    chkSesi.Items(0).Enabled = True
-                                    'chkSesi.Items(1).Enabled = False
-                                Else
-                                    'chkSesi.Items(0).Enabled = False
-                                    chkSesi.Items(1).Enabled = True
-                                End If
-                                btnSearch.Enabled = True
-                                btnPrint.Enabled = True
-                            End If
-                        Else
-                            btnSearch.Enabled = False
-                            btnPrint.Enabled = False
-                            lblMsg.Text = "Jana Penyata Pendaftaran Ulang telah ditutup!"
-                        End If
-                    Next
                 Else
                     btnSearch.Enabled = False
                     btnPrint.Enabled = False
                     lblMsg.Text = "Jana Penyata Pendaftaran Ulang telah ditutup!"
                 End If
-                RepoveDuplicate(ddlTahun)
-                RepoveDuplicate(ddlSemester)
+
             End If
 
         Catch ex As Exception
@@ -97,12 +55,40 @@ Public Class cetak_pelajar_ulang1
     End Sub
 
     Private Sub kpmkv_tahun_list()
-        strSQL = "SELECT Kohort FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Kohort ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NULL
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))
+
+                    UNION
+
+                    SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NOT NULL
+                    AND kpmkv_takwim_kv.KolejRecordID = '" & lblKolejID.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            If Not ddlTahun.Text = strRet Then
-                ddlTahun.Items.Add(strRet)
-            End If
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlTahun.DataSource = ds
+            ddlTahun.DataTextField = "Kohort"
+            ddlTahun.DataValueField = "Kohort"
+            ddlTahun.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -110,16 +96,31 @@ Public Class cetak_pelajar_ulang1
         Finally
             objConn.Dispose()
         End Try
-
 
     End Sub
+
     Private Sub kpmkv_semester_list()
-        strSQL = "SELECT Semester FROM kpmkv_takwim WHERE TakwimId='" & IntTakwim & "'ORDER BY Semester ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+
+        strSQL = "  SELECT DISTINCT Semester FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND Kohort = '" & ddlTahun.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
+        Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
+        Dim objConn As SqlConnection = New SqlConnection(strConn)
+        Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
+
         Try
-            If Not ddlSemester.Text = strRet Then
-                ddlSemester.Items.Add(strRet)
-            End If
+            Dim ds As DataSet = New DataSet
+            sqlDA.Fill(ds, "AnyTable")
+
+            ddlSemester.DataSource = ds
+            ddlSemester.DataTextField = "Semester"
+            ddlSemester.DataValueField = "Semester"
+            ddlSemester.DataBind()
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -127,7 +128,6 @@ Public Class cetak_pelajar_ulang1
         Finally
             objConn.Dispose()
         End Try
-
 
     End Sub
     Private Shared Function RepoveDuplicate(ByVal ddl As DropDownList) As DropDownList
@@ -166,10 +166,11 @@ Public Class cetak_pelajar_ulang1
 
     Private Sub kpmkv_kodkursus_list()
 
-        strSQL = "SELECT kpmkv_kursus.KodKursus, kpmkv_kursus.KursusID FROM kpmkv_kursus_kolej LEFT OUTER JOIN"
-        strSQL += " kpmkv_kursus ON kpmkv_kursus_kolej.KursusID = kpmkv_kursus.KursusID"
-        strSQL += " WHERE kpmkv_kursus_kolej.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kursus.Tahun='" & ddlTahun.SelectedValue & "' "
-        strSQL += " AND kpmkv_kursus.Sesi='" & chkSesi.SelectedValue & "' GROUP BY kpmkv_kursus.KodKursus, kpmkv_kursus.KursusID ORDER BY kpmkv_kursus.KodKursus"
+        strSQL = "SELECT kpmkv_kursus.KodKursus, kpmkv_kursus.KursusID"
+        strSQL += " FROM kpmkv_kelas_kursus INNER JOIN kpmkv_kursus ON kpmkv_kelas_kursus.KursusID = kpmkv_kursus.KursusID INNER JOIN"
+        strSQL += " kpmkv_kelas ON kpmkv_kelas_kursus.KelasID = kpmkv_kelas.KelasID"
+        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kursus.Tahun='" & ddlTahun.Text & "'"
+        strSQL += " AND kpmkv_kursus.Sesi='" & chkSesi.SelectedValue & "' GROUP BY kpmkv_kursus.KodKursus,kpmkv_kursus.KursusID"
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
         Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -183,6 +184,8 @@ Public Class cetak_pelajar_ulang1
             ddlKodKursus.DataValueField = "KursusID"
             ddlKodKursus.DataBind()
 
+            '--ALL
+            'ddlKodKursus.Items.Add(New ListItem("-Pilih-", "0"))
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -192,12 +195,12 @@ Public Class cetak_pelajar_ulang1
         End Try
 
     End Sub
-
     Private Sub kpmkv_kelas_list()
+
         strSQL = " SELECT kpmkv_kelas.NamaKelas, kpmkv_kelas.KelasID"
         strSQL += " FROM  kpmkv_kelas_kursus LEFT OUTER JOIN kpmkv_kelas ON kpmkv_kelas_kursus.KelasID = kpmkv_kelas.KelasID LEFT OUTER JOIN"
         strSQL += " kpmkv_kursus ON kpmkv_kelas_kursus.KursusID = kpmkv_kursus.KursusID"
-        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kelas_kursus.KursusID= '" & ddlKodKursus.SelectedValue & "' ORDER BY  kpmkv_kelas.NamaKelas"
+        strSQL += " WHERE kpmkv_kelas.KolejRecordID='" & lblKolejID.Text & "' AND kpmkv_kelas_kursus.KursusID= '" & ddlKodKursus.SelectedValue & "' ORDER BY KelasID"
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
         Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -211,6 +214,8 @@ Public Class cetak_pelajar_ulang1
             ddlNamaKelas.DataValueField = "KelasID"
             ddlNamaKelas.DataBind()
 
+            '--ALL
+            'ddlKelas.Items.Add(New ListItem("-Pilih-", "0"))
 
         Catch ex As Exception
             lblMsg.Text = "System Error:" & ex.Message
@@ -402,6 +407,7 @@ Public Class cetak_pelajar_ulang1
             '--display on screen
             lblMsg.Text = "System Error." & ex.Message
         End Try
+
     End Sub
 
     Private Sub CreatePDF(ByVal tableColumns As DataColumnCollection, ByVal tableRows As DataRowCollection)
@@ -607,7 +613,7 @@ Public Class cetak_pelajar_ulang1
                                 If ds.Tables(0).Rows(iloop).Item(0).ToString = "MATEMATIK" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KODMT As Array
@@ -624,7 +630,7 @@ Public Class cetak_pelajar_ulang1
                                 ElseIf ds.Tables(0).Rows(iloop).Item(0).ToString = "SAINS" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KodNamaMP As Array
@@ -784,7 +790,7 @@ Public Class cetak_pelajar_ulang1
                                 If ds.Tables(0).Rows(iloop).Item(0).ToString = "MATEMATIK" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KODMT As Array
@@ -801,7 +807,7 @@ Public Class cetak_pelajar_ulang1
                                 ElseIf ds.Tables(0).Rows(iloop).Item(0).ToString = "SAINS" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KodNamaMP As Array
@@ -889,7 +895,7 @@ Public Class cetak_pelajar_ulang1
                                 If ds.Tables(0).Rows(iloop).Item(0).ToString = "MATEMATIK" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KODMT As Array
@@ -906,7 +912,7 @@ Public Class cetak_pelajar_ulang1
                                 ElseIf ds.Tables(0).Rows(iloop).Item(0).ToString = "SAINS" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KodNamaMP As Array
@@ -1208,7 +1214,7 @@ Public Class cetak_pelajar_ulang1
                                 If ds.Tables(0).Rows(iloop).Item(0).ToString = "MATEMATIK" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KODMT As Array
@@ -1225,7 +1231,7 @@ Public Class cetak_pelajar_ulang1
                                 ElseIf ds.Tables(0).Rows(iloop).Item(0).ToString = "SAINS" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KodNamaMP As Array
@@ -1382,7 +1388,7 @@ Public Class cetak_pelajar_ulang1
                                 If ds.Tables(0).Rows(iloop).Item(0).ToString = "MATEMATIK" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KODMT As Array
@@ -1399,7 +1405,7 @@ Public Class cetak_pelajar_ulang1
                                 ElseIf ds.Tables(0).Rows(iloop).Item(0).ToString = "SAINS" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KodNamaMP As Array
@@ -1487,7 +1493,7 @@ Public Class cetak_pelajar_ulang1
                                 If ds.Tables(0).Rows(iloop).Item(0).ToString = "MATEMATIK" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%MATEMATIK%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KODMT As Array
@@ -1504,7 +1510,7 @@ Public Class cetak_pelajar_ulang1
                                 ElseIf ds.Tables(0).Rows(iloop).Item(0).ToString = "SAINS" Then
 
                                     strSQL = "SELECT  KODMatapelajaran, NamaMataPelajaran FROM kpmkv_matapelajaran"
-                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND Jenis = '" & strJenisKursus & "' AND Tahun='" & ddlTahun.SelectedValue & "'"
+                                    strSQL += " WHERE Semester='" & ddlSemester.Text & "' AND NamaMataPelajaran LIKE '%SAINS%' AND (Jenis = '" & strJenisKursus & "' OR Jenis IS NULL OR Jenis = '') AND Tahun='" & ddlTahun.SelectedValue & "'"
                                     strRet = oCommon.getFieldValueEx(strSQL)
 
                                     Dim ar_KodNamaMP As Array
@@ -1661,5 +1667,9 @@ Public Class cetak_pelajar_ulang1
             lblMsg.Text = "error" & ex.Message
 
         End Try
+    End Sub
+
+    Private Sub ddlTahun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTahun.SelectedIndexChanged
+        kpmkv_semester_list()
     End Sub
 End Class

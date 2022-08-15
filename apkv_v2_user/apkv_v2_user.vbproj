@@ -743,6 +743,7 @@
       <DependentUpon>cetak.pelajar.ulang.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="common.function.2.vb" />
     <Compile Include="common.function.vb" />
     <Compile Include="commoncontrol\admin_FIK_SVM.ascx.designer.vb">
       <DependentUpon>admin_FIK_SVM.ascx</DependentUpon>

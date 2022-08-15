@@ -10,6 +10,7 @@ Imports iTextSharp.text.pdf
 Public Class slip_keputusan_ulangan1
     Inherits System.Web.UI.UserControl
     Dim oCommon As New Commonfunction
+    Dim oCommon2 As New CommonFunction2
     Dim strSQL As String = ""
     Dim strRet As String = ""
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
@@ -91,26 +92,8 @@ Public Class slip_keputusan_ulangan1
     Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
         lblMsg.Text = ""
         strRet = BindData(datRespondent)
-        tbl_menu_check()
     End Sub
 
-    Private Sub tbl_menu_check()
-
-        Dim str As String
-        For i As Integer = 0 To datRespondent.Rows.Count - 1
-            Dim row As GridViewRow = datRespondent.Rows(0)
-            Dim cb As CheckBox = datRespondent.Rows(i).FindControl("chkSelect")
-
-            str = datRespondent.DataKeys(i).Value.ToString
-            Dim strMykad As String = CType(datRespondent.Rows(i).FindControl("Mykad"), Label).Text
-
-            strSQL = "SELECT KelasID FROM kpmkv_pelajar Where Mykad='" & strMykad & "' AND IsDeleted='N' AND KelasID IS NOT NULL"
-            If oCommon.isExist(strSQL) = False Then
-                cb.Checked = True
-            End If
-        Next
-
-    End Sub
     Protected Sub CheckUncheckAll(sender As Object, e As System.EventArgs)
 
         Dim chk1 As CheckBox
@@ -160,27 +143,34 @@ Public Class slip_keputusan_ulangan1
         Dim strRecordID As String = oCommon.getFieldValue(strSQL)
 
         '--not deleted
-        tmpSQL = "  SELECT 
-                    kpmkv_markah_bmsj_setara.PelajarID, 
-                    kpmkv_pelajar.Tahun,kpmkv_pelajar.IsBmTahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi, kpmkv_pelajar.Nama, kpmkv_pelajar.MYKAD, kpmkv_pelajar.AngkaGiliran,
-                    kpmkv_kluster.NamaKluster,
-                    kpmkv_kursus.NamaKursus,
-                    kpmkv_kelas.NamaKelas
-                    FROM
-                    kpmkv_markah_bmsj_setara
-                    LEFT JOIN kpmkv_pelajar ON kpmkv_pelajar.PelajarID = kpmkv_markah_bmsj_setara.PelajarID
-                    LEFT JOIN kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID
-                    LEFT JOIN kpmkv_kluster ON kpmkv_kluster.KlusterID = kpmkv_kursus.KlusterID
-                    LEFT JOIN kpmkv_kelas ON kpmkv_kelas.KelasID = kpmkv_pelajar.KelasID
-                    WHERE
-                    kpmkv_markah_bmsj_setara.KolejRecordID = '" & strRecordID & "'
-                    AND kpmkv_markah_bmsj_setara.IsAKATahun = '" & ddlTahun.Text & "'
-					AND kpmkv_markah_bmsj_setara.MataPelajaran = '" & ddlMatapelajaran.SelectedItem.Text & "'"
-
-        tmpSQL += " ORDER BY 
-                    kpmkv_kluster.NamaKluster,
-                    kpmkv_kursus.NamaKursus,
-                    kpmkv_pelajar.Nama ASC"
+        tmpSQL = "  SELECT DISTINCT b.PelajarID, b.Tahun, b.IsBMTahun, b.Semester, b.Sesi, b.Nama, b.MYKAD, b.AngkaGiliran FROM APKV.dbo.kpmkv_markah_bmsj_setara a
+LEFT JOIN APKV.dbo.kpmkv_pelajar b ON b.PelajarID = a.PelajarID
+LEFT JOIN APKV.dbo.kpmkv_kursus c ON c.KursusID = b.KursusID
+LEFT JOIN APKV.dbo.kpmkv_kluster d ON d.KlusterID = c.KlusterID
+LEFT JOIN APKV.dbo.kpmkv_kelas e ON e.KelasID = b.KelasID
+LEFT JOIN APKV.dbo.kpmkv_kolej f ON f.RecordID = a.KolejRecordID
+WHERE a.KolejRecordID = '" & strRecordID & "'
+AND a.IsAKATahun = '" & ddlTahun.Text & "'
+AND a.MataPelajaran = '" & ddlMatapelajaran.SelectedItem.Text & "'
+AND a.PelajarID IN
+(SELECT a.PelajarID FROM kpmkv_svmu a
+LEFT JOIN kpmkv_svmu_calon b ON b.svmu_id = a.svmu_id
+WHERE a.DatabaseName = 'APKV' AND b.Status = 'DISAHKAN')
+UNION
+SELECT DISTINCT b.PelajarID, b.Tahun, b.IsBMTahun, b.Semester, b.Sesi, b.Nama, b.MYKAD, b.AngkaGiliran FROM APKV.dbo.kpmkv_markah_bmsj_setara a
+LEFT JOIN KPMKV.dbo.kpmkv_pelajar b ON b.PelajarID = a.PelajarID
+LEFT JOIN KPMKV.dbo.kpmkv_kursus c ON c.KursusID = b.KursusID
+LEFT JOIN KPMKV.dbo.kpmkv_kluster d ON d.KlusterID = c.KlusterID
+LEFT JOIN KPMKV.dbo.kpmkv_kelas e ON e.KelasID = b.KelasID
+LEFT JOIN KPMKV.dbo.kpmkv_kolej f ON f.RecordID = a.KolejRecordID
+WHERE a.KolejRecordID = '" & strRecordID & "'
+AND a.IsAKATahun = '" & ddlTahun.Text & "'
+AND a.MataPelajaran = '" & ddlMatapelajaran.SelectedItem.Text & "'
+AND a.PelajarID IN
+(SELECT a.PelajarID FROM kpmkv_svmu a
+LEFT JOIN kpmkv_svmu_calon b ON b.svmu_id = a.svmu_id
+WHERE a.DatabaseName = 'KPMKV' AND b.Status = 'DISAHKAN')
+ORDER BY b.Nama ASC"
 
         getSQL = tmpSQL
         ''--debug
@@ -216,69 +206,60 @@ Public Class slip_keputusan_ulangan1
             Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
 
             'kolejnegeri
-            strSQL = "SELECT Negeri FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
+            strSQL = "SELECT Negeri FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
             Dim strKolejnegeri As String = oCommon.getFieldValue(strSQL)
 
             Dim strKolejLength As String = strKolejnama + "," + strKolejnegeri
             Dim strtotalLength As Integer = strKolejLength.Length
 
-            strSQL = "  SELECT 
-                    kpmkv_markah_bmsj_setara.PelajarID, 
-                    kpmkv_pelajar.Tahun,kpmkv_pelajar.IsBmTahun, kpmkv_pelajar.Semester, kpmkv_pelajar.Sesi, kpmkv_pelajar.Nama, kpmkv_pelajar.MYKAD, kpmkv_pelajar.AngkaGiliran,
-                    kpmkv_kluster.NamaKluster,
-                    kpmkv_kursus.NamaKursus,
-                    kpmkv_kelas.NamaKelas
-                    FROM
-                    kpmkv_markah_bmsj_setara
-                    LEFT JOIN kpmkv_pelajar ON kpmkv_pelajar.PelajarID = kpmkv_markah_bmsj_setara.PelajarID
-                    LEFT JOIN kpmkv_kursus ON kpmkv_pelajar.KursusID = kpmkv_kursus.KursusID
-                    LEFT JOIN kpmkv_kluster ON kpmkv_kluster.KlusterID = kpmkv_kursus.KlusterID
-                    LEFT JOIN kpmkv_kelas ON kpmkv_kelas.KelasID = kpmkv_pelajar.KelasID
-                    WHERE
-                    kpmkv_markah_bmsj_setara.KolejRecordID = '" & strRecordID & "'
-                    AND kpmkv_markah_bmsj_setara.IsAKATahun = '" & ddlTahun.Text & "'
-					AND kpmkv_markah_bmsj_setara.MataPelajaran = '" & ddlMatapelajaran.SelectedItem.Text & "'"
-
-            strSQL += " ORDER BY 
-                        kpmkv_kluster.NamaKluster,
-                        kpmkv_kursus.NamaKursus,
-                        kpmkv_pelajar.Nama ASC"
-
-            strRet = oCommon.ExecuteSQL(strSQL)
-
-            Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
-            Dim ds As DataSet = New DataSet
-            sqlDA.Fill(ds, "AnyTable")
-
-            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
+            For i As Integer = 0 To datRespondent.Rows.Count - 1
 
                 Dim cb As CheckBox = datRespondent.Rows(i).FindControl("chkSelect")
 
                 If cb.Checked = True Then
 
-                    Dim strPelajarID As String = ds.Tables(0).Rows(i).Item(0).ToString
-                    Dim strTahun As String = ds.Tables(0).Rows(i).Item(1).ToString
-                    Dim strIsBMTahun As String = ds.Tables(0).Rows(i).Item(2).ToString
-                    Dim strSemester As String = ds.Tables(0).Rows(i).Item(3).ToString
-                    Dim strSesi As String = ds.Tables(0).Rows(i).Item(4).ToString
-                    Dim strNama As String = ds.Tables(0).Rows(i).Item(5).ToString
-                    Dim strMykad As String = ds.Tables(0).Rows(i).Item(6).ToString
-                    Dim strAngkaGiliran As String = ds.Tables(0).Rows(i).Item(7).ToString
-                    Dim strNamaKluster As String = ds.Tables(0).Rows(i).Item(8).ToString
-                    Dim strNamaKursus As String = ds.Tables(0).Rows(i).Item(9).ToString
-                    Dim strNamaKelas As String = ds.Tables(0).Rows(i).Item(10).ToString
+                    Dim strPelajarID As String = datRespondent.DataKeys(i).Value.ToString
 
-                    ''get kod kursus
-                    strSQL = "SELECT KodKursus FROM kpmkv_kursus WHERE NamaKursus = '" & strNamaKursus & "'"
-                    Dim strKodKursus As String = oCommon.getFieldValue(strSQL)
+                    strSQL = "SELECT DatabaseName FROM kpmkv_svmu WHERE PelajarID = '" & strPelajarID & "'"
+                    Dim DatabaseName As String = oCommon.getFieldValue(strSQL)
 
-                    ''getting data end
+                    If DatabaseName = "APKV" Then
+
+                        strSQL = "  SELECT a.Nama, a.MYKAD, a.AngkaGiliran, b.KodKursus, b.NamaKursus, c.NamaKluster, d.NamaKelas FROM kpmkv_pelajar a
+LEFT JOIN kpmkv_kursus b ON b.KursusID = a.KursusID
+LEFT JOIN kpmkv_kluster c ON c.klusterID = b.KlusterID
+LEFT JOIN kpmkv_kelas d ON d.KelasID = a.KelasID
+WHERE a.PelajarID = '" & strPelajarID & "'"
+                        strRet = oCommon.getFieldValueEx(strSQL)
+
+                    Else
+
+                        strSQL = "  SELECT a.Nama, a.MYKAD, a.AngkaGiliran, b.KodKursus, b.NamaKursus, c.NamaKluster, d.NamaKelas FROM kpmkv_pelajar a
+LEFT JOIN kpmkv_kursus b ON b.KursusID = a.KursusID
+LEFT JOIN kpmkv_kluster c ON c.klusterID = b.KlusterID
+LEFT JOIN kpmkv_kelas d ON d.KelasID = a.KelasID
+WHERE a.PelajarID = '" & strPelajarID & "'"
+                        strRet = oCommon2.getFieldValueEx(strSQL)
+
+                    End If
+
+                    Dim Pelajar As Array
+                    Pelajar = strRet.Split("|")
+
+                    Dim strNama As String = Pelajar(0)
+                    Dim strMykad As String = Pelajar(1)
+                    Dim strAngkaGiliran As String = Pelajar(2)
+                    Dim strKodKursus As String = Pelajar(3)
+                    Dim strNamaKursus As String = Pelajar(4)
+                    Dim strNamaKluster As String = Pelajar(5)
+                    Dim strNamaKelas As String = Pelajar(6)
+
+                    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
                     Dim table As New PdfPTable(3)
                     table.WidthPercentage = 100
                     table.SetWidths({42, 16, 42})
                     table.DefaultCell.Border = 0
-
 
                     myDocument.Add(table)
 
@@ -293,14 +274,14 @@ Public Class slip_keputusan_ulangan1
                     If ddlMatapelajaran.SelectedValue = 1 Then
 
                         myDocument.Add(imgSpacing)
-                        Dim myPara02 As New Paragraph("SLIP KEPUTUSAN BAHASA MELAYU 1104", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
+                        Dim myPara02 As New Paragraph("SLIP KEPUTUSAN BAHASA MELAYU 1104 ULANGAN", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
                         myPara02.Alignment = Element.ALIGN_CENTER
                         myDocument.Add(myPara02)
 
                     ElseIf ddlMatapelajaran.SelectedValue = 2 Then
 
                         myDocument.Add(imgSpacing)
-                        Dim myPara02 As New Paragraph("SLIP KEPUTUSAN SEJARAH 1251", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
+                        Dim myPara02 As New Paragraph("SLIP KEPUTUSAN SEJARAH 1251 ULANGAN", FontFactory.GetFont("Tw Cen Mt", 12, Font.NORMAL))
                         myPara02.Alignment = Element.ALIGN_CENTER
                         myDocument.Add(myPara02)
 
@@ -336,6 +317,15 @@ Public Class slip_keputusan_ulangan1
                     cell.AddElement(New Paragraph(cetak, FontFactory.GetFont("Arial", 10)))
                     cell.Border = 0
                     table.AddCell(cell)
+
+                    strSQL = "SELECT svmu_id FROM kpmkv_svmu WHERE PelajarID = '" & strPelajarID & "'"
+                    Dim svmu_id As String = oCommon.getFieldValue(strSQL)
+
+                    strSQL = "SELECT PusatPeperiksaanJPN FROM kpmkv_svmu_calon WHERE svmu_id = '" & svmu_id & "' AND PusatPeperiksaanJPN IS NOT NULL"
+                    Dim PusatPeperiksaanJPN As String = oCommon.getFieldValue(strSQL)
+
+                    strSQL = "SELECT Nama FROM kpmkv_kolej WHERE RecordID = '" & PusatPeperiksaanJPN & "'"
+                    strKolejnama = oCommon.getFieldValue(strSQL)
 
                     cell = New PdfPCell()
                     cetak = Environment.NewLine & ": " & strNama

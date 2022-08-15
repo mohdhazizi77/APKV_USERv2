@@ -13,28 +13,41 @@ Public Class cetak_labelMeja
 
     Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
     Dim objConn As SqlConnection = New SqlConnection(strConn)
+
+    Dim SubMenuText As String = "Cetak Slip Meja"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             If Not IsPostBack Then
+
                 'kolejnama
                 strSQL = "SELECT Nama FROM kpmkv_users WHERE LoginID='" & Session("LoginID") & "'"
                 Dim strKolejnama As String = oCommon.getFieldValue(strSQL)
-
                 'kolejid
                 strSQL = "SELECT RecordID FROM kpmkv_kolej WHERE Nama='" & strKolejnama & "'"
                 lblKolejID.Text = oCommon.getFieldValue(strSQL)
 
-                kpmkv_tahun_list()
-                ddlTahun.Text = Now.Year
+                strSQL = "SELECT * FROM kpmkv_takwim WHERE Tahun='" & Now.Year & "' AND SubMenuText = '" & SubMenuText & "' AND Aktif='1' AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
 
-                kpmkv_kelas_list()
+                If oCommon.isExist(strSQL) = True Then
 
-                kpmkv_kodkursus_list()
+                    kpmkv_tahun_list()
+                    ddlTahun.Text = Now.Year
 
-                kpmkv_semester_list()
+                    kpmkv_kelas_list()
 
-                kpmkv_tahun_2_list()
-                ddlTahun_Semasa.Text = Now.Year
+                    kpmkv_kodkursus_list()
+
+                    kpmkv_semester_list()
+
+                    kpmkv_tahun_2_list()
+                    ddlTahun_Semasa.Text = Now.Year
+
+                Else
+                    btnSearch.Enabled = False
+                    btnPrint.Enabled = False
+                    lblMsg.Text = SubMenuText & " telah ditutup!"
+                End If
 
             End If
         Catch ex As Exception
@@ -44,7 +57,27 @@ Public Class cetak_labelMeja
 
 
     Private Sub kpmkv_tahun_list()
-        strSQL = "SELECT Tahun FROM kpmkv_tahun ORDER BY TahunID"
+        strSQL = "  SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NULL
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))
+
+                    UNION
+
+                    SELECT DISTINCT kpmkv_takwim.Kohort FROM kpmkv_takwim
+                    LEFT JOIN kpmkv_takwim_kv ON kpmkv_takwim_kv.TakwimID = kpmkv_takwim.TakwimID
+                    WHERE
+                    kpmkv_takwim.SubMenuText = '" & SubMenuText & "'
+                    AND kpmkv_takwim.Aktif = '1'
+                    AND kpmkv_takwim.Tahun = '" & Now.Year & "'
+                    AND kpmkv_takwim_kv.TakwimKVID IS NOT NULL
+                    AND kpmkv_takwim_kv.KolejRecordID = '" & lblKolejID.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
+
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
         Dim sqlDA As New SqlDataAdapter(strSQL, objConn)
@@ -54,11 +87,12 @@ Public Class cetak_labelMeja
             sqlDA.Fill(ds, "AnyTable")
 
             ddlTahun.DataSource = ds
-            ddlTahun.DataTextField = "Tahun"
-            ddlTahun.DataValueField = "Tahun"
+            ddlTahun.DataTextField = "Kohort"
+            ddlTahun.DataValueField = "Kohort"
             ddlTahun.DataBind()
 
         Catch ex As Exception
+            lblMsg.Text = "System Error:" & ex.Message
 
         Finally
             objConn.Dispose()
@@ -90,8 +124,13 @@ Public Class cetak_labelMeja
     End Sub
 
     Private Sub kpmkv_semester_list()
-        strSQL = "SELECT Semester FROM kpmkv_semester ORDER BY Semester ASC"
-        strRet = oCommon.getFieldValue(strSQL)
+        strSQL = "  SELECT DISTINCT Semester FROM kpmkv_takwim 
+                    WHERE 
+                    SubMenuText = '" & SubMenuText & "' 
+                    AND Aktif = '1'
+                    AND Tahun = '" & Now.Year & "'
+                    AND Kohort = '" & ddlTahun.Text & "'
+                    AND GETDATE() BETWEEN CONVERT(date, TarikhMula, 103) AND DATEADD(day,1,CONVERT(date, TarikhAkhir, 103))"
 
         Dim strConn As String = ConfigurationManager.AppSettings("ConnectionString")
         Dim objConn As SqlConnection = New SqlConnection(strConn)
@@ -107,12 +146,24 @@ Public Class cetak_labelMeja
             ddlSemester.DataBind()
 
         Catch ex As Exception
+            lblMsg.Text = "System Error:" & ex.Message
 
         Finally
             objConn.Dispose()
         End Try
 
     End Sub
+
+    Private Shared Function RepoveDuplicate(ByVal ddl As DropDownList) As DropDownList
+        For Row As Int16 = 0 To ddl.Items.Count - 2
+            For RowAgain As Int16 = ddl.Items.Count - 1 To Row + 1 Step -1
+                If ddl.Items(Row).ToString = ddl.Items(RowAgain).ToString Then
+                    ddl.Items.RemoveAt(RowAgain)
+                End If
+            Next
+        Next
+        Return ddl
+    End Function
 
     Private Sub kpmkv_kodkursus_list()
 
@@ -1054,5 +1105,9 @@ Public Class cetak_labelMeja
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub ddlTahun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlTahun.SelectedIndexChanged
+        kpmkv_semester_list()
     End Sub
 End Class

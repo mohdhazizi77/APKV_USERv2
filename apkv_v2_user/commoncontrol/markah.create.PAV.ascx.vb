@@ -393,7 +393,7 @@ Public Class markah_create_PAV
                 strSQL += " WHERE KolejRecordID='" & lblKolejID.Text & "' AND PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
             ElseIf nCount = 5 Then
                 strSQL = "UPDATE kpmkv_pelajar_markah SET  A_Amali1='" & Amali1 & "', A_Amali2='" & Amali1 & "',"
-                strSQL += " A_Amali3='" & Amali1 & "', A_Amali4='" & Amali1 & "'"
+                strSQL += " A_Amali3='" & Amali1 & "', A_Amali4='" & Amali1 & "',"
                 strSQL += " A_Amali5='" & Amali1 & "'"
                 strSQL += " WHERE KolejRecordID='" & lblKolejID.Text & "' AND PelajarID='" & datRespondent.DataKeys(i).Value.ToString & "'"
             ElseIf nCount = 6 Then

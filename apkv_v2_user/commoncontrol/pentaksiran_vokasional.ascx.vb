@@ -1289,8 +1289,8 @@ Public Class pentaksiran_vokasional
 
                     If Not strGredPI = "" Then
                         strJamKreditAkademik = CDbl(strJamKreditBM) + CDbl(strJamKreditBI) + CDbl(strJamKreditMT) + CDbl(strJamKreditSC) + CDbl(strJamKreditSJ) + CDbl(strJamKreditPI)
-                    ElseIf Not strGredPM = "" Then
-                        strJamKreditAkademik = CDbl(strJamKreditBM) + CDbl(strJamKreditBI) + CDbl(strJamKreditMT) + CDbl(strJamKreditSC) + CDbl(strJamKreditSJ) + CDbl(strJamKreditPI)
+                    Else
+                        strJamKreditAkademik = CDbl(strJamKreditBM) + CDbl(strJamKreditBI) + CDbl(strJamKreditMT) + CDbl(strJamKreditSC) + CDbl(strJamKreditSJ) + CDbl(strJamKreditPM)
                     End If
 
                     'check by semester
@@ -1642,7 +1642,7 @@ Public Class pentaksiran_vokasional
 
                     myDocument.Add(imgSpacing)
                     myDocument.Add(imgSpacing)
-                    myDocument.Add(New Paragraph("TARIKH: " & ddlHari.Text & "/" & ddlBulan.Text & "/" & ddlTahun_1.Text & "                                                                                                                                                      PENGARAH", FontFactory.GetFont("Arial", 8, Font.BOLD)))
+                    myDocument.Add(New Paragraph("TARIKH: " & ddlHari.Text & "/" & ddlBulan.Text & "/" & ddlTahun_1.Text & "                                                                                                                                                            PENGARAH", FontFactory.GetFont("Arial", 8, Font.BOLD)))
                     Dim myPengarah As New Paragraph("" & strKolejnama, FontFactory.GetFont("Arial", 8, Font.BOLD))
                     myPengarah.Alignment = Element.ALIGN_RIGHT
                     myDocument.Add(myPengarah)
